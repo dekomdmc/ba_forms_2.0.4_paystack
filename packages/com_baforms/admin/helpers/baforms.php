@@ -216,7 +216,7 @@ abstract class baformsHelper
         $db = JFactory::getDbo();
         $array = array('google_drive','google_maps', 'google_sheets', 'paypal', 'twocheckout', 'mailchimp', 'mollie',
             'stripe', 'activecampaign', 'authorize', 'liqpay', 'payupl', 'cloudpayments', 'campaign_monitor', 
-            'getresponse', 'zoho_crm', 'robokassa', 'payu_latam', 'yandex_kassa', 'redsys', 'payfast', 'paypal_sdk');
+            'getresponse', 'zoho_crm', 'robokassa', 'payu_latam', 'yandex_kassa', 'redsys', 'payfast', 'paypal_sdk', 'paystack');
         $where = array();
         foreach ($array as $value) {
             $where[] = 'service = '.$db->quote($value);

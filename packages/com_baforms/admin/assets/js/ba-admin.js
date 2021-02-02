@@ -1,19 +1,18 @@
 /**
-* @package   BaForms
-* @author    Balbooa http://www.balbooa.com/
-* @copyright Copyright @ Balbooa
-* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
-*/
+ * @package   BaForms
+ * @author    Balbooa http://www.balbooa.com/
+ * @copyright Copyright @ Balbooa
+ * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
+ */
 
-function showNotice(message, className)
-{
+function showNotice(message, className) {
     if (!className) {
         className = '';
     }
     if (notification.hasClass('notification-in')) {
-        setTimeout(function(){
+        setTimeout(function() {
             notification.removeClass('notification-in').addClass('animation-out');
-            setTimeout(function(){
+            setTimeout(function() {
                 addNoticeText(message, className);
             }, 400);
         }, 2000);
@@ -22,31 +21,28 @@ function showNotice(message, className)
     }
 }
 
-function formsRecaptchaOnload()
-{
-    $f('.ba-form-submit-field').each(function(){
+function formsRecaptchaOnload() {
+    $f('.ba-form-submit-field').each(function() {
         app.initFormsRecaptcha(this);
     })
 }
 
-function addNoticeText(message, className)
-{
+function addNoticeText(message, className) {
     var time = 3000;
     if (className) {
         time = 6000;
     }
     notification.find('p').html(message);
     notification.addClass(className).removeClass('animation-out').addClass('notification-in');
-    setTimeout(function(){
+    setTimeout(function() {
         notification.removeClass('notification-in').addClass('animation-out');
-        setTimeout(function(){
+        setTimeout(function() {
             notification.removeClass(className);
         }, 400);
     }, time);
 }
 
-function prepareColumns(data)
-{
+function prepareColumns(data) {
     let content = templates.row.content.cloneNode(true),
         columns = data.split('+'),
         span = 12 / columns.length,
@@ -60,10 +56,10 @@ function prepareColumns(data)
         wrapper.appendChild(column.cloneNode(true));
     }
     setSortable($f(wrapper).find('.ba-form-column'), 'items', handle, selector);
-    $f(wrapper).find('.ba-form-column').each(function(){
-        this.id = 'bacolumn-'+(++columnNumber);
+    $f(wrapper).find('.ba-form-column').each(function() {
+        this.id = 'bacolumn-' + (++columnNumber);
         this.dataset.span = span;
-        $f(this).removeClass('span12').addClass('span'+span).find('.column-info').each(function(){
+        $f(this).removeClass('span12').addClass('span' + span).find('.column-info').each(function() {
             this.textContent = this.textContent.trim().replace(/\d+/, span);
         });
     });
@@ -71,36 +67,45 @@ function prepareColumns(data)
     return content;
 }
 
-function getSpanWidth(i, style, rowWidth)
-{
-    switch(i) {
-        case 1 : return Math.floor(rowWidth * 6 / 100 - 2);
+function getSpanWidth(i, style, rowWidth) {
+    switch (i) {
+        case 1:
+            return Math.floor(rowWidth * 6 / 100 - 2);
             break;
-        case 2 : return Math.floor(rowWidth * 14.5 / 100 - 2);
+        case 2:
+            return Math.floor(rowWidth * 14.5 / 100 - 2);
             break;
-        case 3 : return Math.floor(rowWidth * 23 / 100 - 2);
+        case 3:
+            return Math.floor(rowWidth * 23 / 100 - 2);
             break;
-        case 4 : return Math.floor(rowWidth * 31 / 100 - 2);
+        case 4:
+            return Math.floor(rowWidth * 31 / 100 - 2);
             break;
-        case 5 : return Math.floor(rowWidth * 40 / 100 - 2);
+        case 5:
+            return Math.floor(rowWidth * 40 / 100 - 2);
             break;
-        case 6 : return Math.floor(rowWidth * 48 / 100 - 2);
+        case 6:
+            return Math.floor(rowWidth * 48 / 100 - 2);
             break;
-        case 7 : return Math.floor(rowWidth * 57 / 100 - 2);
+        case 7:
+            return Math.floor(rowWidth * 57 / 100 - 2);
             break;
-        case 8 : return Math.floor(rowWidth * 65 / 100 - 2);
+        case 8:
+            return Math.floor(rowWidth * 65 / 100 - 2);
             break;
-        case 9 : return Math.floor(rowWidth * 74 / 100 - 2);
+        case 9:
+            return Math.floor(rowWidth * 74 / 100 - 2);
             break;
-        case 10 : return Math.floor(rowWidth * 82.6 / 100 - 2);
+        case 10:
+            return Math.floor(rowWidth * 82.6 / 100 - 2);
             break;
-        case 11 : return Math.floor(rowWidth * 91.1 / 100 - 2);
+        case 11:
+            return Math.floor(rowWidth * 91.1 / 100 - 2);
             break;
     }
 }
 
-function getSpan(i)
-{
+function getSpan(i) {
     if (i < 14.8) {
         if (i - 6 < 14.8 - i) {
             return 1;
@@ -156,8 +161,7 @@ function getSpan(i)
     }
 }
 
-function columnResizer(event)
-{
+function columnResizer(event) {
     var leftEl = $f(this).prev(),
         rightEl = $f(this).next(),
         style = getComputedStyle(rightEl[0]),
@@ -177,7 +181,7 @@ function columnResizer(event)
     rightEl.addClass('ba-column-resize');
     padding += style.borderLeftWidth.replace('px', '') * 1 + style.borderRightWidth.replace('px', '') * 1;
     lpadding += lstyle.borderLeftWidth.replace('px', '') * 1 + lstyle.borderRightWidth.replace('px', '') * 1;
-    $f(document).on('mousemove.resize', function(event){
+    $f(document).on('mousemove.resize', function(event) {
         if (startX > event.pageX) {
             rightWidth = rightWidth + (startX - event.pageX);
             leftWidth = leftWidth - (startX - event.pageX);
@@ -199,17 +203,17 @@ function columnResizer(event)
             span;
         percent = Math.round(percent * 100) / 100;
         span = getSpan(percent);
-        rightEl.find('.column-info').text('Span '+span);
-        rightEl.removeClass('span'+rightSpan);
+        rightEl.find('.column-info').text('Span ' + span);
+        rightEl.removeClass('span' + rightSpan);
         rightSpan = span;
-        rightEl.addClass('span'+span).attr('data-span', span);
+        rightEl.addClass('span' + span).attr('data-span', span);
         span = maxSpan - span + 1;
-        leftEl.find('.column-info').text('Span '+span);
-        leftEl.removeClass('span'+leftSpan);
+        leftEl.find('.column-info').text('Span ' + span);
+        leftEl.removeClass('span' + leftSpan);
         leftSpan = span;
-        leftEl.addClass('span'+span).attr('data-span', span);
+        leftEl.addClass('span' + span).attr('data-span', span);
         startX = event.pageX;
-    }).on('mouseup.resize contextmenu.resize', function(event){
+    }).on('mouseup.resize contextmenu.resize', function(event) {
         $f(document).off('mouseup.resize contextmenu.resize mousemove.resize');
         rightEl[0].style.width = '';
         leftEl[0].style.width = '';
@@ -219,10 +223,9 @@ function columnResizer(event)
     return false;
 }
 
-function pageResizer(event)
-{
+function pageResizer(event) {
     var page = $f(this).closest('.ba-form-page'),
-        info = page.find('> .page-info').addClass('visible-info '+this.dataset.position),
+        info = page.find('> .page-info').addClass('visible-info ' + this.dataset.position),
         direction = this.dataset.position == 'right' ? 1 : -1,
         width = page.outerWidth(),
         value = 0,
@@ -234,7 +237,7 @@ function pageResizer(event)
     $f('input[data-option="fullwidth"]').prop('checked', false);
     app.design.form.width.fullwidth = false;
     app.setDesignCssVariable('form', 'width', 'fullwidth', app.design, document.body);
-    $f(document).on('mousemove.resize', function(event){
+    $f(document).on('mousemove.resize', function(event) {
         if (startX > event.pageX) {
             width = width - ((startX - event.pageX) * direction * 2);
         } else {
@@ -253,9 +256,9 @@ function pageResizer(event)
         $f('input[type="number"][data-subgroup="width"][data-option="value"]').val(value);
         app.design.form.width.value = value;
         app.setDesignCssVariable('form', 'width', 'value', app.design, document.body);
-        info.text(value+app.design.form.units['width-value']);
+        info.text(value + app.design.form.units['width-value']);
         startX = event.pageX;
-    }).on('mouseup.resize contextmenu.resize', function(event){
+    }).on('mouseup.resize contextmenu.resize', function(event) {
         $f(document).off('mouseup.resize contextmenu.resize mousemove.resize');
         info.removeClass('visible-info left right');
         document.body.classList.remove('page-resize-started');
@@ -263,13 +266,12 @@ function pageResizer(event)
     return false;
 }
 
-function setMinicolorsColor(value)
-{
+function setMinicolorsColor(value) {
     var rgba = value ? value : 'rgba(255,255,255,0)',
         color = rgba2hex(rgba);
     var obj = {
-        color : color[0],
-        opacity : color[1],
+        color: color[0],
+        opacity: color[1],
         update: false
     }
     $f('.variables-color-picker').minicolors('value', obj).closest('#color-picker-cell')
@@ -278,8 +280,7 @@ function setMinicolorsColor(value)
     $f('#color-picker-cell, #color-variables-dialog .nav-tabs li:first-child').addClass('active');
 }
 
-function inputColor()
-{
+function inputColor() {
     var value = this.value.trim().toLowerCase(),
         parts = value.match(/[^#]\w/g),
         opacity = 1;
@@ -297,7 +298,7 @@ function inputColor()
                 rgba += '1)';
             } else {
                 opacity = parts[4];
-                rgba += parts[4]+')';
+                rgba += parts[4] + ')';
             }
         }
         this.dataset.rgba = rgba;
@@ -308,15 +309,13 @@ function inputColor()
     $f(this).closest('.ba-settings-item').find('.minicolors-opacity').val(opacity).removeAttr('readonly');
 }
 
-function updateInput(input, rgba)
-{
+function updateInput(input, rgba) {
     var color = rgba2hex(rgba);
     input.attr('data-rgba', rgba).val(color[0]).next().find('.minicolors-swatch-color').css('background-color', rgba);
     input.closest('.minicolors').next().find('.minicolors-opacity').val(color[1]);
 }
 
-function rgba2hex(rgb)
-{
+function rgba2hex(rgb) {
     var parts = rgb.toLowerCase().match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/),
         hex = '#',
         part,
@@ -325,7 +324,7 @@ function rgba2hex(rgb)
         for (var i = 1; i <= 3; i++) {
             part = parseInt(parts[i]).toString(16);
             if (part.length < 2) {
-                part = '0'+part;
+                part = '0' + part;
             }
             hex += part;
         }
@@ -334,26 +333,25 @@ function rgba2hex(rgb)
         }
         color.push(hex);
         color.push(parts[4] * 1);
-        
+
         return color;
     } else {
         color.push(rgb.trim());
         color.push(1);
-        
+
         return color;
     }
 }
 
-function returnPointLibraryItem(event)
-{
+function returnPointLibraryItem(event) {
     var pageY = event.clientY,
         pageX = event.clientX,
         item = rect = style = null,
         marginTop = marginBottom = 0,
         columns = [].slice.call(document.querySelectorAll('.ba-form-column-wrapper > .ba-form-column'));
     columns = columns.reverse();
-    for (var i = 0; i < columns.length; i ++) {
-        $f(columns[i]).find(' > .ba-form-field-item').each(function(){
+    for (var i = 0; i < columns.length; i++) {
+        $f(columns[i]).find(' > .ba-form-field-item').each(function() {
             rect = this.getBoundingClientRect();
             style = getComputedStyle(this);
             marginTop = style.marginTop.replace(/px|%/, '') * 1;
@@ -380,16 +378,15 @@ function returnPointLibraryItem(event)
             break;
         }
     }
-    
+
     return item;
 }
 
-function checkIframe(modal, view, callback)
-{
+function checkIframe(modal, view, callback) {
     var iframe = modal.find('iframe');
-    if (iframe.attr('src').indexOf('view='+view) == -1) {
-        iframe[0].src = 'index.php?option=com_baforms&view='+view+'&tmpl=component';
-        iframe[0].onload = function(){
+    if (iframe.attr('src').indexOf('view=' + view) == -1) {
+        iframe[0].src = 'index.php?option=com_baforms&view=' + view + '&tmpl=component';
+        iframe[0].onload = function() {
             modal.modal();
             if (typeof(callback) != 'undefined') {
                 callback();
@@ -403,21 +400,19 @@ function checkIframe(modal, view, callback)
     }
 }
 
-function setSortable(item, group, handle, selector, change)
-{
+function setSortable(item, group, handle, selector, change) {
     if (!change) {
-        change = function(){}
+        change = function() {}
     }
     item.sortable({
-        handle : handle,
-        selector : selector,
+        handle: handle,
+        selector: selector,
         group: group,
         change: change
     })
 }
 
-function prepareFieldsStyle(obj, content, type, id)
-{
+function prepareFieldsStyle(obj, content, type, id) {
     let wrapper = null;
     switch (type) {
         case 'image':
@@ -452,16 +447,15 @@ function prepareFieldsStyle(obj, content, type, id)
     }
 }
 
-function prepareFields(key, field)
-{
+function prepareFields(key, field) {
     let content = templates[key].content.cloneNode(true),
-        id = 'baform-'+(++fieldNumber);
+        id = 'baform-' + (++fieldNumber);
     content.querySelector('.ba-form-field-item').id = id;
     if (field) {
         let options = JSON.parse(field.options);
         app.items[id] = options;
         if (field.type == 'image') {
-            content.querySelector('img').src = JUri+options.src;
+            content.querySelector('img').src = JUri + options.src;
         }
     } else {
         app.items[id] = $f.extend(true, {}, formOptions[key]);
@@ -530,10 +524,11 @@ var pageNumber = 0,
     },
     app = {
         items: {},
-        months : ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY',
-            'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'],
+        months: ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY',
+            'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'
+        ],
         shortMonths: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
-        days : ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'],
+        days: ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'],
         edit: null,
         selector: null,
         formsTemplates: [],
@@ -541,13 +536,13 @@ var pageNumber = 0,
         state: false,
         loadingLibrary: {},
         masks: ['phone', 'zip', 'time', 'date', 'card'],
-        getTextContent: function(textarea){
+        getTextContent: function(textarea) {
             let data = textarea ? textarea.value : CKE.getData();
-            document.querySelector('#'+app.selector+' .text-content-wrapper').innerHTML = data;
+            document.querySelector('#' + app.selector + ' .text-content-wrapper').innerHTML = data;
             app.edit.html = data;
             app.buttonsPrevent($f('.ba-forms-workspace').find('a, input[type="submit"], button'));
         },
-        getErrorText: function(text){
+        getErrorText: function(text) {
             let div = document.createElement('div');
             div.innerHTML = text;
             if (div.querySelector('title')) {
@@ -556,7 +551,7 @@ var pageNumber = 0,
 
             return text;
         },
-        fetch: async function(url, data){
+        fetch: async function(url, data) {
             let request = await fetch(url, {
                     method: 'POST',
                     body: app.getFormData(data)
@@ -574,7 +569,7 @@ var pageNumber = 0,
 
             return response;
         },
-        getFormData: function(data){
+        getFormData: function(data) {
             let formData = new FormData();
             if (data) {
                 for (let ind in data) {
@@ -593,9 +588,8 @@ var pageNumber = 0,
     googleDrive = {},
     fontBtn = libHandle = notification = CKE = uploadMode = null,
     mapStyles = {
-        'standart' : [],
-        'silver' : [
-            {
+        'standart': [],
+        'silver': [{
                 "elementType": "geometry",
                 "stylers": [{
                     "color": "#f5f5f5"
@@ -718,8 +712,7 @@ var pageNumber = 0,
                 }]
             }
         ],
-        'retro' : [
-            {
+        'retro': [{
                 "elementType": "geometry",
                 "stylers": [{
                     "color": "#ebe3cd"
@@ -885,8 +878,7 @@ var pageNumber = 0,
                 }]
             }
         ],
-        'dark' : [
-            {
+        'dark': [{
                 "elementType": "geometry",
                 "stylers": [{
                     "color": "#212121"
@@ -1029,8 +1021,7 @@ var pageNumber = 0,
                 }]
             }
         ],
-        'night' : [
-            {
+        'night': [{
                 "elementType": "geometry",
                 "stylers": [{
                     "color": "#242f3e"
@@ -1154,8 +1145,7 @@ var pageNumber = 0,
                 }]
             }
         ],
-        'aubergine' : [
-            {
+        'aubergine': [{
                 "elementType": "geometry",
                 "stylers": [{
                     "color": "#1d2c4d"
@@ -1337,39 +1327,38 @@ var pageNumber = 0,
         ]
     };
 
-setInterval(function(){
+setInterval(function() {
     $f.ajax({
-        type : "POST",
-        dataType : 'text',
-        url : "index.php?option=com_baforms&task=form.getSession",
-        success : function(msg){
-        }
+        type: "POST",
+        dataType: 'text',
+        url: "index.php?option=com_baforms&task=form.getSession",
+        success: function(msg) {}
     });
 }, 600000);
 
-app.google =  {
+app.google = {
     sheets: {},
     drive: {},
-    getGoogleAuth: function(client_id, type, btn){
+    getGoogleAuth: function(client_id, type, btn) {
         app.fetch('index.php?option=com_baforms&view=form&task=form.getGoogleAuth', {
             client_id: client_id,
             type: type
-        }).then(function(text){
+        }).then(function(text) {
             btn.href = text;
             btn.closest('.ba-subgroup-element').classList.add('visible-subgroup');
         });
     },
-    getWorkSheets: function(accessToken, spreadsheet, obj, flag, worksheet){
+    getWorkSheets: function(accessToken, spreadsheet, obj, flag, worksheet) {
         let object = {
-                id: obj.sheets[spreadsheet].id,
-                title: obj.sheets[spreadsheet].title
-            }
+            id: obj.sheets[spreadsheet].id,
+            title: obj.sheets[spreadsheet].title
+        }
         app.fetch('index.php?option=com_baforms&view=form&task=form.getWorkSheets', {
             client_id: app.google.sheets.client_id,
             client_secret: app.google.sheets.client_secret,
             accessToken: accessToken,
             spreadsheet: JSON.stringify(object)
-        }).then(function(text){
+        }).then(function(text) {
             obj.sheets[spreadsheet].worksheets = JSON.parse(text);
             if (flag) {
                 notification[0].className = 'animation-out';
@@ -1381,18 +1370,18 @@ app.google =  {
             }
         });
     },
-    getWorkSheetsColumns: function(accessToken, spreadsheet, obj, flag, worksheet){
+    getWorkSheetsColumns: function(accessToken, spreadsheet, obj, flag, worksheet) {
         let object = {
-                id : obj.sheets[spreadsheet].id,
-                title: obj.sheets[spreadsheet].title
-            };
+            id: obj.sheets[spreadsheet].id,
+            title: obj.sheets[spreadsheet].title
+        };
         app.fetch('index.php?option=com_baforms&view=form&task=form.getWorkSheetsColumns', {
             client_id: app.google.sheets.client_id,
             client_secret: app.google.sheets.client_secret,
             accessToken: obj.accessToken,
             spreadsheet: JSON.stringify(object),
             worksheet: JSON.stringify(obj.sheets[spreadsheet].worksheets[worksheet])
-        }).then(function(text){
+        }).then(function(text) {
             obj.sheets[spreadsheet].worksheets[worksheet].columns = JSON.parse(text);
             if (flag) {
                 document.querySelector('.google-sheet-worksheets').dataset.authentication = 'enabled';
@@ -1403,23 +1392,23 @@ app.google =  {
             app.google.drawWorkSheetsColumns(obj.sheets[spreadsheet].worksheets[worksheet].columns);
         });
     },
-    drawDriveFolders: function(obj){
+    drawDriveFolders: function(obj) {
         let str = '';
-        $f('.google-drive-folders').addClass('visible-subgroup');    
+        $f('.google-drive-folders').addClass('visible-subgroup');
         for (let i = 0; i < obj.folders.length; i++) {
-            str += '<li data-value="'+obj.folders[i].id+'">'+obj.folders[i].title+'</li>';
+            str += '<li data-value="' + obj.folders[i].id + '">' + obj.folders[i].title + '</li>';
         }
         $f('#drive-folders-dialog ul').html(str);
     },
-    drawSpreadsheets: function(obj){
+    drawSpreadsheets: function(obj) {
         let select = $f('.google-sheet-spreadsheets');
         select.find('option:not([hidden])').remove();
         select.closest('.ba-subgroup-element').addClass('visible-subgroup');
         for (let ind in obj.sheets) {
-            select.append('<option value="'+obj.sheets[ind].id+'">'+obj.sheets[ind].title+'</option>');
+            select.append('<option value="' + obj.sheets[ind].id + '">' + obj.sheets[ind].title + '</option>');
         }
     },
-    drawWorksheets: function(obj, spreadsheet){
+    drawWorksheets: function(obj, spreadsheet) {
         let select = $f('.google-sheet-worksheets').val('');
         $f('.google-sheets-fields .ba-settings-item').remove();
         select.find('option:not([hidden])').remove();
@@ -1427,26 +1416,26 @@ app.google =  {
         $f('.google-sheets-fields.visible-subgroup').removeClass('visible-subgroup');
         select[0].spreadsheet = spreadsheet;
         for (let ind in obj) {
-            select.append('<option value="'+obj[ind].id+'">'+obj[ind].title+'</option>');
+            select.append('<option value="' + obj[ind].id + '">' + obj[ind].title + '</option>');
         }
     },
-    drawWorkSheetsColumns: function(columns){
+    drawWorkSheetsColumns: function(columns) {
         let div = $f('.google-sheets-fields'),
             str = '';
         div.find('.ba-settings-item').remove();
         for (let i = 0; i < columns.length; i++) {
-            str += '<div class="ba-settings-item ba-settings-select-type"><span class="ba-settings-item-title">'+
-                columns[i]+'</span><select class="forms-fields-list" data-key="'+
-                columns[i]+'"><option value="" hidden></option></select></div>';
+            str += '<div class="ba-settings-item ba-settings-select-type"><span class="ba-settings-item-title">' +
+                columns[i] + '</span><select class="forms-fields-list" data-key="' +
+                columns[i] + '"><option value="" hidden></option></select></div>';
         }
         div.append(str).addClass('visible-subgroup');
         drawSubmitItemsSelect();
     },
-    setClient: function(key, client_id, client_secret){
+    setClient: function(key, client_id, client_secret) {
         app.google[key].client_id = client_id;
         app.google[key].client_secret = client_secret;
     },
-    setGoogleAuth: function(key){
+    setGoogleAuth: function(key) {
         if (app.google[key].client_id && app.google[key].client_secret) {
             app.google.getGoogleAuth(app.google[key].client_id, key, app.google[key].btn);
         } else {
@@ -1454,7 +1443,7 @@ app.google =  {
                 .find('input[type="text"]').val('').trigger('input');
         }
     },
-    setDriveIntegration: function(){
+    setDriveIntegration: function() {
         app.google.setClient('drive', integrations.google_drive.key.client_id, integrations.google_drive.key.client_secret);
         app.google.setGoogleAuth('drive');
         if (app.google.drive.client_id && app.google.drive.client_secret && integrations.google_drive.key.accessToken) {
@@ -1462,7 +1451,7 @@ app.google =  {
                 client_id: app.google.drive.client_id,
                 client_secret: app.google.drive.client_secret,
                 token: integrations.google_drive.key.accessToken
-            }).then(function(text){
+            }).then(function(text) {
                 googleDrive.code = integrations.google_drive.key.code;
                 googleDrive.accessToken = integrations.google_drive.key.accessToken;
                 googleDrive.folders = JSON.parse(text);
@@ -1470,17 +1459,17 @@ app.google =  {
                 delete integrations.google_drive.key.accessToken;
             });
         }
-        $f('.get-google-drive-auth-url').on('input', function(){
+        $f('.get-google-drive-auth-url').on('input', function() {
             $f('.authenticate-google-drive').val('');
             $f('.integration-options[data-group="google_drive"] .ba-subgroup-element').first()
                 .nextAll('.ba-subgroup-element').removeClass('visible-subgroup');
             app.google.drive[this.dataset.key] = this.value.trim();
             clearTimeout(this.delay);
-            this.delay = setTimeout(function(){
+            this.delay = setTimeout(function() {
                 app.google.setGoogleAuth('drive');
             }, 300);
         })
-        $f('.authenticate-google-drive').on('input', function(){
+        $f('.authenticate-google-drive').on('input', function() {
             if (this.dataset.authentication == 'pending' && this.value.trim()) {
                 return false;
             } else if (!this.value.trim()) {
@@ -1491,8 +1480,8 @@ app.google =  {
             }
             let $this = this;
             clearTimeout(this.delay);
-            this.delay = setTimeout(function(){
-                var str = formsLanguage['PLEASE_WAIT']+'<img src="'+JUri;
+            this.delay = setTimeout(function() {
+                var str = formsLanguage['PLEASE_WAIT'] + '<img src="' + JUri;
                 str += 'components/com_baforms/assets/images/reload.svg"></img>';
                 notification[0].className = 'notification-in';
                 notification.find('p').html(str);
@@ -1502,7 +1491,7 @@ app.google =  {
                     client_id: app.google.drive.client_id,
                     client_secret: app.google.drive.client_secret,
                     code: $this.value.trim()
-                }).then(function(text){
+                }).then(function(text) {
                     $this.dataset.authentication = 'enabled';
                     if (!text || text == 'INVALID_TOKEN') {
                         showNotice('Invalid Authentication Code', 'ba-alert');
@@ -1514,11 +1503,11 @@ app.google =  {
                 });
             }, 500);
         });
-        $f('.google-drive-folders').on('change', function(){
+        $f('.google-drive-folders').on('change', function() {
             $f('.google-drive-fields').addClass('visible-subgroup');
         });
     },
-    setSheetsIntegration: function(){
+    setSheetsIntegration: function() {
         app.google.setClient('sheets', integrations.google_sheets.key.client_id, integrations.google_sheets.key.client_secret);
         app.google.setGoogleAuth('sheets');
         if (app.google.sheets.client_id && app.google.sheets.client_secret && integrations.google_sheets.key.accessToken) {
@@ -1526,7 +1515,7 @@ app.google =  {
                 client_id: app.google.sheets.client_id,
                 client_secret: app.google.sheets.client_secret,
                 token: integrations.google_sheets.key.accessToken
-            }).then(function(text){
+            }).then(function(text) {
                 googleSheets.code = integrations.google_sheets.key.code;
                 googleSheets.accessToken = integrations.google_sheets.key.accessToken;
                 googleSheets.sheets = JSON.parse(text);
@@ -1539,7 +1528,7 @@ app.google =  {
                 }
             });
         }
-        $f('.get-google-sheets-auth-url').on('input', function(){
+        $f('.get-google-sheets-auth-url').on('input', function() {
             $f('.authenticate-google-sheets').val('');
             $f('.integration-options[data-group="google_sheets"] .ba-subgroup-element').first()
                 .nextAll('.ba-subgroup-element').removeClass('visible-subgroup');
@@ -1547,11 +1536,11 @@ app.google =  {
             $f('.google-sheets-fields .ba-settings-item').remove();
             app.google.sheets[this.dataset.key] = this.value.trim();
             clearTimeout(this.delay);
-            this.delay = setTimeout(function(){
+            this.delay = setTimeout(function() {
                 app.google.setGoogleAuth('sheets');
             }, 300);
         });
-        $f('.authenticate-google-sheets').on('input', function(){
+        $f('.authenticate-google-sheets').on('input', function() {
             if (this.dataset.authentication == 'pending' && this.value.trim()) {
                 return false;
             } else if (!this.value.trim()) {
@@ -1563,8 +1552,8 @@ app.google =  {
             }
             let $this = this;
             clearTimeout(this.delay);
-            this.delay = setTimeout(function(){
-                var str = formsLanguage['PLEASE_WAIT']+'<img src="'+JUri;
+            this.delay = setTimeout(function() {
+                var str = formsLanguage['PLEASE_WAIT'] + '<img src="' + JUri;
                 str += 'components/com_baforms/assets/images/reload.svg"></img>';
                 notification[0].className = 'notification-in';
                 notification.find('p').html(str);
@@ -1575,7 +1564,7 @@ app.google =  {
                     client_id: app.google.sheets.client_id,
                     client_secret: app.google.sheets.client_secret,
                     code: $this.value.trim(),
-                }).then(function(text){
+                }).then(function(text) {
                     $this.dataset.authentication = 'enabled';
                     if (!text || text == 'SHEETS_INVALID_TOKEN') {
                         showNotice('Invalid Authentication Code', 'ba-alert');
@@ -1587,21 +1576,21 @@ app.google =  {
                 });
             }, 500);
         });
-        $f('.google-sheet-spreadsheets').on('change', function(){
+        $f('.google-sheet-spreadsheets').on('change', function() {
             let value = $f(this).val();
             if (this.dataset.authentication == 'pending') {
                 return false;
             } else if (app.googleSheets.sheets[value].worksheets) {
                 app.google.drawWorksheets(app.googleSheets.sheets[value].worksheets, value);
             }
-            let str = formsLanguage['INSTALLING']+'<img src="'+JUri;
+            let str = formsLanguage['INSTALLING'] + '<img src="' + JUri;
             this.dataset.authentication = 'pending';
             str += 'components/com_baforms/assets/images/reload.svg"></img>';
             notification[0].className = 'notification-in';
             notification.find('p').html(str);
             app.google.getWorkSheets(app.googleSheets.accessToken, value, app.googleSheets, true, false)
         });
-        $f('.google-sheet-worksheets').on('change', function(){
+        $f('.google-sheet-worksheets').on('change', function() {
             let value = $f(this).val();
             if (this.dataset.authentication == 'pending') {
                 return false;
@@ -1609,7 +1598,7 @@ app.google =  {
                 app.google.drawWorkSheetsColumns(app.googleSheets.sheets[this.spreadsheet].worksheets[value].columns);
                 return false;
             }
-            let str = formsLanguage['INSTALLING']+'<img src="'+JUri;
+            let str = formsLanguage['INSTALLING'] + '<img src="' + JUri;
             this.dataset.authentication = 'pending';
             str += 'components/com_baforms/assets/images/reload.svg"></img>';
             notification[0].className = 'notification-in';
@@ -1619,31 +1608,29 @@ app.google =  {
     }
 }
 
-app.loadGoogleMaps = function(search)
-{
+app.loadGoogleMaps = function(search) {
     if (!app.googleMaps) {
         app.mapScript = document.createElement('script');
-        app.mapScript.onload = function(){
+        app.mapScript.onload = function() {
             app.googleMaps = true;
             app.loadGoogleMaps(search);
             if ($f('#google-maps-field-settings-dialog').hasClass('in')) {
                 app.createLocationMap();
             }
         }
-        app.mapScript.src = 'https://maps.googleapis.com/maps/api/js?libraries=places&key='+integrations.google_maps.key;
+        app.mapScript.src = 'https://maps.googleapis.com/maps/api/js?libraries=places&key=' + integrations.google_maps.key;
         document.head.append(app.mapScript);
     } else {
         if (!search) {
             search = '.ba-form-field-item.ba-form-map-field';
         }
-        $f(search).each(function(){
+        $f(search).each(function() {
             app.createGoogleMap(this.querySelector('.ba-map-wrapper'), app.items[this.id]);
         });
     }
 }
 
-app.createLocationMap = function()
-{
+app.createLocationMap = function() {
     $f('input[data-option="place"]').removeAttr('style').removeAttr('placeholder')
         .removeAttr('class').removeAttr('autocomplete').removeAttr('disabled');
     if (app.googleMaps) {
@@ -1661,15 +1648,15 @@ app.createLocationMap = function()
             locationInput = document.querySelector('input[data-option="place"]'),
             autocomplete = new google.maps.places.Autocomplete(locationInput);
         app.locationMap = new google.maps.Map(document.querySelector('.ba-address-map-wrapper'), options);
-        app.locationMap.setOptions({styles: mapStyles.dark});
+        app.locationMap.setOptions({ styles: mapStyles.dark });
         locationInput.value = '';
         setMarker();
-        $f(locationInput).on('input', function(){
-            $f('.pac-container').on('mousedown', function(event){
+        $f(locationInput).on('input', function() {
+            $f('.pac-container').on('mousedown', function(event) {
                 event.stopPropagation();
             });
         });
-        autocomplete.addListener('place_changed', function(){
+        autocomplete.addListener('place_changed', function() {
             var place = autocomplete.getPlace();
             app.edit.place = locationInput.value;
             if (place.geometry.viewport) {
@@ -1678,10 +1665,10 @@ app.createLocationMap = function()
                 app.locationMap.setCenter(place.geometry.location);
             }
         });
-        app.locationMap.addListener('maptypeid_changed',function(event){
+        app.locationMap.addListener('maptypeid_changed', function(event) {
             setCenter();
         });
-        app.locationMap.addListener('idle',function(event){
+        app.locationMap.addListener('idle', function(event) {
             setCenter();
         });
         app.locationMap.addListener('click', function(event) {
@@ -1695,9 +1682,8 @@ app.createLocationMap = function()
     }
 }
 
-!function(d){
-    function getTemplatesElement(obj)
-    {
+! function(d) {
+    function getTemplatesElement(obj) {
         let div = templates['templates-element'].content.cloneNode(true),
             el = div.querySelector('.templates-element'),
             script = d.createElement('script');
@@ -1705,27 +1691,27 @@ app.createLocationMap = function()
         el.dataset.group = obj.group;
         el.dataset.key = obj.key;
         d.querySelector('#templates-modal .integrations-group').append(div);
-        script.src = 'https://www.balbooa.com/updates/baforms/formsApi/'+obj.key+'.js';
-        script.onload = function(){
+        script.src = 'https://www.balbooa.com/updates/baforms/formsApi/' + obj.key + '.js';
+        script.onload = function() {
             app.formsTemplates.push(formsApi.templates[obj.group][obj.key]);
             let img = formsApi.templates[obj.group][obj.key].imageData
-            el.querySelector('.templates-element-image').style.backgroundImage = 'url('+img+')';
+            el.querySelector('.templates-element-image').style.backgroundImage = 'url(' + img + ')';
         }
         d.head.append(script);
     }
 
-    d.addEventListener('DOMContentLoaded', function(){
+    d.addEventListener('DOMContentLoaded', function() {
         let script = d.createElement('script');
         script.src = 'https://www.balbooa.com/updates/baforms/formsApi/formsApi.js';
-        script.onload = function(){
+        script.onload = function() {
             if (formsApi.templates) {
                 for (let ind in formsApi.templates) {
-                    if (!d.querySelector('#templates-modal li[data-group="'+ind+'"]')) {
+                    if (!d.querySelector('#templates-modal li[data-group="' + ind + '"]')) {
                         delete formsApi.templates[ind];
                         continue;
                     }
                     for (let key in formsApi.templates[ind]) {
-                        if (d.querySelector('#templates-modal .templates-element[data-group="'+ind+'"][data-key="'+key+'"]')) {
+                        if (d.querySelector('#templates-modal .templates-element[data-group="' + ind + '"][data-key="' + key + '"]')) {
                             delete formsApi.templates[ind][key];
                             continue;
                         }
@@ -1738,8 +1724,7 @@ app.createLocationMap = function()
     });
 }(document);
 
-function setMarker()
-{
+function setMarker() {
     if (app.edit.marker.position) {
         if (app.locationMap.marker) {
             app.locationMap.marker.setMap(null);
@@ -1749,37 +1734,36 @@ function setMarker()
             map: app.locationMap
         }
         if (app.edit.marker.icon) {
-            obj.icon = JUri+app.edit.marker.icon;
+            obj.icon = JUri + app.edit.marker.icon;
         }
         app.locationMap.marker = new google.maps.Marker(obj);
         if (app.edit.marker.description) {
             app.locationMap.marker.infoWindow = new google.maps.InfoWindow({
-                content : app.edit.marker.description
+                content: app.edit.marker.description
             });
             if (app.edit.marker.infobox) {
                 app.locationMap.marker.infoWindow.open(app.locationMap, app.locationMap.marker);
             }
-            app.locationMap.marker.addListener('click', function(event){
+            app.locationMap.marker.addListener('click', function(event) {
                 this.infoWindow.open(app.locationMap, this);
             });
         }
     }
 }
 
-app.checkState = function(){
+app.checkState = function() {
     $f.ajax({
-        type:"POST",
-        dataType:'text',
-        url:"index.php?option=com_baforms&task=form.checkState",
-        success: function(msg){
+        type: "POST",
+        dataType: 'text',
+        url: "index.php?option=com_baforms&task=form.checkState",
+        success: function(msg) {
             let obj = JSON.parse(msg);
             app.state = !!obj.data;
         }
     })
 }
 
-function setCenter()
-{
+function setCenter() {
     var center = app.locationMap.getCenter();
     app.edit.map.center.lat = center.lat();
     app.edit.map.center.lng = center.lng();
@@ -1787,52 +1771,52 @@ function setCenter()
     app.edit.map.mapTypeId = app.locationMap.getMapTypeId();
 }
 
-app.createGoogleMap = function(div, obj){
+app.createGoogleMap = function(div, obj) {
     let map = new google.maps.Map(div, obj.map);
-    map.setOptions({styles: mapStyles[obj.styleType]});
+    map.setOptions({ styles: mapStyles[obj.styleType] });
     if (obj.marker.position) {
         let object = {
-            position : obj.marker.position,
-            map : map
+            position: obj.marker.position,
+            map: map
         }
         if (obj.marker.icon) {
-            object.icon = JUri+obj.marker.icon;
+            object.icon = JUri + obj.marker.icon;
         }
         let marker = new google.maps.Marker(object);
         if (obj.marker.description) {
             marker.infoWindow = new google.maps.InfoWindow({
-                content : obj.marker.description
+                content: obj.marker.description
             });
             if (obj.marker.infobox == 1) {
                 marker.infoWindow.open(map, marker);
             }
-            marker.addListener('click', function(event){
+            marker.addListener('click', function(event) {
                 this.infoWindow.open(map, this);
             });
         }
     }
 }
 
-app.ckeLink = function(){
-    $f('.post-link-input').on('input', function(){
+app.ckeLink = function() {
+    $f('.post-link-input').on('input', function() {
         if (this.value.trim()) {
             $f('#post-link-apply').addClass('active-button');
         } else {
             $f('#post-link-apply').removeClass('active-button');
         }
-    }).on('focus', function(){
+    }).on('focus', function() {
         this.closest('.link-picker-container').classList.add('focus-link-input');
-    }).on('blur', function(){
+    }).on('blur', function() {
         this.closest('.link-picker-container').classList.remove('focus-link-input');
     });
-    $f('.cke-link-target-select').on('customAction', function(){
+    $f('.cke-link-target-select').on('customAction', function() {
         if ($f('.post-link-input').val().trim()) {
             $f('#post-link-apply').addClass('active-button');
         } else {
             $f('#post-link-apply').removeClass('active-button');
         }
     });
-    $f('#post-link-apply').on('click', function(event){
+    $f('#post-link-apply').on('click', function(event) {
         event.preventDefault();
         if ($f(this).hasClass('active-button')) {
             var obj = {
@@ -1845,8 +1829,8 @@ app.ckeLink = function(){
     });
 }
 
-app.customSelect = function(){
-    $f('.ba-custom-select > i, div.ba-custom-select input').on('click', function(event){
+app.customSelect = function() {
+    $f('.ba-custom-select > i, div.ba-custom-select input').on('click', function(event) {
         event.stopPropagation();
         var $this = $f(this),
             parent = $this.parent(),
@@ -1855,7 +1839,7 @@ app.customSelect = function(){
             event.stopPropagation();
             $f('.visible-select').removeClass('visible-select');
             ul.addClass('visible-select');
-            parent.find('li').off('click').one('click', function(){
+            parent.find('li').off('click').one('click', function() {
                 var text = this.textContent.trim(),
                     val = this.dataset.value;
                 if (this.dataset.title) {
@@ -1866,31 +1850,31 @@ app.customSelect = function(){
                 parent.trigger('customAction');
             });
             parent.trigger('show');
-            setTimeout(function(){
-                $f('body').one('click', function(){
+            setTimeout(function() {
+                $f('body').one('click', function() {
                     $f('.visible-select').trigger('customHide').removeClass('visible-select');
                 });
             }, 50);
         }
     });
-    $f('div.ba-custom-select').on('show', function(){
+    $f('div.ba-custom-select').on('show', function() {
         var $this = $f(this),
             ul = $this.find('ul'),
             value = $this.find('input[type="hidden"]').val();
         ul.find('i').remove();
         ul.find('.selected').removeClass('selected');
-        ul.find('li[data-value="'+value+'"]').addClass('selected').prepend('<i class="zmdi zmdi-check"></i>');
+        ul.find('li[data-value="' + value + '"]').addClass('selected').prepend('<i class="zmdi zmdi-check"></i>');
     });
-    $f('.font-search').on('input', function(){
+    $f('.font-search').on('input', function() {
         let $this = $f(this),
             search = this.value.toLowerCase(),
             li = $this.closest('div.modal-list-type-wrapper').find('li[data-value]');
         clearTimeout(this.delay);
-        this.delay = setTimeout(function(){
+        this.delay = setTimeout(function() {
             if (!search) {
                 li.show();
             } else {
-                li.each(function(){
+                li.each(function() {
                     var font = this.textContent.toLowerCase();
                     if (font.indexOf(search) < 0 || this.classList.contains('popular-fonts')) {
                         this.style.display = 'none';
@@ -1901,16 +1885,16 @@ app.customSelect = function(){
             }
         }, 300);
     });
-    $f('.default-country-search').on('input', function(){
+    $f('.default-country-search').on('input', function() {
         var $this = $f(this),
             search = this.value.toLowerCase(),
             li = $this.closest('div.modal-list-type-wrapper').find('li[data-value]');
         clearTimeout(this.delay);
-        this.delay = setTimeout(function(){
+        this.delay = setTimeout(function() {
             if (!search) {
                 li.show();
             } else {
-                li.each(function(){
+                li.each(function() {
                     var title = this.dataset.title.toLowerCase();
                     if (title.indexOf(search) < 0) {
                         this.style.display = 'none';
@@ -1925,10 +1909,10 @@ app.customSelect = function(){
 
 app.checkState();
 
-app.setTooltip = function(parent){
-    parent.off('mouseenter mouseleave').on('mouseenter', function(){
-        if (this.classList.contains('ba-form-field') && !this.classList.contains('disabled-field-drag')
-            && (this.dataset.key == 'map' || this.dataset.key == 'address')) {
+app.setTooltip = function(parent) {
+    parent.off('mouseenter mouseleave').on('mouseenter', function() {
+        if (this.classList.contains('ba-form-field') && !this.classList.contains('disabled-field-drag') &&
+            (this.dataset.key == 'map' || this.dataset.key == 'address')) {
             return false;
         }
         var coord = this.getBoundingClientRect(),
@@ -1942,7 +1926,7 @@ app.setTooltip = function(parent){
         if (this.classList.contains('ba-input-help')) {
             className += ' ba-input-help-tooltip';
         }
-        $f('body').append('<span class="'+className+'">'+data+'</span>');
+        $f('body').append('<span class="' + className + '">' + data + '</span>');
         var tooltip = $f('body > .ba-tooltip').last(),
             width = tooltip.outerWidth(),
             height = tooltip.outerHeight();
@@ -1956,31 +1940,31 @@ app.setTooltip = function(parent){
             center = coord.right + 10;
         }
         tooltip.css({
-            'top' : top+'px',
-            'left' : center+'px'
+            'top': top + 'px',
+            'left': center + 'px'
         });
-    }).on('mouseleave', function(){
+    }).on('mouseleave', function() {
         var tooltip = $f('body > .ba-tooltip');
         tooltip.addClass('tooltip-hidden');
-        setTimeout(function(){
+        setTimeout(function() {
             tooltip.remove();
         }, 500);
     });
 }
 
-app.showCodeEditor = function(){
+app.showCodeEditor = function() {
     let modal = $f('#code-editor-dialog');
-    setTimeout(function(){
-        modal.one('shown', function(){
+    setTimeout(function() {
+        modal.one('shown', function() {
             app.codeCss.refresh();
         }).modal();
-        modal.find('a[href="#code-edit-javascript"]').one('shown', function(){
+        modal.find('a[href="#code-edit-javascript"]').one('shown', function() {
             app.codeJs.refresh();
         });
     }, 50);
 }
 
-app.loadCodeMirror = function(callback){
+app.loadCodeMirror = function(callback) {
     var file = document.createElement('link'),
         css = document.getElementById('code-editor-css'),
         js = document.getElementById('code-editor-javascript'),
@@ -1988,33 +1972,33 @@ app.loadCodeMirror = function(callback){
         cssFlag = false,
         jsFlag = false;
     file.rel = 'stylesheet';
-    file.href = JUri+'media/editors/codemirror/lib/codemirror.min.css';
+    file.href = JUri + 'media/editors/codemirror/lib/codemirror.min.css';
     document.head.appendChild(file);
     file = document.createElement('link');
     file.rel = 'stylesheet';
-    file.href = JUri+'media/editors/codemirror/theme/material.css';
+    file.href = JUri + 'media/editors/codemirror/theme/material.css';
     document.head.appendChild(file);
     file = document.createElement('script');
-    file.src = JUri+'media/editors/codemirror/lib/codemirror.min.js';
+    file.src = JUri + 'media/editors/codemirror/lib/codemirror.min.js';
     document.head.appendChild(file);
-    file.onload = function(){
+    file.onload = function() {
         file = document.createElement('script');
         file.type = 'text/javascript';
-        file.src = JUri+'media/editors/codemirror/addon/hint/show-hint.min.js';
+        file.src = JUri + 'media/editors/codemirror/addon/hint/show-hint.min.js';
         document.head.appendChild(file);
         file = document.createElement('script');
         file.type = 'text/javascript';
-        file.src = JUri+'media/editors/codemirror/addon/hint/css-hint.min.js';
+        file.src = JUri + 'media/editors/codemirror/addon/hint/css-hint.min.js';
         document.head.appendChild(file);
         file = document.createElement('script');
         file.type = 'text/javascript';
-        file.src = JUri+'media/editors/codemirror/addon/hint/javascript-hint.min.js';
+        file.src = JUri + 'media/editors/codemirror/addon/hint/javascript-hint.min.js';
         document.head.appendChild(file);
         file = document.createElement('script');
         file.type = 'text/javascript';
-        file.src = JUri+'media/editors/codemirror/mode/css/css.min.js';
+        file.src = JUri + 'media/editors/codemirror/mode/css/css.min.js';
         document.head.appendChild(file);
-        file.onload = function(){
+        file.onload = function() {
             app.codeCss = CodeMirror.fromTextArea(css, {
                 lineNumbers: true,
                 theme: 'material',
@@ -2030,18 +2014,18 @@ app.loadCodeMirror = function(callback){
                 app.codemirror = true;
                 app.showCodeEditor();
             }
-            app.codeCss.on('keydown', function(cm, event){
+            app.codeCss.on('keydown', function(cm, event) {
                 event.stopPropagation();
             });
             app.codeCss.on("inputRead", function(cm, event) {
-                if (!cm.state.completionActive && event.text[0] != ':' && event.text[0] != ';'
-                    && event.text[0] != '{' && $f.trim(event.text[0]) != '' && event.origin != 'paste') {
-                    CodeMirror.commands.autocomplete(cm, null, {completeSingle: false});
+                if (!cm.state.completionActive && event.text[0] != ':' && event.text[0] != ';' &&
+                    event.text[0] != '{' && $f.trim(event.text[0]) != '' && event.origin != 'paste') {
+                    CodeMirror.commands.autocomplete(cm, null, { completeSingle: false });
                 }
             });
             app.codeCss.on('change', function(from, too) {
                 clearTimeout(this.delay);
-                this.delay = setTimeout(function(){
+                this.delay = setTimeout(function() {
                     let value = app.codeCss.getValue();
                     input.value = value;
                     style.innerHTML = value
@@ -2050,9 +2034,9 @@ app.loadCodeMirror = function(callback){
         }
         file = document.createElement('script');
         file.type = 'text/javascript';
-        file.src = JUri+'media/editors/codemirror/mode/javascript/javascript.min.js';
+        file.src = JUri + 'media/editors/codemirror/mode/javascript/javascript.min.js';
         document.getElementsByTagName('head')[0].appendChild(file);
-        file.onload = function(){
+        file.onload = function() {
             app.codeJs = CodeMirror.fromTextArea(js, {
                 lineNumbers: true,
                 theme: 'material',
@@ -2068,31 +2052,31 @@ app.loadCodeMirror = function(callback){
                 app.showCodeEditor();
             }
             app.codeJs.on("inputRead", function(cm, event) {
-                if (!cm.state.completionActive && event.text[0] != ':' && event.text[0] != ';'
-                    && event.text[0] != '{' && $f.trim(event.text[0]) != '' && event.origin != 'paste') {
-                    CodeMirror.commands.autocomplete(cm, null, {completeSingle: false});
+                if (!cm.state.completionActive && event.text[0] != ':' && event.text[0] != ';' &&
+                    event.text[0] != '{' && $f.trim(event.text[0]) != '' && event.origin != 'paste') {
+                    CodeMirror.commands.autocomplete(cm, null, { completeSingle: false });
                 }
             });
-            app.codeJs.on('keydown', function(cm, event){
+            app.codeJs.on('keydown', function(cm, event) {
                 event.stopPropagation();
             });
             app.codeJs.on('change', function(from, too) {
                 clearTimeout(this.delay);
-                this.delay = setTimeout(function(){
+                this.delay = setTimeout(function() {
                     input.value = app.codeJs.getValue();
                 }, 500);
             });
         }
         file = document.createElement('script');
         file.type = 'text/javascript';
-        file.src = JUri+'media/editors/codemirror/mode/xml/xml.min.js';
+        file.src = JUri + 'media/editors/codemirror/mode/xml/xml.min.js';
         document.head.appendChild(file);
-        file.onload = function(){
+        file.onload = function() {
             file = document.createElement('script');
             file.type = 'text/javascript';
-            file.src = JUri+'media/editors/codemirror/mode/htmlmixed/htmlmixed.min.js';
+            file.src = JUri + 'media/editors/codemirror/mode/htmlmixed/htmlmixed.min.js';
             document.head.appendChild(file);
-            file.onload = function(){
+            file.onload = function() {
                 app.HTMLEditor = CodeMirror.fromTextArea(html, {
                     lineNumbers: true,
                     theme: 'material',
@@ -2106,7 +2090,7 @@ app.loadCodeMirror = function(callback){
                 }
                 app.HTMLEditor.on('change', function(from, too) {
                     clearTimeout(this.delay);
-                    this.delay = setTimeout(function(){
+                    this.delay = setTimeout(function() {
                         var value = app.HTMLEditor.getValue(),
                             item = document.getElementById(app.selector).querySelector('div.custom-html-wrapper');
                         item.innerHTML = value;
@@ -2114,7 +2098,7 @@ app.loadCodeMirror = function(callback){
                         app.buttonsPrevent($f('.ba-forms-workspace').find('a, input[type="submit"], button'));
                     }, 500);
                 });
-                app.HTMLEditor.on('keydown', function(cm, event){
+                app.HTMLEditor.on('keydown', function(cm, event) {
                     event.stopPropagation();
                 });
             }
@@ -2122,65 +2106,65 @@ app.loadCodeMirror = function(callback){
     }
 }
 
-app.loadResizable = function(){
+app.loadResizable = function() {
     var file = document.createElement('script');
     file.type = 'text/javascript';
     file.src = 'components/com_baforms/assets/libraries/resizable/resizable.js';
     document.head.appendChild(file);
-    file.onload = function(){
+    file.onload = function() {
         $f('.code-editor-dialog').resizable({
-            handle : '.resizable-handle-right',
-            change : function(){
+            handle: '.resizable-handle-right',
+            change: function() {
                 app.codeCss.refresh();
                 app.codeJs.refresh();
                 app.HTMLEditor.refresh();
             }
         });
         $f('#text-editor-dialog').resizable({
-            handle : '.resizable-handle-right'
+            handle: '.resizable-handle-right'
         });
         $f('.draggable-modal-cp').resizable({
-            handle : '.resize-handle-bottom',
-            direction : 'bottom'
+            handle: '.resize-handle-bottom',
+            direction: 'bottom'
         });
     }
 }
 
-app.loadDraggable = function(){
+app.loadDraggable = function() {
     var file = document.createElement('script');
     file.type = 'text/javascript';
     file.src = 'components/com_baforms/assets/libraries/draggable/draggable.js';
     document.head.appendChild(file);
-    file.onload = function(){
+    file.onload = function() {
         $f('.code-editor-dialog, .draggable-modal-cp, #text-editor-dialog').draggable({
-            'handle' : '.modal-header'
+            'handle': '.modal-header'
         });
     }
 }
 
-app.buttonsPrevent = function(search){
+app.buttonsPrevent = function(search) {
     search = search ? search : 'a:not(.brand), input[type="submit"], button'
-    $f(search).not('.default-action').on('click', function(event){
+    $f(search).not('.default-action').on('click', function(event) {
         if (!this.parentNode.classList.contains('viewsite')) {
             event.preventDefault();
         }
     });
 }
 
-app.prepareTemplates = function(){
-    $f('template[data-key]').each(function(){
+app.prepareTemplates = function() {
+    $f('template[data-key]').each(function() {
         templates[this.dataset.key] = this;
     });
 }
 
-app.setTabsAnimation = function(){
-    $f('.general-tabs > ul').on('show', function(event){
+app.setTabsAnimation = function() {
+    $f('.general-tabs > ul').on('show', function(event) {
         event.stopPropagation();
         var ind = new Array(),
             ul = $f(event.currentTarget),
             id = $f(event.relatedTarget).attr('href'),
             aId = $f(event.target).attr('href');
-        ul.find('li a').each(function(i){
+        ul.find('li a').each(function(i) {
             if (this == event.target) {
                 ind[0] = i;
             }
@@ -2191,57 +2175,57 @@ app.setTabsAnimation = function(){
         if (ind[0] > ind[1]) {
             $f(id).addClass('out-left');
             $f(aId).addClass('right');
-            setTimeout(function(){
+            setTimeout(function() {
                 $f(id).removeClass('out-left');
                 $f(aId).removeClass('right');
             }, 500);
         } else {
             $f(id).addClass('out-right');
             $f(aId).addClass('left');
-            setTimeout(function(){
+            setTimeout(function() {
                 $f(id).removeClass('out-right');
                 $f(aId).removeClass('left');
             }, 500);
         }
-    }).on('shown', function(event){
+    }).on('shown', function(event) {
         event.stopPropagation();
     });
-    $f('.general-tabs > ul a').on('show', function(event){
+    $f('.general-tabs > ul a').on('show', function(event) {
         var parent = $f(this).closest('.general-tabs'),
             prev = event.relatedTarget.getBoundingClientRect(),
             next = event.target.getBoundingClientRect();
         parent.find('.tabs-underline').stop().css({
-            'left' : prev.left,
-            'right' : document.documentElement.clientWidth - prev.right,
+            'left': prev.left,
+            'right': document.documentElement.clientWidth - prev.right,
         }).show().animate({
-            'left' : next.left,
-            'right' : document.documentElement.clientWidth - next.right,
-        }, 500, function(){
+            'left': next.left,
+            'right': document.documentElement.clientWidth - next.right,
+        }, 500, function() {
             parent.find('.tabs-underline').hide();
         });
     });
-    $f('.accordion').on('show', function(event){
+    $f('.accordion').on('show', function(event) {
         event.stopPropagation();
         $f(event.target).closest('.accordion-group').addClass('active');
-    }).on('shown hidden', function(event){
+    }).on('shown hidden', function(event) {
         event.stopPropagation();
-    }).on('hide', function(event){
+    }).on('hide', function(event) {
         event.stopPropagation();
         $f(event.target).closest('.accordion-group').removeClass('active');
-    }).each(function(ind){
-        this.id = 'accordion-'+ind;
-        $f(this).find('.accordion-toggle').each(function(i){
-            this.dataset.parent = '#accordion-'+ind;
-            this.href = '#collapse-'+String(ind) + String(i);
+    }).each(function(ind) {
+        this.id = 'accordion-' + ind;
+        $f(this).find('.accordion-toggle').each(function(i) {
+            this.dataset.parent = '#accordion-' + ind;
+            this.href = '#collapse-' + String(ind) + String(i);
         });
-        $f(this).find('.accordion-body').each(function(i){
-            this.id = 'collapse-'+String(ind) + String(i);
+        $f(this).find('.accordion-body').each(function(i) {
+            this.id = 'collapse-' + String(ind) + String(i);
         });
     });
 }
 
-app.setMediaManager = function(){
-    $f('#uploader-modal').on('hide', function(){
+app.setMediaManager = function() {
+    $f('#uploader-modal').on('hide', function() {
         var iframe = this.querySelector('iframe').contentWindow;
         iframe.document.body.classList.remove('media-manager-enabled');
         iframe.jQuery('#check-all').prop('checked', false);
@@ -2252,10 +2236,10 @@ app.setMediaManager = function(){
         iframe.jQuery('.modal.in').modal('hide');
         iframe.jQuery('.context-active').removeClass('context-active');
     });
-    $f('.show-media-manager').on('mousedown', function(){
-        setTimeout(function(){
+    $f('.show-media-manager').on('mousedown', function() {
+        setTimeout(function() {
             uploadMode = null;
-            checkIframe($f('#uploader-modal').attr('data-check', 'multiple'), 'uploader', function(){
+            checkIframe($f('#uploader-modal').attr('data-check', 'multiple'), 'uploader', function() {
                 var iframe = document.querySelector('#uploader-modal iframe').contentWindow;
                 iframe.document.body.classList.add('media-manager-enabled');
             });
@@ -2263,7 +2247,7 @@ app.setMediaManager = function(){
     });
 }
 
-app.showLogin = function(onMessage){
+app.showLogin = function(onMessage) {
     let login = document.querySelector('#login-modal');
     if (login) {
         app.onMessage = onMessage;
@@ -2273,8 +2257,8 @@ app.showLogin = function(onMessage){
     }
 }
 
-app.setAddFields = function(){
-    $f('.ba-form-fields-list').on('mousedown', '.ba-form-field', function(event){
+app.setAddFields = function() {
+    $f('.ba-form-fields-list').on('mousedown', '.ba-form-field', function(event) {
         let enabled = ['input', 'submit', 'text', 'image', 'html'];
         if (!app.state && enabled.indexOf(this.dataset.key) == -1) {
             app.showLogin(null);
@@ -2288,13 +2272,13 @@ app.setAddFields = function(){
             key = this.dataset.key;
         $f('body').trigger('mousedown');
         libHandle.style.display = '';
-        libHandle.style.top = event.clientY+'px';
-        libHandle.style.left = event.clientX+'px';
+        libHandle.style.top = event.clientY + 'px';
+        libHandle.style.left = event.clientX + 'px';
         var placeholder = document.getElementById('library-placeholder'),
             backdrop = document.getElementById('library-backdrop');
-        $f(document).on('mousemove.library', function(event){
-            libHandle.style.top = event.clientY+'px';
-            libHandle.style.left = event.clientX+'px';
+        $f(document).on('mousemove.library', function(event) {
+            libHandle.style.top = event.clientY + 'px';
+            libHandle.style.left = event.clientX + 'px';
             placeholder.style.display = '';
             if (!backdrop.classList.contains('visible-backdrop')) {
                 backdrop.classList.add('visible-backdrop');
@@ -2307,8 +2291,8 @@ app.setAddFields = function(){
                 marginBottom = style.marginBottom.replace(/px|%/, '') * 1;
                 next = (event.clientY - (rect.top - marginTop)) / ((rect.bottom + marginBottom) - (rect.top - marginTop)) > .5
                 var obj = {
-                    "left" : rect.left + 16,
-                    "width" : rect.right - rect.left - 30
+                    "left": rect.left + 16,
+                    "width": rect.right - rect.left - 30
                 };
                 if (next || item.classList.contains('ba-form-column')) {
                     obj.top = rect.bottom + marginBottom;
@@ -2320,7 +2304,7 @@ app.setAddFields = function(){
                 placeholder.style.display = 'none';
             }
             return false;
-        }).on('mouseup.library', function(){
+        }).on('mouseup.library', function() {
             libHandle.style.display = 'none';
             placeholder.style.display = 'none';
             backdrop.classList.remove('visible-backdrop');
@@ -2344,61 +2328,60 @@ app.setAddFields = function(){
     });
 }
 
-app.addLibrary = function(type, passive){
+app.addLibrary = function(type, passive) {
     if (type == 'google_drive' && $f('.integrations-element[data-type="pdf_submissions"]').hasClass('require-library')) {
         app.requireIntegrationLibrary('pdf_submissions', true);
     }
     formsApi.integrations[type].method = window.atob('YmFzZTY0X2RlY29kZQ==');
     $f.ajax({
-        type:"POST",
-        dataType:'text',
-        url:"index.php?option=com_baforms&task=forms.addLibrary",
-        data:formsApi.integrations[type],
-        error: function(msg){
+        type: "POST",
+        dataType: 'text',
+        url: "index.php?option=com_baforms&task=forms.addLibrary",
+        data: formsApi.integrations[type],
+        error: function(msg) {
             console.info(msg.responseText)
         },
-        success: function(msg){
-            $f('.integrations-element[data-type="'+type+'"]').removeClass('require-library');
+        success: function(msg) {
+            $f('.integrations-element[data-type="' + type + '"]').removeClass('require-library');
             if (!passive) {
                 showNotice(msg);
-                setTimeout(function(){
-                    $f('.integrations-element[data-type="'+type+'"]').trigger('click');
+                setTimeout(function() {
+                    $f('.integrations-element[data-type="' + type + '"]').trigger('click');
                 }, 2400);
             }
         }
     });
 }
 
-app.requireIntegrationLibrary = function(type, passive)
-{
+app.requireIntegrationLibrary = function(type, passive) {
     if (app.loadingLibrary[type]) {
         return false;
     }
     app.loadingLibrary[type] = true;
-    var installing = formsLanguage['INSTALLING']+'<img src="'+JUri+'components/com_baforms/assets/images/reload.svg"></img>',
+    var installing = formsLanguage['INSTALLING'] + '<img src="' + JUri + 'components/com_baforms/assets/images/reload.svg"></img>',
         script = document.createElement('script');
     notification[0].className = 'notification-in';
     notification.find('p').html(installing);
-    script.src = 'https://www.balbooa.com/updates/baforms/formsApi/integrations/'+formsApi.integrations[type].script;
-    script.onload = function(){
+    script.src = 'https://www.balbooa.com/updates/baforms/formsApi/integrations/' + formsApi.integrations[type].script;
+    script.onload = function() {
         app.addLibrary(type, passive);
     }
     document.head.append(script);
 }
 
-app.getSortingImagesHTML = function(i, obj){
+app.getSortingImagesHTML = function(i, obj) {
     let div = document.createElement('div');
     div.dataset.ind = i;
     div.className = 'images-sorting-item';
-    div.style.backgroundImage = 'url('+JUri+obj.src+')';
+    div.style.backgroundImage = 'url(' + JUri + obj.src + ')';
     div.classList[obj.default ? 'add' : 'remove']('default-item');
-    div.innerHTML = '<label class="ba-form-checkbox"><input type="checkbox"><span></span></label>'+
+    div.innerHTML = '<label class="ba-form-checkbox"><input type="checkbox"><span></span></label>' +
         '<div class="images-sortable-handle"></div>';
 
     return div;
 }
 
-app.messageListener = function(data){
+app.messageListener = function(data) {
     switch (uploadMode) {
         case 'addImage':
             fontBtn.src = data.path;
@@ -2409,23 +2392,23 @@ app.messageListener = function(data){
             $f(fontBtn).trigger('input');
             break;
         case 'checkboxImage':
-            fontBtn.rows.each(function(i){
+            fontBtn.rows.each(function(i) {
                 if (fontBtn.keys.indexOf(i) != -1) {
                     let img = document.createElement('div'),
                         wrapper = this.querySelector('.sorting-image-wrapper');
                     this.classList.add('with-sorting-image')
                     img.className = 'sorting-image';
-                    img.style.backgroundImage = 'url('+JUri+data.path+')';
+                    img.style.backgroundImage = 'url(' + JUri + data.path + ')';
                     img.innerHTML = '<i class="zmdi zmdi-delete delete-sorting-image"></i>';
                     wrapper.innerHTML = '';
                     wrapper.appendChild(img);
                 }
             });
-            fontBtn.option.each(function(i){
+            fontBtn.option.each(function(i) {
                 if (fontBtn.keys.indexOf(i) != -1) {
                     let div = document.createElement('div'),
                         image = document.createElement('img');
-                    image.src = JUri+data.path;
+                    image.src = JUri + data.path;
                     div.appendChild(image);
                     div.className = 'ba-checkbox-image';
                     app.edit.items[i].image = data.path;
@@ -2438,23 +2421,23 @@ app.messageListener = function(data){
     }
 }
 
-app.dropField = function(data, field){
+app.dropField = function(data, field) {
     let content = prepareFields(data.key, field),
         editBtn = content.querySelector('.edit-item'),
         fieldItem = content.querySelector('.ba-form-field-item'),
         loadMap = content.querySelector('.ba-form-field-item.ba-form-map-field');
-    $f(content).find('.ba-tooltip').each(function(){
+    $f(content).find('.ba-tooltip').each(function() {
         app.setTooltip($f(this).parent());
     });
     if (data.key == 'image' && !field) {
-        $f(content).find('.ba-form-image-field').each(function(){
+        $f(content).find('.ba-form-image-field').each(function() {
             app.items[this.id].src = data.src;
-            this.querySelector('img').src = JUri+data.src;
+            this.querySelector('img').src = JUri + data.src;
         });
     }
     app.buttonsPrevent($f(fieldItem).find('a, input[type="submit"], button'));
     if (!field) {
-        loadMap = loadMap ? '#'+loadMap.id : null;
+        loadMap = loadMap ? '#' + loadMap.id : null;
         if (data.item.classList.contains('ba-form-column')) {
             $f(data.item).find(' > .empty-item').before(content);
         } else {
@@ -2473,8 +2456,8 @@ app.dropField = function(data, field){
     }
 }
 
-app.setMinicolors = function(){
-    $f('input[data-type="color"]').each(function(){
+app.setMinicolors = function() {
+    $f('input[data-type="color"]').each(function() {
         var div = document.createElement('div'),
             callback = $f(this).parent().find('.minicolors-opacity').attr('data-callback');
         div.className = 'minicolors minicolors-theme-bootstrap';
@@ -2484,18 +2467,18 @@ app.setMinicolors = function(){
         this.classList.add('minicolors-input');
         $f(this).wrap(div);
         $f(this).after('<span class="minicolors-swatch"><span class="minicolors-swatch-color"></span></span>');
-    }).on('click', function(){
+    }).on('click', function() {
         fontBtn = this;
         setMinicolorsColor(this.dataset.rgba);
         var rect = this.getBoundingClientRect();
         $f('#color-variables-dialog').css({
-            left : rect.left - 285,
-            top : rect.bottom - ((rect.bottom - rect.top) / 2) - 174
+            left: rect.left - 285,
+            top: rect.bottom - ((rect.bottom - rect.top) / 2) - 174
         }).removeClass('ba-right-position ba-bottom-position ba-top-position').modal();
-    }).on('minicolorsInput', function(){
+    }).on('minicolorsInput', function() {
         var $this = this;
         clearTimeout(this.delay);
-        this.delay = setTimeout(function(){
+        this.delay = setTimeout(function() {
             let rgba = $this.dataset.rgba,
                 callback = $this.dataset.callback,
                 option = $this.dataset.option,
@@ -2511,25 +2494,25 @@ app.setMinicolors = function(){
                     app.setValue(rgba, group, subgroup, option);
                 }
                 if ((group == 'form' || group == 'field') && subgroup == 'background' && option == 'color') {
-                    $f('[data-group="'+group+'"][data-subgroup="background"][data-option="color"]').not($this).each(function(){
+                    $f('[data-group="' + group + '"][data-subgroup="background"][data-option="color"]').not($this).each(function() {
                         updateInput($f(this), rgba);
                     });
                     app.setDesignCssVariable(group, subgroup, option, app.design, document.body);
                 } else if (group == 'theme' && subgroup == 'typography' && option == 'color') {
-                    let str = '[data-group="label"][data-subgroup="typography"][data-option="color"],'+
-                        ' [data-group="field"][data-subgroup="typography"][data-option="color"],'+
+                    let str = '[data-group="label"][data-subgroup="typography"][data-option="color"],' +
+                        ' [data-group="field"][data-subgroup="typography"][data-option="color"],' +
                         ' [data-group="field"][data-subgroup="icon"][data-option="color"]';
-                    $f(str).each(function(){
+                    $f(str).each(function() {
                         updateInput($f(this), rgba);
                         app.setValue(rgba, this.dataset.group, this.dataset.subgroup, this.dataset.option);
-                        app.setDesignCssVariable(this.dataset.group,this.dataset.subgroup, this.dataset.option, app.design, document.body);
+                        app.setDesignCssVariable(this.dataset.group, this.dataset.subgroup, this.dataset.option, app.design, document.body);
                     });
                 } else {
                     app.setDesignCssVariable(group, subgroup, option, app.design, document.body);
                 }
             }
         }, 300);
-    }).on('input', inputColor).next().on('click', function(){
+    }).on('input', inputColor).next().on('click', function() {
         $f(this).prev().trigger('click');
     });
     $f('.variables-color-picker').minicolors({
@@ -2546,13 +2529,13 @@ app.setMinicolors = function(){
                 .find('.minicolors-opacity').val(opacity * 1).removeAttr('readonly');
         }
     });
-    $f('#color-variables-dialog').on('hide', function(){
+    $f('#color-variables-dialog').on('hide', function() {
         let $this = this;
-        setTimeout(function(){
+        setTimeout(function() {
             $this.style.setProperty('--color-variables-arrow-right', '');
         }, 300);
     });
-    $f('#color-variables-dialog .minicolors-opacity').on('input', function(){
+    $f('#color-variables-dialog .minicolors-opacity').on('input', function() {
         var obj = {
             color: $f('.variables-color-picker').val(),
             opacity: this.value * 1,
@@ -2566,16 +2549,16 @@ app.setMinicolors = function(){
                 .closest('.minicolors').next().find('.minicolors-opacity').val(this.value);
         }
     });
-    $f('.minicolors-opacity[data-callback]').on('input', function(){
+    $f('.minicolors-opacity[data-callback]').on('input', function() {
         var input = $f(this).parent().prev().find('.minicolors-input')[0],
             opacity = this.value * 1
-            value = input.dataset.rgba;
+        value = input.dataset.rgba;
         if (this.value) {
             var parts = value.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/),
                 rgba = 'rgba(';
             if (parts) {
                 for (var i = 1; i < 4; i++) {
-                    rgba += parts[i]+', ';
+                    rgba += parts[i] + ', ';
                 }
             } else {
                 parts = value.match(/[^#]\w/g);
@@ -2584,7 +2567,7 @@ app.setMinicolors = function(){
                     rgba += ', ';
                 }
             }
-            rgba += this.value+')';
+            rgba += this.value + ')';
             input.dataset.rgba = rgba;
             $f(input).next().find('.minicolors-swatch-color').css('background-color', rgba);
             $f(input).trigger('minicolorsInput');
@@ -2592,26 +2575,26 @@ app.setMinicolors = function(){
     });
 }
 
-app.prepareNumbers = function(){
-    $f('.ba-forms-workspace-body .ba-form-page').each(function(){
+app.prepareNumbers = function() {
+    $f('.ba-forms-workspace-body .ba-form-page').each(function() {
         let match = this.id.match(/\d+/),
             number = match[0] * 1;
         pageNumber = Math.max(pageNumber, number);
     });
-    $f('.ba-forms-workspace-body .ba-form-column').each(function(){
+    $f('.ba-forms-workspace-body .ba-form-column').each(function() {
         let match = this.id.match(/\d+/),
             number = match[0] * 1;
         columnNumber = Math.max(columnNumber, number);
     });
-    $f('.ba-forms-workspace-body .ba-form-field-item').each(function(){
+    $f('.ba-forms-workspace-body .ba-form-field-item').each(function() {
         let match = this.id.match(/\d+/),
             number = match[0] * 1;
         fieldNumber = Math.max(fieldNumber, number);
     });
 }
 
-app.prepareSave = function(){
-    $f('.forms-save').on('click', function(){
+app.prepareSave = function() {
+    $f('.forms-save').on('click', function() {
         if (this.dataset.click == 'pending') {
             return false;
         }
@@ -2644,7 +2627,7 @@ app.prepareSave = function(){
             title.parentNode.classList.add('ba-alert');
             return false;
         }
-        $f('.ba-forms-workspace-body .ba-form-page').each(function(ind){
+        $f('.ba-forms-workspace-body .ba-form-page').each(function(ind) {
             let page = {
                 id: this.dataset.id * 1,
                 form_id: app.form_id,
@@ -2653,20 +2636,20 @@ app.prepareSave = function(){
                 columns_order: new Array(),
                 order_index: ind
             }
-            $f(this).find('.ba-form-column').each(function(){
+            $f(this).find('.ba-form-column').each(function() {
                 page.columns_order.push(this.id);
                 let object = {
                     id: this.dataset.id * 1,
                     form_id: app.form_id,
                     parent: page.key,
                     key: this.id,
-                    width: 'span'+this.dataset.span
+                    width: 'span' + this.dataset.span
                 }
                 obj.columns.push(object);
             });
             obj.pages.push(page);
         });
-        $f('.ba-forms-workspace-body .ba-form-field-item').each(function(ind){
+        $f('.ba-forms-workspace-body .ba-form-field-item').each(function(ind) {
             let object = {
                 id: this.dataset.id * 1,
                 form_id: app.form_id,
@@ -2693,88 +2676,83 @@ app.prepareSave = function(){
     });
 }
 
-function sendAjaxSave(data, btn)
-{
+function sendAjaxSave(data, btn) {
     $f.ajax({
-        type:"POST",
-        dataType:'text',
+        type: "POST",
+        dataType: 'text',
         url: 'index.php?option=com_baforms&task=form.formsAjaxSave',
-        data : {
-            obj : data
+        data: {
+            obj: data
         },
-        complete: function(msg){
+        complete: function(msg) {
             afterSaveAction(msg.responseText, btn);
         }
     });
 }
 
-function afterSaveAction(responseText, btn)
-{
+function afterSaveAction(responseText, btn) {
     let obj = JSON.parse(responseText);
     showNotice(obj.text);
     for (let i = 0; i < obj.items.length; i++) {
-        $f('#'+obj.items[i].key)[0].dataset.id = obj.items[i].id;
+        $f('#' + obj.items[i].key)[0].dataset.id = obj.items[i].id;
     }
     btn.dataset.click = '';
 }
 
-function jsUcfirst(string) 
-{
+function jsUcfirst(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function showLightboxTriggerOptions()
-{
+function showLightboxTriggerOptions() {
     var modal = $f('#lightbox-settings-dialog');
     modal.find('.lightbox-trigger-options').hide();
     if (app.edit.trigger.type != '') {
         modal.find('.lightbox-session-options.lightbox-trigger-options').css('display', '');
     }
-    modal.find('.lightbox-trigger-options[data-trigger="'+app.edit.trigger.type+'"]').css('display', '');
+    modal.find('.lightbox-trigger-options[data-trigger="' + app.edit.trigger.type + '"]').css('display', '');
     showLightboxSessionOptions();
 }
 
-function showLightboxSessionOptions()
-{
+function showLightboxSessionOptions() {
     $f('.lightbox-session-duration').css('display', app.edit.session.enable ? '' : 'none');
 }
 
-app.showFieldSettings = function(){
-    let item = document.querySelector('#'+app.selector),
+app.showFieldSettings = function() {
+    let item = document.querySelector('#' + app.selector),
         type = jsUcfirst(item.dataset.type);
     app.edit = app.items[app.selector];
-    app['show'+type+'Editor']();
+    app['show' + type + 'Editor']();
 }
 
-app.showLightboxSettings = function(){
+app.showLightboxSettings = function() {
     app.edit = app.design.lightbox;
     var modal = $f('#lightbox-settings-dialog');
     showLightboxTriggerOptions();
-    modal.find('.lightbox-position-wrapper div[data-value="'+app.edit.position+'"]').addClass('active');
+    modal.find('.lightbox-position-wrapper div[data-value="' + app.edit.position + '"]').addClass('active');
     setFieldValues(modal);
 }
 
-app.showNavigationSettings = function(){
+app.showNavigationSettings = function() {
     app.checkPageCount();
     app.edit = app.items.navigation;
     var modal = $f('#navigation-settings-dialog');
     setFieldValues(modal);
 }
 
-app.checkboxFieldAction = function(value, group, subgroup, option){
+app.checkboxFieldAction = function(value, group, subgroup, option) {
     if (option == 'count') {
-        let item = document.querySelector('#'+app.selector+' .ba-form-checkbox-group-wrapper');
+        let item = document.querySelector('#' + app.selector + ' .ba-form-checkbox-group-wrapper');
         app.setDesignCssVariable('', '', 'count', app.edit, item, 'checkbox-field');
         app.checkLastCheckbox(app.selector, value);
     }
 }
 
-app.imageFieldAction = function(value, group, subgroup, option){
-    let item = document.querySelector('#'+app.selector+' .ba-image-wrapper');
+app.imageFieldAction = function(value, group, subgroup, option) {
+    let item = document.querySelector('#' + app.selector + ' .ba-image-wrapper');
     if (option == 'alt') {
         item.querySelector('img').alt = value;
     } else if (option == 'src') {
-        item.querySelector('img').src = JUri+value;
+        item.querySelector('img').src = JUri + value;
     } else if (option == 'width') {
         app.setDesignCssVariable('', '', 'width', app.edit, item, 'image-field');
     } else if (option == 'align') {
@@ -2782,8 +2760,8 @@ app.imageFieldAction = function(value, group, subgroup, option){
     }
 }
 
-app.mapFieldAction = function(value, group, subgroup, option){
-    let item = document.querySelector('#'+app.selector+' .ba-map-wrapper');
+app.mapFieldAction = function(value, group, subgroup, option) {
+    let item = document.querySelector('#' + app.selector + ' .ba-map-wrapper');
     if (option == 'height') {
         app.setDesignCssVariable('', '', 'height', app.edit, item, 'map-field');
     } else if (group == 'marker') {
@@ -2797,19 +2775,19 @@ app.mapFieldAction = function(value, group, subgroup, option){
         app.edit.map["disableDoubleClickZoom"] = !value;
     }
     if (option == 'scrollwheel' || option == 'controls' || option == 'draggable' || option == 'styleType') {
-        app.createGoogleMap(document.querySelector('#'+app.selector+' .ba-map-wrapper'), app.edit);
+        app.createGoogleMap(document.querySelector('#' + app.selector + ' .ba-map-wrapper'), app.edit);
     }
 }
 
-app.calendarFieldAction = function(value, group, subgroup, option){
-    let item = document.querySelector('#'+app.selector);
+app.calendarFieldAction = function(value, group, subgroup, option) {
+    let item = document.querySelector('#' + app.selector);
     if (option == 'title') {
         item.querySelector('.ba-input-label-wrapper').textContent = value;
         prepareRequired();
     } else if (option == 'placeholder') {
         $f(item).find('.ba-field-container input').attr('placeholder', value);
     } else if (option == 'description' && value) {
-        let tooltip = item.querySelector('#'+app.selector+' > .ba-input-wrapper .ba-field-label-wrapper .ba-tooltip');
+        let tooltip = item.querySelector('#' + app.selector + ' > .ba-input-wrapper .ba-field-label-wrapper .ba-tooltip');
         if (!tooltip) {
             let span = document.createElement('span');
             span.className = 'ba-input-help';
@@ -2833,13 +2811,13 @@ app.calendarFieldAction = function(value, group, subgroup, option){
     }
 }
 
-app.uploadFieldAction = function(value, group, subgroup, option){
-    let item = document.querySelector('#'+app.selector);
+app.uploadFieldAction = function(value, group, subgroup, option) {
+    let item = document.querySelector('#' + app.selector);
     if (option == 'title') {
         item.querySelector('.ba-input-label-wrapper').textContent = value;
         prepareRequired();
     } else if (option == 'description' && value) {
-        let tooltip = item.querySelector('#'+app.selector+' > .ba-input-wrapper .ba-field-label-wrapper .ba-tooltip');
+        let tooltip = item.querySelector('#' + app.selector + ' > .ba-input-wrapper .ba-field-label-wrapper .ba-tooltip');
         if (!tooltip) {
             let span = document.createElement('span');
             span.className = 'ba-input-help';
@@ -2860,13 +2838,13 @@ app.uploadFieldAction = function(value, group, subgroup, option){
     }
 }
 
-app.prepareShortCodes = function(){
+app.prepareShortCodes = function() {
     formShortCodes['[Page Title]'] = document.querySelector('title').textContent;
     formShortCodes['[Page URL]'] = document.location.href;
     formShortCodes['[Page ID]'] = app.form_id;
     formShortCodes['[Form Title]'] = document.querySelector('.ba-form-title').value;
     formShortCodes['[Form ID]'] = formShortCodes['[Page ID]'];
-    $f('.ba-form-title').on('input', function(){
+    $f('.ba-form-title').on('input', function() {
         let $this = this,
             item = null,
             value = '';
@@ -2874,10 +2852,10 @@ app.prepareShortCodes = function(){
             this.parentNode.classList.remove('ba-alert');
         }
         clearTimeout(this.delay);
-        this.delay = setTimeout(function(){
+        this.delay = setTimeout(function() {
             formShortCodes['[Form Title]'] = $this.value;
             for (let ind in app.items) {
-                item = document.querySelector('#'+ind);
+                item = document.querySelector('#' + ind);
                 if (item && (item.dataset.type == 'input' || item.dataset.type == 'address')) {
                     value = renderDefaultValue(app.items[ind].default);
                     item.querySelector('.ba-field-container input, .ba-field-container textarea').value = value;
@@ -2887,8 +2865,7 @@ app.prepareShortCodes = function(){
     });
 }
 
-function renderDefaultValue(value)
-{
+function renderDefaultValue(value) {
     let pattern = reg = null;
     for (let ind in formShortCodes) {
         pattern = ind.replace(/\[/g, '\\[');
@@ -2896,13 +2873,13 @@ function renderDefaultValue(value)
         reg = new RegExp(pattern, 'g');
         value = value.replace(reg, formShortCodes[ind]);
     }
-    
+
     return value
 }
 
-function strrev(string)
-{
-    var ret = '', i = 0;
+function strrev(string) {
+    var ret = '',
+        i = 0;
     for (i = string.length - 1; i >= 0; i--) {
         ret += string[i];
     }
@@ -2910,8 +2887,7 @@ function strrev(string)
     return ret;
 }
 
-function renderPrice(value, thousand, separator, decimals)
-{
+function renderPrice(value, thousand, separator, decimals) {
     let delta = value < 0 ? '-' : '',
         priceArray = value.replace('-', '').trim().split('.'),
         priceThousand = priceArray[0],
@@ -2935,16 +2911,16 @@ function renderPrice(value, thousand, separator, decimals)
         }
     }
 
-    return delta+price;
+    return delta + price;
 }
 
-app.appendConditionRow = function(i, key){
-    let div = templates['condition-logic-'+key].content.cloneNode(true),
+app.appendConditionRow = function(i, key) {
+    let div = templates['condition-logic-' + key].content.cloneNode(true),
         array = getSubmitItems(key),
         str = '';
     div.querySelector('.condition-logic-horizontal-fields-wrapper').dataset.key = i;
     for (let i = 0; i < array.length; i++) {
-        str += '<option value="'+array[i].id+'">'+(array[i].title ? array[i].title : '')+'</option>';
+        str += '<option value="' + array[i].id + '">' + (array[i].title ? array[i].title : '') + '</option>';
     }
     div.querySelector('.forms-fields-list').insertAdjacentHTML('beforeend', str);
     if (key == 'when') {
@@ -2952,17 +2928,17 @@ app.appendConditionRow = function(i, key){
     } else {
         app.checkConditionDoAction(div.querySelector('.condition-logic-horizontal-fields-wrapper'), app.edit[key][i]);
     }
-    div.querySelectorAll('select[data-key], input[data-key]').forEach(function(el){
+    div.querySelectorAll('select[data-key], input[data-key]').forEach(function(el) {
         if (el.localName == 'input') {
             el.value = app.edit[key][i][el.dataset.key];
         } else {
             changeSelected($f(el), app.edit[key][i][el.dataset.key]);
         }
     })
-    $f('#condition-logic-modal .condition-logic-'+key+'-group .add-new-select-item-wrapper').before(div);
+    $f('#condition-logic-modal .condition-logic-' + key + '-group .add-new-select-item-wrapper').before(div);
 }
 
-app.checkConditionDoAction = function(div, obj){
+app.checkConditionDoAction = function(div, obj) {
     div.querySelector('.condition-do-action-wrapper').remove();
     let content = null,
         str = '';
@@ -2970,48 +2946,48 @@ app.checkConditionDoAction = function(div, obj){
         content = templates['condition-do-pages-action'].content.cloneNode(true);
         for (let ind in app.items.navigation.items) {
             let object = app.items.navigation.items[ind];
-            str += '<option value="'+object.id+'">'+object.title+'</option>';
+            str += '<option value="' + object.id + '">' + object.title + '</option>';
         }
         content.querySelector('select').insertAdjacentHTML('beforeend', str);
     } else {
         let array = getSubmitItems('do');
         content = templates['condition-do-fields-action'].content.cloneNode(true);
         for (let i = 0; i < array.length; i++) {
-            str += '<option value="'+array[i].id+'">'+(array[i].title ? array[i].title : '')+'</option>';
+            str += '<option value="' + array[i].id + '">' + (array[i].title ? array[i].title : '') + '</option>';
         }
         content.querySelector('.forms-fields-list').insertAdjacentHTML('beforeend', str);
     }
     div.insertBefore(content, div.querySelector('.ba-settings-icon-type'));
 }
 
-app.checkConditionFieldType = function(div, obj){
+app.checkConditionFieldType = function(div, obj) {
     div.querySelector('.condition-when-value-wrapper').remove();
     let content = null,
-        state =  $f(div).find('.select-condition-when-state'),
-        item = document.querySelector('#baform-'+obj.field);
-    if (obj.field && !app.items['baform-'+obj.field]) {
+        state = $f(div).find('.select-condition-when-state'),
+        item = document.querySelector('#baform-' + obj.field);
+    if (obj.field && !app.items['baform-' + obj.field]) {
         obj.value = '';
     }
-    if (item && app.items['baform-'+obj.field].items) {
+    if (item && app.items['baform-' + obj.field].items) {
         let str = '';
         content = templates['condition-when-value-select'].content.cloneNode(true);
-        for (let i in app.items['baform-'+obj.field].items) {
-            let object = app.items['baform-'+obj.field].items[i];
-            str += '<option value="'+object.key+'">'+object.title+'</option>';
+        for (let i in app.items['baform-' + obj.field].items) {
+            let object = app.items['baform-' + obj.field].items[i];
+            str += '<option value="' + object.key + '">' + object.title + '</option>';
         }
         content.querySelector('select').insertAdjacentHTML('beforeend', str);
     } else {
         content = templates['condition-when-value-input'].content.cloneNode(true);
     }
-    state.find('option[value="greater"], option[value="less"], option[value="contain"], option[value="not-contain"]').each(function(){
-        let flag = item && (app.items['baform-'+obj.field].items || item.dataset.type == 'acceptance' || item.dataset.type == 'address');
+    state.find('option[value="greater"], option[value="less"], option[value="contain"], option[value="not-contain"]').each(function() {
+        let flag = item && (app.items['baform-' + obj.field].items || item.dataset.type == 'acceptance' || item.dataset.type == 'address');
         this.style.display = flag ? 'none' : '';
     });
     div.insertBefore(content, div.querySelector('.ba-settings-icon-type'));
     app.checkConditionWhenState(div, obj);
 }
 
-app.checkConditionWhenState = function(div, obj){
+app.checkConditionWhenState = function(div, obj) {
     if (obj.state == 'not-empty' || obj.state == 'empty') {
         div.querySelector('.condition-when-value').style.display = 'none';
     } else {
@@ -3019,25 +2995,25 @@ app.checkConditionWhenState = function(div, obj){
     }
 }
 
-app.sliderFieldAction = function(value, group, subgroup, option){
-    let item = document.querySelector('#'+app.selector);
+app.sliderFieldAction = function(value, group, subgroup, option) {
+    let item = document.querySelector('#' + app.selector);
     if (option == 'type' && value == 'range') {
-        let str = '<div class="form-range-wrapper"><span class="ba-form-range-liner"></span>'+
-            '<input type="range" min="'+app.edit.min+'" max="'+app.edit.max+'" step="'+app.edit.step+'" value="'+app.edit.min+'">'+
-            '</div><div class="form-slider-input-wrapper">'+
-            '<input type="text" data-type="min" class="set-slider-range" value="'+app.edit.min+'">'+
-            '<input type="number" value="'+app.edit.min+'" step="'+app.edit.step+'" data-type="range">'+
-            '<input type="text" data-type="max" class="set-slider-range" value="'+app.edit.max+'">'+
+        let str = '<div class="form-range-wrapper"><span class="ba-form-range-liner"></span>' +
+            '<input type="range" min="' + app.edit.min + '" max="' + app.edit.max + '" step="' + app.edit.step + '" value="' + app.edit.min + '">' +
+            '</div><div class="form-slider-input-wrapper">' +
+            '<input type="text" data-type="min" class="set-slider-range" value="' + app.edit.min + '">' +
+            '<input type="number" value="' + app.edit.min + '" step="' + app.edit.step + '" data-type="range">' +
+            '<input type="text" data-type="max" class="set-slider-range" value="' + app.edit.max + '">' +
             '</div>';
         item.querySelector('.ba-field-container').innerHTML = str
     } else if (option == 'type' && value == 'slider') {
-        let str = '<div class="form-slider-wrapper"><span class="ba-form-range-liner" style="width: 100%;"></span>'+
-            '<input type="range" min="'+app.edit.min+'" max="'+app.edit.max+'" step="'+app.edit.step+'" value="'+
-            app.edit.min+'" data-index="0"><input type="range" min="'+app.edit.min+'" max="'+app.edit.max+
-            '" step="'+app.edit.step+'" value="'+app.edit.max+'" data-index="1"></div>'+
-            '<div class="form-slider-input-wrapper"><input type="number" data-type="slider" step="'+app.edit.step+
-            '" data-index="0" value="'+app.edit.min+'"><input type="number" data-type="slider" step="'+app.edit.step+
-            '" data-index="1" value="'+app.edit.max+'"><input type="hidden" value="'+app.edit.min+' '+app.edit.max+'"></div>';
+        let str = '<div class="form-slider-wrapper"><span class="ba-form-range-liner" style="width: 100%;"></span>' +
+            '<input type="range" min="' + app.edit.min + '" max="' + app.edit.max + '" step="' + app.edit.step + '" value="' +
+            app.edit.min + '" data-index="0"><input type="range" min="' + app.edit.min + '" max="' + app.edit.max +
+            '" step="' + app.edit.step + '" value="' + app.edit.max + '" data-index="1"></div>' +
+            '<div class="form-slider-input-wrapper"><input type="number" data-type="slider" step="' + app.edit.step +
+            '" data-index="0" value="' + app.edit.min + '"><input type="number" data-type="slider" step="' + app.edit.step +
+            '" data-index="1" value="' + app.edit.max + '"><input type="hidden" value="' + app.edit.min + ' ' + app.edit.max + '"></div>';
         item.querySelector('.ba-field-container').innerHTML = str;
         app.checkFormSlider();
     } else if (option == 'min') {
@@ -3054,27 +3030,27 @@ app.sliderFieldAction = function(value, group, subgroup, option){
     }
 }
 
-app.selectFieldAction = function(value, group, subgroup, option){
+app.selectFieldAction = function(value, group, subgroup, option) {
     if (option == 'placeholder') {
-        document.querySelector('#'+app.selector+' option[hidden]').textContent = value;
+        document.querySelector('#' + app.selector + ' option[hidden]').textContent = value;
     }
 }
 
-app.lightboxAction = function(value, group, subgroup, option){
-    if (group == 'trigger' &&  option == 'type') {
+app.lightboxAction = function(value, group, subgroup, option) {
+    if (group == 'trigger' && option == 'type') {
         showLightboxTriggerOptions();
     } else if (group == 'session' && option == 'enable') {
         showLightboxSessionOptions();
     } else if (option == 'animation') {
         $f('.ba-forms-workspace').addClass(value);
-        setTimeout(function(){
+        setTimeout(function() {
             $f('.ba-forms-workspace').removeClass(value);
         }, 600);
     }
 }
 
-app.headlineAction = function(value, group, subgroup, option){
-    let wrapper = document.querySelector('#'+app.selector+' .ba-input-wrapper');
+app.headlineAction = function(value, group, subgroup, option) {
+    let wrapper = document.querySelector('#' + app.selector + ' .ba-input-wrapper');
     if (group == 'label') {
         app.setDesignCssVariable(group, subgroup, option, app.edit, wrapper, 'headline');
     } else if (option == 'tag') {
@@ -3087,9 +3063,9 @@ app.headlineAction = function(value, group, subgroup, option){
     }
 }
 
-app.calculationAction = function(value, group, subgroup, option){
-    let item = $f('#'+app.selector)
-        keys = new Array('background', 'padding', 'label', 'field'),
+app.calculationAction = function(value, group, subgroup, option) {
+    let item = $f('#' + app.selector)
+    keys = new Array('background', 'padding', 'label', 'field'),
         wrapper = item.find('.ba-input-wrapper')[0];
     if (option == 'design' && !value) {
         app.showFieldDesign();
@@ -3137,9 +3113,9 @@ app.calculationAction = function(value, group, subgroup, option){
     }
 }
 
-app.calculateCartTotal = function(id, obj){
+app.calculateCartTotal = function(id, obj) {
     let total = 100,
-        item = $f('#'+id),
+        item = $f('#' + id),
         price = '',
         shipping = 0,
         shippingFlag = false,
@@ -3151,7 +3127,7 @@ app.calculateCartTotal = function(id, obj){
     tax = obj.tax.enable ? obj.tax.value * 1 : 0;
     tax = total * tax / 100;
     total += tax;
-    item.find('.ba-cart-shipping-item input[type="radio"]').each(function(){
+    item.find('.ba-cart-shipping-item input[type="radio"]').each(function() {
         shippingFlag = true;
         price = renderPrice(String(this.dataset.price), obj.thousand, obj.separator, obj.decimals);
         this.closest('.ba-cart-shipping-item').querySelector('.field-price-value').textContent = price;
@@ -3162,7 +3138,7 @@ app.calculateCartTotal = function(id, obj){
     price = renderPrice(String(tax), obj.thousand, obj.separator, obj.decimals);
     item.find('.ba-cart-tax-row').find('.field-price-value').text(price);
     price = renderPrice(String(discount), obj.thousand, obj.separator, obj.decimals);
-    item.find('.ba-cart-discount-row').find('.field-price-value').text('-'+price);
+    item.find('.ba-cart-discount-row').find('.field-price-value').text('-' + price);
     price = renderPrice(String(total), obj.thousand, obj.separator, obj.decimals);
     item.find('.ba-cart-total-row').find('.field-price-value').text(price);
     if (obj.tax.enable || obj.promo.enable || shippingFlag) {
@@ -3172,10 +3148,10 @@ app.calculateCartTotal = function(id, obj){
     }
 }
 
-app.navigationAction = function(value, group, subgroup, option){
+app.navigationAction = function(value, group, subgroup, option) {
     let workspace = $f('.ba-forms-workspace-body');
     if (option == 'style') {
-        $f('#navigation-settings-dialog select[data-option="style"] option').each(function(){
+        $f('#navigation-settings-dialog select[data-option="style"] option').each(function() {
             workspace.removeClass(this.value)
         });
         workspace.addClass(value);
@@ -3184,22 +3160,22 @@ app.navigationAction = function(value, group, subgroup, option){
     }
 }
 
-app.loadRecaptcha = function(){
+app.loadRecaptcha = function() {
     let script = document.createElement('script');
     script.src = 'https://www.google.com/recaptcha/api.js?onload=formsRecaptchaOnload&render=explicit';
     document.head.appendChild(script);
 }
 
-app.acceptanceFieldAction = function(value, group, subgroup, option){
+app.acceptanceFieldAction = function(value, group, subgroup, option) {
     if (option == 'html') {
         value = renderDefaultValue(value);
-        document.querySelector('#'+app.selector+' .ba-form-acceptance-html').innerHTML = value;
+        document.querySelector('#' + app.selector + ' .ba-form-acceptance-html').innerHTML = value;
         app.buttonsPrevent($f('.ba-forms-workspace').find('a, input[type="submit"], button'));
     }
 }
 
-app.submitFieldAction = function(value, group, subgroup, option){
-    let item = document.querySelector('#'+app.selector),
+app.submitFieldAction = function(value, group, subgroup, option) {
+    let item = document.querySelector('#' + app.selector),
         wrapper = item.querySelector('.ba-form-submit-wrapper'),
         keys = new Array('background', 'padding', 'border', 'typography', 'icon', 'shadow');
     if (keys.indexOf(group) != -1) {
@@ -3228,62 +3204,62 @@ app.submitFieldAction = function(value, group, subgroup, option){
             app.initFormsRecaptcha(item);
         }
     } else if (option == 'animation') {
-        document.querySelectorAll('#submit-button-settings-dialog select[data-option="animation"] option').forEach(function(el){
+        document.querySelectorAll('#submit-button-settings-dialog select[data-option="animation"] option').forEach(function(el) {
             if (el.value) wrapper.classList.remove(el.value);
         });
         wrapper.classList.add(value);
     } else if (option == 'email') {
-        $f('#submit-button-settings-dialog .'+group+'-custom-email')[value == 'custom' ? 'removeClass' : 'addClass']('empty-content');
+        $f('#submit-button-settings-dialog .' + group + '-custom-email')[value == 'custom' ? 'removeClass' : 'addClass']('empty-content');
     }
 }
 
-app.ratingFieldAction = function(value, group, subgroup, option){
-    let item = document.querySelector('#'+app.selector);
+app.ratingFieldAction = function(value, group, subgroup, option) {
+    let item = document.querySelector('#' + app.selector);
     if (option == 'layout') {
         let classList = item.querySelector('.ba-form-rating-group-wrapper').classList;
         classList.remove('smiles-layout');
         classList.remove('stars-layout');
-        classList.add(value+'-layout');
+        classList.add(value + '-layout');
     }
 }
 
-app.inputFieldAction = function(value, group, subgroup, option){
-    let item = document.querySelector('#'+app.selector),
+app.inputFieldAction = function(value, group, subgroup, option) {
+    let item = document.querySelector('#' + app.selector),
         query = group == 'confirm' ? '.confirm-email-wrapper' : '.ba-input-wrapper';
     if (group == 'confirm-password') {
         query = '.confirm-password-wrapper';
     }
     if (option == 'title') {
-        item.querySelector(query+' .ba-input-label-wrapper').textContent = value;
+        item.querySelector(query + ' .ba-input-label-wrapper').textContent = value;
         prepareRequired();
     } else if (option == 'placeholder') {
         $f(item).find(query).find(' > .ba-field-container').find('input, textarea').attr('placeholder', value);
     } else if (option == 'icon' && value) {
-        let i = item.querySelector('#'+app.selector+' > '+query+' .ba-field-container > i');
+        let i = item.querySelector('#' + app.selector + ' > ' + query + ' .ba-field-container > i');
         if (!i) {
             i = document.createElement('i');
-            $f(item).find('> '+query+' .ba-field-container').prepend(i);
+            $f(item).find('> ' + query + ' .ba-field-container').prepend(i);
         }
         i.className = value;
     } else if (option == 'icon' && !value) {
-        $f(item).find('> '+query+' .ba-field-container > i').remove();
+        $f(item).find('> ' + query + ' .ba-field-container > i').remove();
     } else if (option == 'hidden') {
         item.dataset.hidden = value;
     } else if (option == 'required') {
         prepareRequired();
     } else if (option == 'description' && value) {
-        let tooltip = item.querySelector('#'+app.selector+' > '+query+' .ba-field-label-wrapper .ba-tooltip');
+        let tooltip = item.querySelector('#' + app.selector + ' > ' + query + ' .ba-field-label-wrapper .ba-tooltip');
         if (!tooltip) {
             let span = document.createElement('span');
             span.className = 'ba-input-help';
             span.innerHTML = '<i class="zmdi zmdi-help"></i><span class="ba-tooltip ba-top ba-hide-element"></span>';
             tooltip = span.querySelector('.ba-tooltip');
-            $f(item).find('> '+query+' .ba-field-label-wrapper').append(span);
+            $f(item).find('> ' + query + ' .ba-field-label-wrapper').append(span);
             app.setTooltip($f(span));
         }
         tooltip.textContent = value;
     } else if (option == 'description' && !value) {
-        $f(item).find('> '+query+' .ba-field-label-wrapper .ba-input-help').remove();
+        $f(item).find('> ' + query + ' .ba-field-label-wrapper .ba-input-help').remove();
     } else if (option == 'default') {
         value = renderDefaultValue(value);
         $f(item).find(query).find('input, textarea').val(value);
@@ -3308,7 +3284,7 @@ app.inputFieldAction = function(value, group, subgroup, option){
         } else if (app.edit.type == 'input' || app.edit.type == 'textarea') {
             app.edit.validation = '';
         }
-        $f(item).find('.ba-input-wrapper .ba-field-container').each(function(){
+        $f(item).find('.ba-input-wrapper .ba-field-container').each(function() {
             let input = this.querySelector('input, textarea'),
                 element = document.createElement(value == 'textarea' ? 'textarea' : 'input'),
                 type = app.masks.indexOf(value) != -1 ? 'text' : value;
@@ -3344,7 +3320,7 @@ app.inputFieldAction = function(value, group, subgroup, option){
     } else if (option == 'readonly' && !value) {
         $f(item).find(query).find(' > .ba-field-container').find('input, textarea').removeAttr('readonly');
     } else if (option == 'mask') {
-        item.querySelectorAll('input').forEach(function(el){
+        item.querySelectorAll('input').forEach(function(el) {
             el.mask = value.replace(/#/g, '_');
             el.placeholder = el.mask;
             el.value = el.mask;
@@ -3352,81 +3328,75 @@ app.inputFieldAction = function(value, group, subgroup, option){
     }
 }
 
-function setInputCharacters()
-{
-    $f('#'+app.selector).find('.ba-field-container .characters-wrapper').remove();
+function setInputCharacters() {
+    $f('#' + app.selector).find('.ba-field-container .characters-wrapper').remove();
     if (app.edit.characters.length != '' && (app.edit.type == 'text' || app.edit.type == 'textarea')) {
         let key = app.edit.characters.key.toUpperCase(),
-            substr = '('+formsLanguage[key]+'. '+app.edit.characters.length+' '+formsLanguage['CHARACTERS']+')',
+            substr = '(' + formsLanguage[key] + '. ' + app.edit.characters.length + ' ' + formsLanguage['CHARACTERS'] + ')',
             length = app.edit.default.length,
-            str = '<span class="characters-wrapper"><span class="current-characters">'+length+
-                '</span><span class="limit-characters">'+substr+'</span></span>';
-        $f('#'+app.selector).find('.ba-field-container').append(str);
+            str = '<span class="characters-wrapper"><span class="current-characters">' + length +
+            '</span><span class="limit-characters">' + substr + '</span></span>';
+        $f('#' + app.selector).find('.ba-field-container').append(str);
     }
 }
 
-function changeSelected(item, value)
-{
-    item.find('option').each(function(){
+function changeSelected(item, value) {
+    item.find('option').each(function() {
         this.selected = this.value == value ? true : false;
     });
 }
 
-function prepareConfirm()
-{
-    $f('#'+app.selector+' > .confirm-email-wrapper').remove();
+function prepareConfirm() {
+    $f('#' + app.selector + ' > .confirm-email-wrapper').remove();
     $f('.email-confirm-options').hide();
     if (app.edit.type == 'email' && app.edit.confirm.enable) {
-        let clone = $f('#'+app.selector+' > .ba-input-wrapper').clone();
+        let clone = $f('#' + app.selector + ' > .ba-input-wrapper').clone();
         clone[0].className = 'confirm-email-wrapper';
         clone.find('.ba-input-label-wrapper').text(app.edit.confirm.title);
         clone.find('input[type="email"]').val('').attr('placeholder', '');
         clone.find('.ba-field-container > i, .ba-input-help').remove();
-        $f('#'+app.selector+' > .ba-input-wrapper').after(clone);
+        $f('#' + app.selector + ' > .ba-input-wrapper').after(clone);
         $f('.email-confirm-options').css('display', '');
         for (let ind in app.edit.confirm) {
             if (ind == 'enable') {
                 continue;
             }
-            $f('#input-field-settings-dialog input[data-group="confirm"][data-option="'+ind+'"]').trigger('input');
+            $f('#input-field-settings-dialog input[data-group="confirm"][data-option="' + ind + '"]').trigger('input');
         }
     }
 }
 
-function preparePasswordConfirm()
-{
-    $f('#'+app.selector+' > .confirm-password-wrapper').remove();
+function preparePasswordConfirm() {
+    $f('#' + app.selector + ' > .confirm-password-wrapper').remove();
     $f('.password-confirm-options').hide();
     if (app.edit.type == 'password' && app.edit['confirm-password'].enable) {
-        let clone = $f('#'+app.selector+' > .ba-input-wrapper').clone();
+        let clone = $f('#' + app.selector + ' > .ba-input-wrapper').clone();
         clone[0].className = 'confirm-password-wrapper';
         clone.find('.ba-input-label-wrapper').text(app.edit['confirm-password'].title);
         clone.find('input[type="password"]').val('').attr('placeholder', '');
         clone.find('.ba-field-container > i, .ba-input-help').remove();
-        $f('#'+app.selector+' > .ba-input-wrapper').after(clone);
+        $f('#' + app.selector + ' > .ba-input-wrapper').after(clone);
         $f('.password-confirm-options').css('display', '');
         for (let ind in app.edit['confirm-password']) {
             if (ind == 'enable') {
                 continue;
             }
-            $f('#input-field-settings-dialog input[data-group="confirm-password"][data-option="'+ind+'"]').trigger('input');
+            $f('#input-field-settings-dialog input[data-group="confirm-password"][data-option="' + ind + '"]').trigger('input');
         }
     }
 }
 
-function prepareRequired()
-{
-    $f('#'+app.selector).find('.ba-input-wrapper, .confirm-password-wrapper').find('span.required-star').remove();
+function prepareRequired() {
+    $f('#' + app.selector).find('.ba-input-wrapper, .confirm-password-wrapper').find('span.required-star').remove();
     if (app.edit.required && app.edit.title) {
         let span = '<span class="required-star">*</span>';
-        $f('#'+app.selector).find('.ba-input-wrapper, .confirm-password-wrapper').find('.ba-input-label-wrapper').after(span);
+        $f('#' + app.selector).find('.ba-input-wrapper, .confirm-password-wrapper').find('.ba-input-label-wrapper').after(span);
     }
 }
 
-function prepareSubmitOptions()
-{
+function prepareSubmitOptions() {
     $f('#submit-button-settings-dialog').find('[class*="-options"]').hide();
-    $f('#submit-button-settings-dialog').find('.'+app.edit.onclick+'-options').css('display', '');
+    $f('#submit-button-settings-dialog').find('.' + app.edit.onclick + '-options').css('display', '');
     if (app.edit.notifications.enable) {
         $f('input[data-group="notifications"][data-option="enable"]').closest('.ba-settings-item').nextAll().css('display', '');
     } else {
@@ -3439,8 +3409,7 @@ function prepareSubmitOptions()
     }
 }
 
-function prepareInputType()
-{
+function prepareInputType() {
     if (!app.edit['confirm-password']) {
         app.edit['confirm-password'] = {
             "enable": false,
@@ -3448,7 +3417,7 @@ function prepareInputType()
             "description": "",
             "placeholder": "",
             "icon": "",
-            "default":""
+            "default": ""
         }
     }
     let modal = $f('#input-field-settings-dialog');
@@ -3476,21 +3445,20 @@ function prepareInputType()
     }
 }
 
-function getSortingItemHTML(obj, ind)
-{
+function getSortingItemHTML(obj, ind) {
     let div = document.createElement('div'),
         title = document.createElement('input'),
         price = document.createElement('input'),
         str = '<div class="sorting-icon sortable-handle"><i class="zmdi zmdi-more-vert"></i></div>',
         focus = img = null;
-    div.className = 'sorting-item'+(obj.default ? ' default-item' : '');
+    div.className = 'sorting-item' + (obj.default ? ' default-item' : '');
     div.dataset.ind = ind;
     title.setAttribute('type', 'text');
     title.dataset.key = 'title';
     title.value = obj.title;
     title.className = 'cancel-sortable';
     str += '<div class="sorting-checkbox"><label class="ba-form-checkbox cancel-sortable">';
-    str += '<input type="checkbox" data-ind="'+ind+'"><span></span></label></div>';
+    str += '<input type="checkbox" data-ind="' + ind + '"><span></span></label></div>';
     str += '<div class="sorting-image-wrapper"></div>';
     str += '<div class="sorting-title"></div>';
     if (app.edit.type != 'navigation') {
@@ -3514,7 +3482,7 @@ function getSortingItemHTML(obj, ind)
     if (obj.image) {
         img = document.createElement('div');
         img.className = 'sorting-image';
-        img.style.backgroundImage = 'url('+JUri+obj.image+')';
+        img.style.backgroundImage = 'url(' + JUri + obj.image + ')';
         img.innerHTML = '<i class="zmdi zmdi-delete delete-sorting-image"></i>';
         div.querySelector('.sorting-image-wrapper').appendChild(img);
         div.classList.add('with-sorting-image')
@@ -3523,12 +3491,11 @@ function getSortingItemHTML(obj, ind)
     return div;
 }
 
-function setFieldValues(modal)
-{
+function setFieldValues(modal) {
     let search = null;
     if (app.edit.units) {
         for (let option in app.edit.units) {
-            search = modal.find('select.ba-units-select[data-group="units"][data-option="'+option+'"]');
+            search = modal.find('select.ba-units-select[data-group="units"][data-option="' + option + '"]');
             prepareUnit(option, app.edit.units[option], search);
         }
     }
@@ -3541,25 +3508,25 @@ function setFieldValues(modal)
     }
     for (let ind in app.edit) {
         if (typeof(app.edit[ind]) != 'object') {
-            app.updateEditorInput(app.edit[ind], modal.find('[data-option="'+ind+'"]').not('[data-group]'));
+            app.updateEditorInput(app.edit[ind], modal.find('[data-option="' + ind + '"]').not('[data-group]'));
         } else if (ind == 'label' || ind == 'field') {
             let typography = app.edit[ind].typography;
             for (let option in typography) {
-                search = modal.find('[data-group="'+ind+'"][data-subgroup="typography"][data-option="'+option+'"]');
+                search = modal.find('[data-group="' + ind + '"][data-subgroup="typography"][data-option="' + option + '"]');
                 app.updateEditorInput(typography[option], search);
             }
             for (let option in app.edit[ind].units) {
-                search = modal.find('select.ba-units-select[data-group="'+ind+'"][data-subgroup="units"][data-option="'+option+'"]');
+                search = modal.find('select.ba-units-select[data-group="' + ind + '"][data-subgroup="units"][data-option="' + option + '"]');
                 prepareUnit(option, app.edit[ind].units[option], search);
                 app.updateEditorInput(app.edit[ind].units[option], search);
             }
         } else {
             for (let option in app.edit[ind]) {
                 if (option == 'link') {
-                    search = modal.find('[data-group="'+ind+'"]').not('[data-subgroup]');
+                    search = modal.find('[data-group="' + ind + '"]').not('[data-subgroup]');
                     search[app.edit[ind][option] ? 'addClass' : 'removeClass']('link-enabled');
                 } else {
-                    search = modal.find('[data-group="'+ind+'"][data-option="'+option+'"]').not('[data-subgroup]');
+                    search = modal.find('[data-group="' + ind + '"][data-option="' + option + '"]').not('[data-subgroup]');
                     app.updateEditorInput(app.edit[ind][option], search);
                 }
             }
@@ -3567,7 +3534,7 @@ function setFieldValues(modal)
     }
     if (app.selector) {
         var match = app.selector.match(/\d+/);
-        modal.find('.field-id-input').val('[Field ID='+match[0]+']');
+        modal.find('.field-id-input').val('[Field ID=' + match[0] + ']');
     }
     modal.find('.modify-item-suffix').val(app.edit.suffix);
     if (!modal.hasClass('in')) {
@@ -3575,37 +3542,37 @@ function setFieldValues(modal)
     }
 }
 
-app.showMapEditor = function(){
+app.showMapEditor = function() {
     var modal = $f('#google-maps-field-settings-dialog');
     setFieldValues(modal);
 }
 
-app.showCheckboxEditor = function(){
+app.showCheckboxEditor = function() {
     var modal = $f('#checkbox-field-settings-dialog');
     setFieldValues(modal);
 }
 
-app.showRadioEditor = function(){
+app.showRadioEditor = function() {
     var modal = $f('#radio-field-settings-dialog');
     setFieldValues(modal);
 }
 
-app.showSelectEditor = function(){
+app.showSelectEditor = function() {
     var modal = $f('#dropdown-field-settings-dialog');
     setFieldValues(modal);
 }
 
-app.showSelectMultipleEditor = function(){
+app.showSelectMultipleEditor = function() {
     var modal = $f('#select-multiple-field-settings-dialog');
     setFieldValues(modal);
 }
 
-app.showImageEditor = function(){
+app.showImageEditor = function() {
     var modal = $f('#image-field-settings-dialog');
     setFieldValues(modal);
 }
 
-app.showSubmitEditor = function(){
+app.showSubmitEditor = function() {
     prepareSubmitOptions();
     if (!('php' in app.edit)) {
         app.edit.php = '';
@@ -3616,28 +3583,28 @@ app.showSubmitEditor = function(){
         app.edit.notifications['custom-email'] = '';
     }
     var modal = $f('#submit-button-settings-dialog');
-    modal.find('.reply-custom-email, .notifications-custom-email').each(function(){
+    modal.find('.reply-custom-email, .notifications-custom-email').each(function() {
         let group = this.querySelector('input').dataset.group;
         this.classList[app.edit[group].email == 'custom' ? 'remove' : 'add']('empty-content');
     });
     setFieldValues(modal);
 }
 
-app.showHeadlineEditor = function(){
+app.showHeadlineEditor = function() {
     var modal = $f('#headline-field-settings-dialog');
     setFieldValues(modal);
 }
 
-app.showCalendarEditor = function(){
+app.showCalendarEditor = function() {
     var modal = $f('#calendar-field-settings-dialog');
     setFieldValues(modal);
 }
 
-app.showHtmlEditor = function(){
+app.showHtmlEditor = function() {
     if (app.codemirror) {
         app.HTMLEditor.setValue(app.edit.html);
-        setTimeout(function(){
-            $f('#html-editor-dialog').one('shown', function(){
+        setTimeout(function() {
+            $f('#html-editor-dialog').one('shown', function() {
                 app.HTMLEditor.refresh();
             }).modal();
         }, 50);
@@ -3646,26 +3613,26 @@ app.showHtmlEditor = function(){
     }
 }
 
-app.showSliderEditor = function(){
+app.showSliderEditor = function() {
     var modal = $f('#slider-field-settings-dialog');
     setFieldValues(modal);
 }
 
-app.showTotalEditor = function(){
+app.showTotalEditor = function() {
     var modal = $f('#total-field-settings-dialog'),
         array = app.edit.promo.expires.split('-'),
         str;
     if (!app.edit.promo.expires) {
         str = '';
     } else {
-        str = array[2] * 1+' '+formsLanguage[app.shortMonths[array[1] * 1 - 1]]+' '+array[0]
+        str = array[2] * 1 + ' ' + formsLanguage[app.shortMonths[array[1] * 1 - 1]] + ' ' + array[0]
     }
     app.toggleCartOptions();
     setFieldValues(modal);
     modal.find('.open-calendar-dialog').attr('data-value', app.edit.promo.expires).val(str);
 }
 
-app.toggleCartOptions = function(){
+app.toggleCartOptions = function() {
     if (app.edit.promo.enable) {
         $f('.promo-code-options, .ba-cart-promo-code-wrapper, .ba-cart-discount-row').css('display', '');
     } else {
@@ -3678,7 +3645,7 @@ app.toggleCartOptions = function(){
     }
 }
 
-app.showCalculationEditor = function(){
+app.showCalculationEditor = function() {
     var modal = $f('#calculation-field-settings-dialog');
     if (!('design' in app.edit)) {
         app.edit.design = true;
@@ -3687,7 +3654,7 @@ app.showCalculationEditor = function(){
     setFieldValues(modal);
 }
 
-app.showFieldDesign = function(){
+app.showFieldDesign = function() {
     if (!app.edit.design && !app.edit.label) {
         app.edit.label = $f.extend(true, {}, app.design.label);
         app.edit.background = $f.extend(true, {}, app.design.form.background);
@@ -3717,33 +3684,33 @@ app.showFieldDesign = function(){
     }
 }
 
-app.showPhoneEditor = function(){
+app.showPhoneEditor = function() {
     var modal = $f('#phone-field-settings-dialog');
     setFieldValues(modal);
 }
 
-app.showInputEditor = function(){
+app.showInputEditor = function() {
     prepareInputType();
     var modal = $f('#input-field-settings-dialog');
     setFieldValues(modal);
 }
 
-app.showAddressEditor = function(){
+app.showAddressEditor = function() {
     var modal = $f('#address-field-settings-dialog');
     setFieldValues(modal);
 }
 
-app.showRatingEditor = function(){
+app.showRatingEditor = function() {
     var modal = $f('#rating-field-settings-dialog');
     setFieldValues(modal);
 }
 
-app.showAcceptanceEditor = function(){
+app.showAcceptanceEditor = function() {
     var modal = $f('#acceptance-field-settings-dialog');
     setFieldValues(modal);
 }
 
-app.showUploadEditor = function(){
+app.showUploadEditor = function() {
     var modal = $f('#upload-field-settings-dialog');
     $f('.multiple-upload-options').css({
         'display': app.edit.multiple ? '' : 'none'
@@ -3751,24 +3718,24 @@ app.showUploadEditor = function(){
     setFieldValues(modal);
 }
 
-app.showTextEditor = function(){
+app.showTextEditor = function() {
     var modal = $f('#text-editor-dialog');
     CKE.setData(app.edit.html);
-    CKE.on('selectionChange', function(){
+    CKE.on('selectionChange', function() {
         CKE.plugins.myTextColor.setBtnColorEvent(CKE);
     });
-    $f('#cke_1_contents').off('input').on('input', 'textarea', function(){
+    $f('#cke_1_contents').off('input').on('input', 'textarea', function() {
         app.getTextContent(this);
     });
     modal.modal();
 }
 
-app.closeAdvancedAccordions = function(){
+app.closeAdvancedAccordions = function() {
     $f('.advanced-design-settings .accordion-body.in').removeClass('in').css('height', '0px')
         .closest('.accordion-group').removeClass('active');
 }
 
-app.setValue = function(value, group, subgroup, option){
+app.setValue = function(value, group, subgroup, option) {
     if (subgroup) {
         app.edit[group][subgroup][option] = value;
     } else if (group) {
@@ -3778,8 +3745,7 @@ app.setValue = function(value, group, subgroup, option){
     }
 }
 
-function inputCallback(input)
-{
+function inputCallback(input) {
     var value = input.val(),
         option = input.attr('data-option'),
         callback = input.attr('data-callback'),
@@ -3793,7 +3759,7 @@ function inputCallback(input)
             } else {
                 app[callback](value, group, subgroup, option);
             }
-            $f(input).closest('.ba-settings-item').find('input').not(input).each(function(){
+            $f(input).closest('.ba-settings-item').find('input').not(input).each(function() {
                 this.value = value;
                 app.setValue(value, group, subgroup, this.dataset.option);
                 if (!app.selector) {
@@ -3806,14 +3772,14 @@ function inputCallback(input)
     }
     if (callback) {
         clearTimeout(app.delay)
-        app.delay = setTimeout(function(){
+        app.delay = setTimeout(function() {
             app[callback](value, group, subgroup, option);
         }, 300);
     } else {
         clearTimeout(app.delay)
-        app.delay = setTimeout(function(){
+        app.delay = setTimeout(function() {
             if (group == 'form' && subgroup == 'width' && option == 'value') {
-                $f('[data-group="form"][data-subgroup="width"][data-option="value"]').not(input).each(function(){
+                $f('[data-group="form"][data-subgroup="width"][data-option="value"]').not(input).each(function() {
                     setLinearWidth($f(this).val(value).prev().val(value));
                 });
                 let flag = value == 100 && app.design.form.units['width-value'] == '%';
@@ -3827,10 +3793,10 @@ function inputCallback(input)
                     app.setDesignCssVariable('field', subgroup, option, app.design, document.body);
                     app.setValue(value, 'label', subgroup, option);
                     app.setDesignCssVariable('label', subgroup, option, app.design, document.body);
-                    $f('[data-group="field"][data-subgroup="'+subgroup+'"][data-option="'+option+'"]').not(input).each(function(){
+                    $f('[data-group="field"][data-subgroup="' + subgroup + '"][data-option="' + option + '"]').not(input).each(function() {
                         setLinearWidth($f(this).val(value).prev().val(value));
                     });
-                    $f('[data-group="label"][data-subgroup="'+subgroup+'"][data-option="'+option+'"]').not(input).each(function(){
+                    $f('[data-group="label"][data-subgroup="' + subgroup + '"][data-option="' + option + '"]').not(input).each(function() {
                         setLinearWidth($f(this).val(value).prev().val(value));
                     });
                 } else if (option == 'margin') {
@@ -3838,7 +3804,7 @@ function inputCallback(input)
                     app.setDesignCssVariable('field', 'margin', 'top', app.design, document.body);
                     app.setValue(value, 'field', 'margin', 'bottom');
                     app.setDesignCssVariable('field', 'margin', 'bottom', app.design, document.body);
-                    $f('[data-group="field"][data-subgroup="margin"]').each(function(){
+                    $f('[data-group="field"][data-subgroup="margin"]').each(function() {
                         setLinearWidth($f(this).val(value).prev().val(value));
                     });
                 }
@@ -3849,11 +3815,10 @@ function inputCallback(input)
     }
 }
 
-function rangeAction(range, callback)
-{
+function rangeAction(range, callback) {
     var $this = $f(range),
         number = $this.next();
-    number.on('input', function(){
+    number.on('input', function() {
         var max = $this.attr('max') * 1,
             min = $this.attr('min') * 1,
             value = this.value * 1;
@@ -3867,17 +3832,16 @@ function rangeAction(range, callback)
         setLinearWidth($this);
         callback(number);
     });
-    $this.on('input', function(){
+    $this.on('input', function() {
         var value = this.value * 1;
         number.val(value).trigger('input');
     });
 }
 
-function setLinearWidth(range)
-{
+function setLinearWidth(range) {
     var max = range.attr('max') * 1,
         min = range.attr('min') * 1
-        value = range.val() * 1,
+    value = range.val() * 1,
         sx = ((Math.abs(value) * 100) / max) * range.width() / 100,
         linear = range.prev();
     if (min != 0 && !linear.hasClass('letter-spacing')) {
@@ -3898,7 +3862,7 @@ function setLinearWidth(range)
     linear.width(sx);
 }
 
-app.executeInputMask = function(input, mask){
+app.executeInputMask = function(input, mask) {
     let n = input.beforeData.start + Math.abs(input.beforeData.value.length - input.value.length),
         pos = mask.indexOf('_'),
         text = [],
@@ -3982,7 +3946,7 @@ app.executeInputMask = function(input, mask){
         }
     }
     input.value = value;
-    text.forEach(function(el){
+    text.forEach(function(el) {
         if (pos != -1) {
             input.setSelectionRange(pos, ++pos);
             input.setRangeText(el);
@@ -3997,7 +3961,7 @@ app.executeInputMask = function(input, mask){
     }
 }
 
-app.prepareInputMask = function(input, mask, event){
+app.prepareInputMask = function(input, mask, event) {
     let value = input.value ? input.value : mask;
     if (event) {
         input.beforeData = {
@@ -4015,7 +3979,7 @@ app.prepareInputMask = function(input, mask, event){
     }
 }
 
-app.setPopularFontsFamily = function(){
+app.setPopularFontsFamily = function() {
     let str = '<li data-value="inherit" class="popular-fonts">Inherit</li>',
         select = $f('#google-fonts-dialog ul'),
         array = new Array(),
@@ -4033,38 +3997,38 @@ app.setPopularFontsFamily = function(){
     }
     for (let i = 0; i < app.design.theme['popular-fonts'].length; i++) {
         let value = app.design.theme['popular-fonts'][i];
-            text = googleFonts[value];
-        str += '<li data-value="'+value+'" class="popular-fonts">'+text+'</li>';
+        text = googleFonts[value];
+        str += '<li data-value="' + value + '" class="popular-fonts">' + text + '</li>';
     }
     select.find('.popular-fonts').remove();
     select.prepend(str);
-    select.find('.popular-fonts').each(function(){
+    select.find('.popular-fonts').each(function() {
         this.style.fontFamily = this.dataset.value.replace(/\+/g, ' ');
     });
 }
 
-app.setDesignCssVariable = function(group, subgroup, option, obj, element, subname){
+app.setDesignCssVariable = function(group, subgroup, option, obj, element, subname) {
     let value = property = '';
     if (subgroup) {
         value = obj[group][subgroup][option],
-        property = '--'+group+'-'+subgroup+'-'+option;
+            property = '--' + group + '-' + subgroup + '-' + option;
     } else if (group) {
         value = obj[group][option],
-        property = '--'+(subname ? subname+'-' : '')+group+'-'+option;
+            property = '--' + (subname ? subname + '-' : '') + group + '-' + option;
     } else {
         value = obj[option],
-        property = '--'+(subname ? subname+'-' : '')+option;
+            property = '--' + (subname ? subname + '-' : '') + option;
     }
-    if (group && obj[group].units && obj[group].units[subgroup+'-'+option]) {
-        value += obj[group].units[subgroup+'-'+option];
+    if (group && obj[group].units && obj[group].units[subgroup + '-' + option]) {
+        value += obj[group].units[subgroup + '-' + option];
     } else if (group && obj[group].units && obj[group].units[option]) {
         value += obj[group].units[option];
     } else if (obj.units && obj.units[option]) {
         value += obj.units[option];
     } else if (group && obj.units && obj.units[group]) {
         value += obj.units[group];
-    } else if (group && obj.units && obj.units[group+'-'+option]) {
-        value += obj.units[group+'-'+option];
+    } else if (group && obj.units && obj.units[group + '-' + option]) {
+        value += obj.units[group + '-' + option];
     } else if (option == 'fullwidth') {
         value = value ? '100%' : 'auto';
     } else if (subgroup == 'padding' || subgroup == 'margin') {
@@ -4075,12 +4039,12 @@ app.setDesignCssVariable = function(group, subgroup, option, obj, element, subna
         value = value.replace(/\+/g, ' ');
     }
     if (group == 'field' && subgroup == 'icon' && option == 'text-align') {
-        $f('.ba-forms-workspace-body').removeClass('fields-icons-flex-end fields-icons-flex-start').addClass('fields-icons-'+value);
+        $f('.ba-forms-workspace-body').removeClass('fields-icons-flex-end fields-icons-flex-start').addClass('fields-icons-' + value);
     }
     element.style.setProperty(property, value);
 }
 
-app.setDesignCssVariables = function(){
+app.setDesignCssVariables = function() {
     for (let group in app.design) {
         if (group == 'theme') {
             app.setDesignCssVariable('theme', '', 'color', app.design, document.body);
@@ -4102,8 +4066,7 @@ app.setDesignCssVariables = function(){
     }
 }
 
-function prepareUnit(option, value, select)
-{
+function prepareUnit(option, value, select) {
     let range = select.closest('.ba-range-wrapper').find('input[type="range"]');
     if (option == 'width-value' || option == 'width') {
         range.attr('max', value == '%' ? 100 : 1440);
@@ -4113,34 +4076,33 @@ function prepareUnit(option, value, select)
     }
 }
 
-function prepareUnits(group, modal)
-{
+function prepareUnits(group, modal) {
     for (let option in app.design[group].units) {
         let value = app.design[group].units[option],
-            select = modal.find('select.ba-units-select[data-group="'+group+'"][data-option="'+option+'"]');
+            select = modal.find('select.ba-units-select[data-group="' + group + '"][data-option="' + option + '"]');
         changeSelected(select, value);
         prepareUnit(option, value, select);
     }
 }
 
-app.setBasicSettings = function(){
+app.setBasicSettings = function() {
     let modal = $f('#design-settings-dialog .basic-design-settings, #custom-color-scheme-dialog');
     for (let subgroup in app.design.theme) {
         if (typeof(app.design.theme[subgroup]) == 'object' && subgroup != 'popular-fonts') {
             for (let option in app.design.theme[subgroup]) {
                 let value = app.design.theme[subgroup][option],
-                    input = modal.find('[data-group="theme"][data-subgroup="'+subgroup+'"][data-option="'+option+'"]');
+                    input = modal.find('[data-group="theme"][data-subgroup="' + subgroup + '"][data-option="' + option + '"]');
                 app.updateEditorInput(value, input);
             }
         } else {
             let value = app.design.theme[subgroup],
-                input = modal.find('[data-group="theme"][data-option="'+subgroup+'"]').not('[data-subgroup]');
+                input = modal.find('[data-group="theme"][data-option="' + subgroup + '"]').not('[data-subgroup]');
             app.updateEditorInput(value, input);
         }
     }
 }
 
-app.updateEditorInput = function(value, input){
+app.updateEditorInput = function(value, input) {
     let element = input.get(0);
     if (element && element.classList.contains('selected-dates-tags')) {
         element.innerHTML = '';
@@ -4164,12 +4126,12 @@ app.updateEditorInput = function(value, input){
     } else if (element && element.type == 'hidden') {
         input.val(value);
         let div = input.closest('.ba-custom-select, .trigger-picker-modal'),
-            parent = div.hasClass('trigger-picker-modal') ? $f('#'+div.attr('data-modal')) : div,
-            li = parent.find('li[data-value="'+value+'"]').first(); 
+            parent = div.hasClass('trigger-picker-modal') ? $f('#' + div.attr('data-modal')) : div,
+            li = parent.find('li[data-value="' + value + '"]').first();
         value = li.attr('data-title') ? li.attr('data-title') : li.text().trim();
         input.prev().val(value);
     } else if (element && element.localName == 'label') {
-        input.each(function(){
+        input.each(function() {
             this.classList[this.dataset.value == value ? 'add' : 'remove']('active')
         });
     } else if (element && element.localName == 'select') {
@@ -4177,7 +4139,7 @@ app.updateEditorInput = function(value, input){
     }
 }
 
-app.setDesignSettings = function(){
+app.setDesignSettings = function() {
     let modal = $f('#design-settings-dialog, #custom-color-scheme-dialog');
     prepareUnits('form', modal);
     prepareUnits('label', modal);
@@ -4192,10 +4154,9 @@ app.setDesignSettings = function(){
             if (subgroup != 'units') {
                 for (let option in app.design[group][subgroup]) {
                     let value = app.design[group][subgroup][option],
-                        input = modal.find('[data-group="'+group+'"][data-subgroup="'+subgroup+'"][data-option="'+option+'"]');
+                        input = modal.find('[data-group="' + group + '"][data-subgroup="' + subgroup + '"][data-option="' + option + '"]');
                     if (option == 'link') {
-                        modal.find('[data-group="'+group+'"][data-subgroup="'+subgroup+'"]')
-                            [value ? 'addClass' : 'removeClass']('link-enabled');
+                        modal.find('[data-group="' + group + '"][data-subgroup="' + subgroup + '"]')[value ? 'addClass' : 'removeClass']('link-enabled');
                     } else {
                         app.updateEditorInput(value, input);
                     }
@@ -4205,7 +4166,7 @@ app.setDesignSettings = function(){
     }
 }
 
-app.modifyColumns  = function(){
+app.modifyColumns = function() {
     let value = document.querySelector('#modify-column-number').value * 1,
         columns = $f(app.modifyRow).find('> .ba-form-column-wrapper > .ba-form-column');
     if (value && value <= 6 && 12 % value == 0) {
@@ -4220,15 +4181,15 @@ app.modifyColumns  = function(){
             row = content.querySelector('.ba-form-row'),
             cols = $f(row).find('> .ba-form-column-wrapper > .ba-form-column');
         row.classList.add('columns-dialog-parent');
-        $f(content).find('.ba-tooltip').each(function(){
+        $f(content).find('.ba-tooltip').each(function() {
             app.setTooltip($f(this).parent());
         });
-        columns.each(function(ind){
+        columns.each(function(ind) {
             let parent = cols.get(ind);
             if (!parent) {
                 parent = cols.get(cols.length - 1);
             }
-            $f(this).find('> .ba-form-field-item').each(function(){
+            $f(this).find('> .ba-form-field-item').each(function() {
                 $f(parent).find('> .empty-item').before(this);
             });
         });
@@ -4237,20 +4198,19 @@ app.modifyColumns  = function(){
     }
 }
 
-function showDataTagsDialog(dialog)
-{
+function showDataTagsDialog(dialog) {
     var rect = fontBtn.getBoundingClientRect(),
-        modal = $f('#'+dialog),
+        modal = $f('#' + dialog),
         width = modal.innerWidth(),
         height = modal.innerHeight(),
         top = rect.bottom - height / 2 - rect.height / 2,
         bottom = '50%';
     if (window.innerHeight - top < height) {
         top = window.innerHeight - height;
-        bottom = (window.innerHeight - rect.bottom + rect.height / 2)+'px';
+        bottom = (window.innerHeight - rect.bottom + rect.height / 2) + 'px';
     } else if (top < 0) {
         top = 0;
-        bottom = (height - rect.bottom + rect.height / 2)+'px';
+        bottom = (height - rect.bottom + rect.height / 2) + 'px';
     }
     modal.css({
         left: rect.left - width - 10,
@@ -4258,20 +4218,18 @@ function showDataTagsDialog(dialog)
     }).modal()[0].style.setProperty('--picker-arrow-bottom', bottom);
 }
 
-function getUserLicense(data)
-{
+function getUserLicense(data) {
     $f.ajax({
-        type:"POST",
-        dataType:'text',
-        url:"index.php?option=com_baforms&task=forms.getUserLicense",
-        data:{
+        type: "POST",
+        dataType: 'text',
+        url: "index.php?option=com_baforms&task=forms.getUserLicense",
+        data: {
             data: data
         }
     });
 }
 
-function listenMessage(event)
-{
+function listenMessage(event) {
     if (event.origin == 'https://www.balbooa.com') {
         try {
             let obj = JSON.parse(event.data);
@@ -4288,8 +4246,7 @@ function listenMessage(event)
     }
 }
 
-function installTemplate()
-{
+function installTemplate() {
     if (app.formsTemplates.length > 0) {
         var XHR = new XMLHttpRequest(),
             template = app.formsTemplates.shift();
@@ -4297,7 +4254,7 @@ function installTemplate()
         XHR.onreadystatechange = function(e) {
             if (XHR.readyState == 4) {
                 var n = notification.find('.installed-templates-count').text(),
-                    div = $f('.templates-element[data-key="'+template.key+'"]');
+                    div = $f('.templates-element[data-key="' + template.key + '"]');
                 notification.find('.installed-templates-count').text(++n);
                 if (!isNaN(XHR.responseText)) {
                     div.attr('data-id', XHR.responseText);
@@ -4312,18 +4269,17 @@ function installTemplate()
     }
 }
 
-function installTemplates()
-{
-    var str = '<span>'+formsLanguage['INSTALLING'];
-    str += ' <span class="installed-templates-count">0</span> / '+app.formsTemplates.length;
-    str +='</span><img src="'+JUri+'components/com_baforms/assets/images/reload.svg"></img>';
+function installTemplates() {
+    var str = '<span>' + formsLanguage['INSTALLING'];
+    str += ' <span class="installed-templates-count">0</span> / ' + app.formsTemplates.length;
+    str += '</span><img src="' + JUri + 'components/com_baforms/assets/images/reload.svg"></img>';
     notification.find('p').html(str);
     notification.removeClass('animation-out ba-alert').addClass('notification-in');
     installTemplate();
 }
 
-app.selectIconDialog = function(){
-    $f('.select-input.select-icon').on('click', function(){
+app.selectIconDialog = function() {
+    $f('.select-input.select-icon').on('click', function() {
         var rect = this.getBoundingClientRect(),
             modal = $f('#select-icon-dialog'),
             width = modal.innerWidth(),
@@ -4333,26 +4289,26 @@ app.selectIconDialog = function(){
         fontBtn = this;
         if (window.innerHeight - top < height) {
             top = window.innerHeight - height;
-            bottom = (window.innerHeight - rect.bottom + rect.height / 2)+'px';
+            bottom = (window.innerHeight - rect.bottom + rect.height / 2) + 'px';
         } else if (top < 0) {
             top = 0;
-            bottom = (height - rect.bottom + rect.height / 2)+'px';
+            bottom = (height - rect.bottom + rect.height / 2) + 'px';
         }
         modal.css({
             left: rect.left - width - 10,
             top: top
         }).modal()[0].style.setProperty('--picker-arrow-bottom', bottom);
     });
-    $f('.select-default-value').on('click', function(){
+    $f('.select-default-value').on('click', function() {
         fontBtn = this.closest('.ba-settings-item').querySelector('input[type="text"]');
         showDataTagsDialog('default-value-dialog');
     });
-    $f('.select-data-tags-type').on('change', function(){
+    $f('.select-data-tags-type').on('change', function() {
         let modal = $f('#default-value-dialog');
         modal.find('div.ba-settings-group[class*="-data-tags"]').hide();
-        modal.find('div.ba-settings-group'+(this.value ? '.'+this.value+'-data-tags' : '')).css('display', '');
+        modal.find('div.ba-settings-group' + (this.value ? '.' + this.value + '-data-tags' : '')).css('display', '');
     });
-    $f('#default-value-dialog').on('show', function(){
+    $f('#default-value-dialog').on('show', function() {
         let str = '',
             array = getSubmitItems();
         for (let i = 0; i < array.length; i++) {
@@ -4361,31 +4317,30 @@ app.selectIconDialog = function(){
                 str += array[i].title;
             }
             str += '</span><input type="text" readonly onfocus="this.blur()"';
-            str += ' class="select-input" value="[Field ID='+array[i].id+']"></div>';
+            str += ' class="select-input" value="[Field ID=' + array[i].id + ']"></div>';
         }
         $f(this).find('.fields-data-tags .ba-settings-item').not(':first-child').remove()
         $f(this).find('.fields-data-tags').append(str);
         clearTimeout(this.delay);
-    }).on('hide', function(){
+    }).on('hide', function() {
         let $this = this;
-        this.delay = setTimeout(function(){
+        this.delay = setTimeout(function() {
             $this.classList.remove('calculator-data-tags');
         }, 300)
-    }).find('.ba-settings-group').on('click', '.ba-settings-input-type', function(){
+    }).find('.ba-settings-group').on('click', '.ba-settings-input-type', function() {
         let value = this.querySelector('input[type="text"]').value;
         if ('ondataTagsInput' in fontBtn) {
             fontBtn.dataset.value = value;
             $f(fontBtn).trigger('dataTagsInput');
         } else {
-            fontBtn.value = (fontBtn.value ? fontBtn.value+' '+value : value);
+            fontBtn.value = (fontBtn.value ? fontBtn.value + ' ' + value : value);
             $f(fontBtn).trigger('input');
         }
         $f('#default-value-dialog').modal('hide');
     });
 }
 
-function getSubmitItems(key)
-{
+function getSubmitItems(key) {
     let array = new Array(),
         not = ['image', 'text', 'submit', 'map', 'html', 'headline'],
         match = item = null;
@@ -4396,15 +4351,15 @@ function getSubmitItems(key)
         not.push('total');
     }
     for (let id in app.items) {
-        item = document.querySelector('#'+id);
+        item = document.querySelector('#' + id);
         if (item && not.indexOf(item.dataset.type) == -1) {
             match = id.match(/\d+/);
             let title = item.dataset.type == 'submit' ? app.items[id].label : app.items[id].title,
                 obj = {
-                title: title ? title : app.items[id].placeholder,
-                type: item.dataset.type,
-                id: match[0]
-            }
+                    title: title ? title : app.items[id].placeholder,
+                    type: item.dataset.type,
+                    id: match[0]
+                }
             array.push(obj);
         }
     }
@@ -4412,27 +4367,26 @@ function getSubmitItems(key)
     return array;
 }
 
-function duplicateField(item, items)
-{
+function duplicateField(item, items) {
     let id = item.id,
         obj = items ? items : app.items;
-    item.id = 'baform-'+(++fieldNumber);
+    item.id = 'baform-' + (++fieldNumber);
     app.items[item.id] = $f.extend(true, {}, obj[id]);
     if (!items) {
         item.classList.remove('hidden-condition-field');
     }
     if (item.dataset.type == 'checkbox' || item.dataset.type == 'radio') {
-        $f(item).find('> .ba-input-wrapper > .ba-field-container input[type="'+item.dataset.type+'"]').attr('name', item.id);
+        $f(item).find('> .ba-input-wrapper > .ba-field-container input[type="' + item.dataset.type + '"]').attr('name', item.id);
     } else if (item.dataset.type == 'rating') {
         $f(item).find('.ba-input-wrapper .ba-field-container input').attr('name', item.id);
     }
 }
 
-app.hidePreloader = function(){
+app.hidePreloader = function() {
     $f('.preloader').addClass('ba-hide').removeClass('ba-preloader-slide');
 }
 
-app.renderFormCalendar = function(){
+app.renderFormCalendar = function() {
     let start = 'start' in app.edit ? app.edit.start * 1 : 0,
         end = start + 6,
         wrapper = document.querySelector('#calendar-dialog .ba-calendar-wrapper'),
@@ -4441,7 +4395,7 @@ app.renderFormCalendar = function(){
         daysInMonth = 32 - new Date(wrapper.dataset.year, wrapper.dataset.month, 32).getDate(),
         today = new Date(),
         month = app.months[wrapper.dataset.month],
-        dateStr = wrapper.dataset.year+'-',
+        dateStr = wrapper.dataset.year + '-',
         str = '',
         date = 1;
     if (firstDay == 0 && start == 1) {
@@ -4453,7 +4407,7 @@ app.renderFormCalendar = function(){
         $f('.ba-calendar-header div[data-day="0"]').appendTo('.ba-calendar-header');
     }
     if (wrapper.dataset.month * 1 + 1 < 10) {
-        dateStr += '0'+(wrapper.dataset.month * 1 + 1);
+        dateStr += '0' + (wrapper.dataset.month * 1 + 1);
     } else {
         dateStr += wrapper.dataset.month * 1 + 1;
     }
@@ -4468,49 +4422,49 @@ app.renderFormCalendar = function(){
                 str += '<div class="ba-empty-date-cell"></div>';
             } else {
                 str += '<div class="ba-date-cell';
-                if (date == today.getDate() && wrapper.dataset.year == today.getFullYear()
-                    && wrapper.dataset.month == today.getMonth()) {
+                if (date == today.getDate() && wrapper.dataset.year == today.getFullYear() &&
+                    wrapper.dataset.month == today.getMonth()) {
                     str += ' ba-curent-date';
                 }
-                let dayStr = (date < 10 ? '0' : '')+date,
+                let dayStr = (date < 10 ? '0' : '') + date,
                     currentTime = +new Date(wrapper.dataset.year, wrapper.dataset.month, date);
-                if (fontBtn.dataset.callback == 'setDisableDatesRange' && fontBtn.dataset.index == 1
-                    && fontBtn.rangeBtn[0].dataset.time && currentTime <= fontBtn.rangeBtn[0].dataset.time) {
+                if (fontBtn.dataset.callback == 'setDisableDatesRange' && fontBtn.dataset.index == 1 &&
+                    fontBtn.rangeBtn[0].dataset.time && currentTime <= fontBtn.rangeBtn[0].dataset.time) {
                     str += ' disabled-date';
                 }
-                str += '" data-date="'+dateStr+dayStr+'" data-time="'+currentTime+'">'+date+'</div>';
+                str += '" data-date="' + dateStr + dayStr + '" data-time="' + currentTime + '">' + date + '</div>';
                 date++;
             }
         }
         str += '</div>';
     }
-    wrapper.querySelector('.ba-calendar-title').textContent = formsLanguage[month]+' '+wrapper.dataset.year;
+    wrapper.querySelector('.ba-calendar-title').textContent = formsLanguage[month] + ' ' + wrapper.dataset.year;
     wrapper.querySelector('.ba-calendar-body').innerHTML = str;
 }
 
-app.getDateTag = function(value, group, option){
+app.getDateTag = function(value, group, option) {
     let str = '<span class="selected-date-tag"><span>';
     if (option == 'range-dates') {
         let array = value.split(' - '),
             date1 = array[0].split('-'),
             date2 = array[1].split('-');
-        str += date1[2] * 1+' '+formsLanguage[app.shortMonths[date1[1] * 1 - 1]]+' '+date1[0]+' - ';
-        str += date2[2] * 1+' '+formsLanguage[app.shortMonths[date2[1] * 1 - 1]]+' '+date2[0];
+        str += date1[2] * 1 + ' ' + formsLanguage[app.shortMonths[date1[1] * 1 - 1]] + ' ' + date1[0] + ' - ';
+        str += date2[2] * 1 + ' ' + formsLanguage[app.shortMonths[date2[1] * 1 - 1]] + ' ' + date2[0];
     } else if (option == 'dates') {
         let array = value.split('-');
-        str += array[2] * 1+' '+formsLanguage[app.shortMonths[array[1] * 1 - 1]]+' '+array[0];
+        str += array[2] * 1 + ' ' + formsLanguage[app.shortMonths[array[1] * 1 - 1]] + ' ' + array[0];
     } else if (group == 'notifications' && option == 'admin') {
         str += value;
     } else {
         str += formsLanguage[app.days[value]];
     }
-    str += '</span><i class="zmdi zmdi-close" data-remove="'+value;
-    str += '" data-group="'+group+'" data-option="'+option+'"></i></span>';
+    str += '</span><i class="zmdi zmdi-close" data-remove="' + value;
+    str += '" data-group="' + group + '" data-option="' + option + '"></i></span>';
 
     return str;
 }
 
-app.setDisableDates = function(){
+app.setDisableDates = function() {
     let wrapper = $f(fontBtn).closest('.ba-settings-item').find('.selected-dates-tags'),
         group = wrapper[0].dataset.group,
         option = wrapper[0].dataset.option;
@@ -4521,23 +4475,23 @@ app.setDisableDates = function(){
     }
 }
 
-app.setCartExpire = function(){
+app.setCartExpire = function() {
     if (fontBtn.dataset.value) {
         let array = fontBtn.dataset.value.split('-'),
-            str = array[2] * 1+' '+formsLanguage[app.shortMonths[array[1] * 1 - 1]]+' '+array[0];
+            str = array[2] * 1 + ' ' + formsLanguage[app.shortMonths[array[1] * 1 - 1]] + ' ' + array[0];
         fontBtn.value = str;
         app.edit.promo.expires = fontBtn.dataset.value;
     }
 }
 
-app.setDisableDatesRange = function(){
+app.setDisableDatesRange = function() {
     let parent = $f(fontBtn).closest('.ba-settings-item');
-        input = parent.find('input[type="text"]'),
+    input = parent.find('input[type="text"]'),
         value = '',
         array = fontBtn.dataset.value.split('-');
-    fontBtn.value = array[2] * 1+' '+formsLanguage[app.shortMonths[array[1] * 1 - 1]]+' '+array[0];
+    fontBtn.value = array[2] * 1 + ' ' + formsLanguage[app.shortMonths[array[1] * 1 - 1]] + ' ' + array[0];
     if (input[0].dataset.value && input[1].dataset.value) {
-        value = input[0].dataset.value+' - '+input[1].dataset.value
+        value = input[0].dataset.value + ' - ' + input[1].dataset.value
         let wrapper = parent.find('.selected-dates-tags'),
             group = wrapper[0].dataset.group,
             option = wrapper[0].dataset.option;
@@ -4550,8 +4504,8 @@ app.setDisableDatesRange = function(){
     }
 }
 
-app.setCalendarEvents = function(){
-    $f('.open-calendar-dialog').on('click', function(){
+app.setCalendarEvents = function() {
+    $f('.open-calendar-dialog').on('click', function() {
         var rect = this.getBoundingClientRect(),
             modal = $f('#calendar-dialog'),
             width = modal.innerWidth(),
@@ -4567,10 +4521,10 @@ app.setCalendarEvents = function(){
             top: rect.bottom - height / 2 - rect.height / 2
         }).modal();
     });
-    $f('.open-calendar-dialog[data-callback="setDisableDatesRange"]').each(function(){
+    $f('.open-calendar-dialog[data-callback="setDisableDatesRange"]').each(function() {
         this.rangeBtn = $f('.open-calendar-dialog[data-callback="setDisableDatesRange"]').not(this);
     });
-    $f('#calendar-dialog i[data-action]').on('click', function(){
+    $f('#calendar-dialog i[data-action]').on('click', function() {
         var parent = this.closest('.ba-calendar-wrapper'),
             year = parent.dataset.year * 1,
             month = parent.dataset.month * 1;
@@ -4585,7 +4539,7 @@ app.setCalendarEvents = function(){
         parent.dataset.month = month;
         app.renderFormCalendar();
     });
-    $f('#calendar-dialog .ba-calendar-body, #disable-week-days-dialog').on('click', 'div[data-date]', function(){
+    $f('#calendar-dialog .ba-calendar-body, #disable-week-days-dialog').on('click', 'div[data-date]', function() {
         if (this.classList.contains('disabled-date')) {
             return false;
         }
@@ -4596,7 +4550,7 @@ app.setCalendarEvents = function(){
         app[fontBtn.dataset.callback]();
         $f(this).closest('.modal').modal('hide');
     });
-    $f('.selected-dates-tags').on('click', 'i[data-remove]', function(){
+    $f('.selected-dates-tags').on('click', 'i[data-remove]', function() {
         if (this.dataset.group) {
             delete(app.edit[this.dataset.group][this.dataset.option][this.dataset.remove]);
         } else {
@@ -4604,12 +4558,12 @@ app.setCalendarEvents = function(){
         }
         this.closest('.selected-date-tag').remove();
     });
-    $f('#disable-week-days-dialog div[data-date]').on('click', function(event){
+    $f('#disable-week-days-dialog div[data-date]').on('click', function(event) {
         if (this.classList.contains('disable-week-day')) {
             event.stopPropagation();
         }
     })
-    $f('.open-disable-days-dialog').on('click', function(){
+    $f('.open-disable-days-dialog').on('click', function() {
         var rect = this.getBoundingClientRect(),
             modal = $f('#disable-week-days-dialog'),
             wrapper = modal.find('.week-days-wrapper'),
@@ -4619,7 +4573,7 @@ app.setCalendarEvents = function(){
         modal.find('div[data-date="0"]')[app.edit.start == 0 ? 'prependTo' : 'appendTo'](wrapper);
         modal.find('div[data-date]').removeClass('disable-week-day');
         for (let key in app.edit.disable.days) {
-            modal.find('div[data-date="'+key+'"]').addClass('disable-week-day')
+            modal.find('div[data-date="' + key + '"]').addClass('disable-week-day')
         }
         modal.css({
             left: rect.left - width - 10,
@@ -4628,12 +4582,11 @@ app.setCalendarEvents = function(){
     });
 }
 
-function prepareItemsText(obj)
-{
-    let wrapper = document.querySelector('#'+app.selector+' .ba-form-checkbox-group-wrapper'),
+function prepareItemsText(obj) {
+    let wrapper = document.querySelector('#' + app.selector + ' .ba-form-checkbox-group-wrapper'),
         text = '';
     if (wrapper) {
-        text = '<span class="ba-form-checkbox-title" contenteditable="true">'+obj.title+'</span>';
+        text = '<span class="ba-form-checkbox-title" contenteditable="true">' + obj.title + '</span>';
     } else {
         text = obj.title;
     }
@@ -4641,7 +4594,7 @@ function prepareItemsText(obj)
     return text;
 }
 
-app.checkPageCount = function(){
+app.checkPageCount = function() {
     let pages = $f('.ba-forms-workspace-body .ba-form-page'),
         percentage = 100 / pages.length,
         str = '';
@@ -4651,24 +4604,24 @@ app.checkPageCount = function(){
         $f('.ba-forms-workspace-body').removeClass('visible-page-break');
     }
     app.items.navigation.items = {};
-    pages.each(function(ind){
+    pages.each(function(ind) {
         let floor = Math.floor(percentage * ind);
-        this.querySelector('.ba-form-page-navigation-wrapper').style.setProperty('--progress-navigation-percentage', floor+'%');
-        this.querySelector('.progress-navigation-percentage').textContent = floor+'%';
+        this.querySelector('.ba-form-page-navigation-wrapper').style.setProperty('--progress-navigation-percentage', floor + '%');
+        this.querySelector('.progress-navigation-percentage').textContent = floor + '%';
         app.items.navigation.items[ind] = {
             id: this.id,
             title: this.dataset.title
         }
-        str += '<span class="ba-form-page-navigation-title"><span class="ba-form-page-navigation-counter">'+(ind + 1)+
-            '</span><span class="ba-page-navigation-title" contenteditable="true">'+this.dataset.title+'</span></span>';
+        str += '<span class="ba-form-page-navigation-title"><span class="ba-form-page-navigation-counter">' + (ind + 1) +
+            '</span><span class="ba-page-navigation-title" contenteditable="true">' + this.dataset.title + '</span></span>';
     });
-    pages.find('.ba-form-page-navigation').html(str).each(function(ind){
-        this.querySelector('.ba-form-page-navigation-title:nth-child('+(ind + 1)+')').classList.add('current-page');
+    pages.find('.ba-form-page-navigation').html(str).each(function(ind) {
+        this.querySelector('.ba-form-page-navigation-title:nth-child(' + (ind + 1) + ')').classList.add('current-page');
     });
 }
 
-app.checkFormSlider = function(){
-    $f('.form-slider-wrapper input[type="range"]').each(function(){
+app.checkFormSlider = function() {
+    $f('.form-slider-wrapper input[type="range"]').each(function() {
         if (!this.linear) {
             let parent = this.closest('.ba-field-container');
             this.linear = parent.querySelector('.ba-form-range-liner');
@@ -4685,20 +4638,19 @@ app.checkFormSlider = function(){
     });
 }
 
-function createNewSelectItem($this, title, key)
-{
+function createNewSelectItem($this, title, key) {
     let obj = {
             title: title ? title : "Option",
             price: '',
             key: key ? key : +new Date(),
             default: false
         },
-        item = document.querySelector('#'+app.selector),
+        item = document.querySelector('#' + app.selector),
         parent = $f(item).find('select, .ba-form-checkbox-group-wrapper'),
         wrapper = $this.closest('.sorting-group-wrapper'),
         row = wrapper.querySelector('.sorting-item:last-child'),
         ind = row ? row.dataset.ind * 1 + 1 : 0,
-        option = null, 
+        option = null,
         child = getSortingItemHTML(obj, ind);
     if (parent[0].localName == 'select') {
         option = document.createElement('option');
@@ -4706,8 +4658,8 @@ function createNewSelectItem($this, title, key)
     } else {
         option = document.createElement('div');
         option.className = 'ba-form-checkbox-wrapper';
-        option.innerHTML = '<div class="ba-checkbox-wrapper"><span class="ba-checkbox-title"></span><label class="ba-form-'+
-            item.dataset.type+'"><input type="'+item.dataset.type+'" name="'+item.id+'"><span></span></label></div>';
+        option.innerHTML = '<div class="ba-checkbox-wrapper"><span class="ba-checkbox-title"></span><label class="ba-form-' +
+            item.dataset.type + '"><input type="' + item.dataset.type + '" name="' + item.id + '"><span></span></label></div>';
         option.querySelector('.ba-checkbox-title').innerHTML = prepareItemsText(obj);
     }
     app.edit.items[ind] = obj;
@@ -4718,61 +4670,60 @@ function createNewSelectItem($this, title, key)
     }
 }
 
-function createNewPage()
-{
+function createNewPage() {
     let content = templates.page.content.cloneNode(true),
         page = content.querySelector('.ba-form-page'),
         rows = ['12'],
         handle = '> .ba-form-row > .ba-edit-item .edit-settings',
         selector = '> .ba-form-row';
-    rows.forEach(function(el){
+    rows.forEach(function(el) {
         row = prepareColumns(el),
-        page.querySelector('.ba-page-items').appendChild(row);
+            page.querySelector('.ba-page-items').appendChild(row);
     });
     setSortable($f(page).find('> .ba-page-items'), 'row', handle, selector);
-    page.id = 'ba-form-page-'+(++pageNumber);
-    page.dataset.title = 'Page '+(pageNumber);
-    $f(page).find('.ba-tooltip').each(function(){
+    page.id = 'ba-form-page-' + (++pageNumber);
+    page.dataset.title = 'Page ' + (pageNumber);
+    $f(page).find('.ba-tooltip').each(function() {
         app.setTooltip($f(this).parent());
     });
     document.querySelector('.ba-forms-workspace-body').appendChild(content);
     app.checkPageCount();
 }
 
-app.copyItem = function($this, items){
+app.copyItem = function($this, items) {
     let item = $this.closest('.ba-edit-item').parentNode,
         clone = item.cloneNode(true);
-    $f(clone).each(function(){
+    $f(clone).each(function() {
         if (this.classList.contains('ba-form-field-item')) {
             duplicateField(this, items);
         } else if (this.classList.contains('ba-form-page')) {
-            this.id = 'ba-form-page-'+(++pageNumber);
+            this.id = 'ba-form-page-' + (++pageNumber);
             let title = this.dataset.title.replace(/\s\d+/, '');
             if (title == 'Page' && !items) {
-                this.dataset.title = 'Page '+pageNumber;
+                this.dataset.title = 'Page ' + pageNumber;
             }
         } else if (this.classList.contains('ba-form-column')) {
-            this.id = 'bacolumn-'+(++columnNumber);
+            this.id = 'bacolumn-' + (++columnNumber);
         }
         this.dataset.id = 0;
-        $f(this).find('.ba-form-field-item').not(this).each(function(){
+        $f(this).find('.ba-form-field-item').not(this).each(function() {
             this.dataset.id = 0;
             duplicateField(this, items);
         });
-        $f(this).find('.ba-form-column').not(this).each(function(){
+        $f(this).find('.ba-form-column').not(this).each(function() {
             this.dataset.id = 0;
-            this.id = 'bacolumn-'+(++columnNumber);
+            this.id = 'bacolumn-' + (++columnNumber);
         });
         let handle = '> .ba-form-field-item > .ba-edit-item .edit-settings';
         setSortable($f(this).find('.ba-page-items'), 'row', '> .ba-form-row > .ba-edit-item .edit-settings', '> .ba-form-row');
         setSortable($f(this).find('.ba-form-column'), 'items', handle, '> .ba-form-field-item');
     });
-    $f(clone).find('.ba-tooltip').each(function(){
+    $f(clone).find('.ba-tooltip').each(function() {
         app.setTooltip($f(this).parent());
     })
     if (!items) {
         $f(item).after(clone);
-        $f(clone).find('.ba-map-wrapper').each(function(){
+        $f(clone).find('.ba-map-wrapper').each(function() {
             app.createGoogleMap(this, app.items[this.closest('.ba-form-map-field').id]);
         });
         app.buttonsPrevent($f('.ba-forms-workspace').find('a, input[type="submit"], button'));
@@ -4782,40 +4733,40 @@ app.copyItem = function($this, items){
     }
 }
 
-app.renderCKE = function(){
+app.renderCKE = function() {
     CKE = CKEDITOR.replace('editor');
-    $f('.text-editor-textarea').each(function(){
+    $f('.text-editor-textarea').each(function() {
         this.CKE = CKEDITOR.replace(this.id);
         this.CKE.textarea = this;
-        this.CKE.on('change', function(){
+        this.CKE.on('change', function() {
             this.textarea.value = this.getData();
             $f(this.textarea).trigger('input');
         });
-        this.CKE.on('selectionChange', function(){
+        this.CKE.on('selectionChange', function() {
             this.plugins.myTextColor.setBtnColorEvent(this);
         });
         this.CKE.config.toolbar_Basic = [
-            {name: 'styles', items: ['Format']},
-            {name: 'align', items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight']},
-            {name: 'color', items: ['myTextColor']},
-            {name: 'basicstyles', items: ['Bold', 'Italic']},
-            {name: 'links', items: ['myLink', 'myUnlink']},
-            {name: 'lists', items: ['NumberedList', 'BulletedList']},
-            {name: 'document', items: ['Source']},
-            {name: 'data-tags', items: ['dataTags']}
+            { name: 'styles', items: ['Format'] },
+            { name: 'align', items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight'] },
+            { name: 'color', items: ['myTextColor'] },
+            { name: 'basicstyles', items: ['Bold', 'Italic'] },
+            { name: 'links', items: ['myLink', 'myUnlink'] },
+            { name: 'lists', items: ['NumberedList', 'BulletedList'] },
+            { name: 'document', items: ['Source'] },
+            { name: 'data-tags', items: ['dataTags'] }
         ];
         this.CKE.config.toolbar = 'Basic';
     });
-    $f('.ba-settings-text-editor-type').on('input', 'textarea.cke_source', function(){
+    $f('.ba-settings-text-editor-type').on('input', 'textarea.cke_source', function() {
         $f(this).closest('.ba-settings-text-editor-type').find('textarea[data-option]').val(this.value).trigger('input');
     });
-    CKE.on('change', function(){
+    CKE.on('change', function() {
         app.getTextContent();
     });
 }
 
-app.initFormsRecaptcha = function(element){
-    let parent = $f(element).find('.ba-form-submit-recaptcha-wrapper').each(function(){
+app.initFormsRecaptcha = function(element) {
+    let parent = $f(element).find('.ba-form-submit-recaptcha-wrapper').each(function() {
         let div = this.querySelector('forms-recaptcha');
         if (div && recaptchaData.data[div.id]) {
             delete(recaptchaData.data[div.id]);
@@ -4825,9 +4776,9 @@ app.initFormsRecaptcha = function(element){
         let captcha = app.items[element.id].recaptcha,
             div = document.createElement('div'),
             options = {
-                sitekey : recaptchaData[captcha].public_key
+                sitekey: recaptchaData[captcha].public_key
             };
-        div.id = 'forms-recaptcha-'+(+new Date());
+        div.id = 'forms-recaptcha-' + (+new Date());
         div.className = 'forms-recaptcha';
         parent.append(div);
         if (captcha == 'recaptcha') {
@@ -4844,12 +4795,12 @@ app.initFormsRecaptcha = function(element){
     }
 }
 
-function checkIntegrationsActiveState(ind)
-{
+function checkIntegrationsActiveState(ind) {
     let flag = false,
         obj = integrations[ind].key,
         payments = ['twocheckout', 'authorize', 'cloudpayments', 'liqpay', 'mollie', 'paypal', 'paypal_sdk',
-            'payupl', 'robokassa', 'stripe', 'payu_latam', 'yandex_kassa', 'redsys', 'payfast'];
+            'payupl', 'robokassa', 'stripe', 'payu_latam', 'yandex_kassa', 'redsys', 'payfast', 'paystack'
+        ];
     if (ind == 'google_maps' || ind == 'telegram') {
         flag = obj != '';
         if (ind == 'google_maps' && flag) {
@@ -4861,9 +4812,9 @@ function checkIntegrationsActiveState(ind)
         flag = obj.enable;
         document.body.classList[flag ? 'add' : 'remove']('pdf-submissions-activated');
     } else if (ind == 'getresponse') {
-        flag = obj.api_key != '' && obj.name != '' &&  obj.email != '';
+        flag = obj.api_key != '' && obj.name != '' && obj.email != '';
     } else if (ind == 'activecampaign') {
-        flag = obj.api_key != '' && obj.account != '' &&  obj.email != '';
+        flag = obj.api_key != '' && obj.account != '' && obj.email != '';
     } else if (payments.indexOf(ind) != -1 || ind == 'mailchimp' || ind == 'google_sheets' || ind == 'campaign_monitor') {
         for (let i in obj) {
             flag = ind == 'authorize' && i == 'return_url' ? true : obj[i] != '';
@@ -4875,7 +4826,7 @@ function checkIntegrationsActiveState(ind)
         flag = obj.list && obj.email && obj.name;
     } else if (ind == 'zoho_crm') {
         flag = obj.client_id && obj.client_secret && obj.email && obj.host && obj.grant_token && obj.layout_id;
-        $f('.zoho-crm-fields .ba-settings-item[data-required] select').each(function(){
+        $f('.zoho-crm-fields .ba-settings-item[data-required] select').each(function() {
             flag = flag && obj[this.dataset.key];
         });
     } else if (ind == 'google_drive') {
@@ -4883,7 +4834,7 @@ function checkIntegrationsActiveState(ind)
     }
     if (payments.indexOf(ind) != -1) {
         let parent = $f('select[data-option="payment"][data-callback="submitFieldAction"]');
-        parent.find('option[value="'+ind+'"]').remove();
+        parent.find('option[value="' + ind + '"]').remove();
         if (flag) {
             let title = jsUcfirst(ind);
             if (ind == 'authorize') {
@@ -4902,22 +4853,24 @@ function checkIntegrationsActiveState(ind)
                 title = 'PayFast';
             } else if (ind == 'yandex_kassa') {
                 title = 'Yandex Kassa';
+            } else if (ind == 'paystack') {
+                title = 'Paystack';
             }
-            parent.append('<option value="'+ind+'"'+(ind == 'paypal' ? ' style="display: none;"' : '')+'>'+title+'</option>');
+            parent.append('<option value="' + ind + '"' + (ind == 'paypal' ? ' style="display: none;"' : '') + '>' + title + '</option>');
             for (let i = 0; i < payments.length; i++) {
-                parent.find('option[value="'+payments[i]+'"]').appendTo(parent);
+                parent.find('option[value="' + payments[i] + '"]').appendTo(parent);
             }
             parent.find('option[value*="custom-payment-"]').appendTo(parent);
         }
     }
-    $f('.integrations-element[data-type="'+ind+'"]')[flag ? 'addClass' : 'removeClass']('active');
+    $f('.integrations-element[data-type="' + ind + '"]')[flag ? 'addClass' : 'removeClass']('active');
 }
 
-function setIntegrationValues(ind)
-{
+function setIntegrationValues(ind) {
+    console.log(ind);
     let obj = integrations[ind].key;
-    if (ind == 'mailchimp' && obj.api_key && mailchimp[obj.api_key]
-        && obj.list && mailchimp[obj.api_key][obj.list]) {
+    if (ind == 'mailchimp' && obj.api_key && mailchimp[obj.api_key] &&
+        obj.list && mailchimp[obj.api_key][obj.list]) {
         drawMailChimpFields(mailchimp[obj.api_key][obj.list], false)
     } else if (ind == 'google_sheets' && googleSheets.sheets && obj.spreadsheet && googleSheets.sheets[obj.spreadsheet]) {
         app.google.drawSpreadsheets(googleSheets);
@@ -4930,7 +4883,7 @@ function setIntegrationValues(ind)
         }
     } else if (ind == 'activecampaign') {
         $f('.activecampaign-list')
-            .closest('.ba-subgroup-element')[obj.api_key && obj.account ?'addClass':'removeClass']('visible-subgroup');
+            .closest('.ba-subgroup-element')[obj.api_key && obj.account ? 'addClass' : 'removeClass']('visible-subgroup');
         $f('.activecampaign-fields')[obj.api_key && obj.account && obj.list ? 'addClass' : 'removeClass']('visible-subgroup');
     } else if (ind == 'getresponse' && obj.api_key && getresponse[obj.api_key]) {
         $f('.getresponse-custom-fields')[obj.custom_fields ? 'addClass' : 'removeClass']('visible-subgroup');
@@ -4939,13 +4892,13 @@ function setIntegrationValues(ind)
         $f('.google-drive-fields')[obj.folder ? 'addClass' : 'removeClass']('visible-subgroup');
     }
     if (ind == 'pdf_submissions') {
-        $f('.integration-options[data-group="'+ind+'"] .ba-subgroup-element')[obj.enable ? 'addClass' : 'removeClass']('visible-subgroup');
+        $f('.integration-options[data-group="' + ind + '"] .ba-subgroup-element')[obj.enable ? 'addClass' : 'removeClass']('visible-subgroup');
     } else if (ind == 'google_sheets' || ind == 'google_drive') {
         let googleKey = ind.replace('google_', '');
         app.google.setClient(googleKey, obj.client_id, obj.client_secret);
         app.google.setGoogleAuth(googleKey);
     }
-    $f('.integration-options[data-group="'+ind+'"] [data-key]').each(function(){
+    $f('.integration-options[data-group="' + ind + '"] [data-key]').each(function() {
         if (this.dataset.key == 'key') {
             $f(this).val(obj);
         } else if (this.type == 'checkbox') {
@@ -4955,29 +4908,27 @@ function setIntegrationValues(ind)
         }
         let trigger = this.closest('.trigger-picker-modal');
         if (trigger) {
-            $f('#'+trigger.dataset.modal).find('li[data-value="'+obj[this.dataset.key]+'"]').each(function(){
+            $f('#' + trigger.dataset.modal).find('li[data-value="' + obj[this.dataset.key] + '"]').each(function() {
                 trigger.querySelector('input[type="text"]').value = this.textContent;
             });
         }
     });
 }
 
-function drawSubmitItemsSelect()
-{
+function drawSubmitItemsSelect() {
     let array = getSubmitItems(),
         str = '';
     $f('select.forms-fields-list option:not([hidden])').remove();
     for (let i = 0; i < array.length; i++) {
-        str += '<option value="'+array[i].id+'">'+(array[i].title ? array[i].title : '')+'</option>';
+        str += '<option value="' + array[i].id + '">' + (array[i].title ? array[i].title : '') + '</option>';
     }
     if (!array.length) {
-        str = '<option value="">'+(formsLanguage['NO_NE'])+'</option>';
+        str = '<option value="">' + (formsLanguage['NO_NE']) + '</option>';
     }
     $f('select.forms-fields-list').append(str);
 }
 
-function connectZohoCRM(zoho)
-{
+function connectZohoCRM(zoho) {
     let data = {},
         ready = true;
     for (let ind in zoho) {
@@ -4991,20 +4942,20 @@ function connectZohoCRM(zoho)
     if (ready) {
         data.redirect_uri = $f('.zoho-redirect-uri').val();
         $f.ajax({
-            type:"POST",
-            dataType:'text',
+            type: "POST",
+            dataType: 'text',
             data: data,
-            url:"index.php?option=com_baforms&task=form.setZohoCRMTempData",
-            error: function(msg){
+            url: "index.php?option=com_baforms&task=form.setZohoCRMTempData",
+            error: function(msg) {
                 console.info(msg.responseText);
             },
-            success: function(msg){
+            success: function(msg) {
                 let obj = JSON.parse(msg),
                     str = '';
                 zoho_crm[data.grant_token] = obj;
                 $f('.zoho-crm-list option:not([hidden])').remove();
                 for (var ind in obj) {
-                    str += '<option value="'+ind+'">'+obj[ind].layout_name+'</option>';
+                    str += '<option value="' + ind + '">' + obj[ind].layout_name + '</option>';
                 }
                 $f('.zoho-crm-list').append(str).closest('.ba-subgroup-element').addClass('visible-subgroup');
             }
@@ -5012,24 +4963,23 @@ function connectZohoCRM(zoho)
     }
 }
 
-function getZohoCRMFields()
-{
+function getZohoCRMFields() {
     $f.ajax({
-        type:"POST",
-        dataType:'text',
-        url:"index.php?option=com_baforms&task=form.getZohoCRMFields",
-        error: function(msg){
+        type: "POST",
+        dataType: 'text',
+        url: "index.php?option=com_baforms&task=form.getZohoCRMFields",
+        error: function(msg) {
             console.info(msg.responseText);
         },
-        success: function(msg){
+        success: function(msg) {
             let obj = JSON.parse(msg),
                 grant_token = $f('.connect-zoho-crm[data-key="grant_token"]').val().trim(),
                 str = '';
             zoho_crm[grant_token] = obj;
             $f('.zoho-crm-list option:not([hidden])').remove();
             for (var ind in obj) {
-                str += '<option value="'+ind+'"'+(integrations.zoho_crm.key.layout_id == ind ? 'selected' : '')+'>';
-                str += obj[ind].layout_name+'</option>';
+                str += '<option value="' + ind + '"' + (integrations.zoho_crm.key.layout_id == ind ? 'selected' : '') + '>';
+                str += obj[ind].layout_name + '</option>';
             }
             $f('.zoho-crm-list').append(str).closest('.ba-subgroup-element').addClass('visible-subgroup');
             if (integrations.zoho_crm.key.layout_id) {
@@ -5039,16 +4989,15 @@ function getZohoCRMFields()
     });
 }
 
-function drawZohoCRMFields(fields, checkActive)
-{
+function drawZohoCRMFields(fields, checkActive) {
     let div = $f('.zoho-crm-fields'),
         str = '';
     div.find('.ba-settings-item').remove();
     for (let i in fields) {
-        str += '<div class="ba-settings-item ba-settings-select-type"'+
-            (fields[i].req ? ' data-required="true"' : '')+'><span class="ba-settings-item-title">'+
-            fields[i].label+(fields[i].req ? ' *' : '')+'</span><select class="forms-fields-list" data-key="'+
-            fields[i].dv+'"><option value="" hidden></option></select></div>';
+        str += '<div class="ba-settings-item ba-settings-select-type"' +
+            (fields[i].req ? ' data-required="true"' : '') + '><span class="ba-settings-item-title">' +
+            fields[i].label + (fields[i].req ? ' *' : '') + '</span><select class="forms-fields-list" data-key="' +
+            fields[i].dv + '"><option value="" hidden></option></select></div>';
     }
     div.append(str).addClass('visible-subgroup');
     drawSubmitItemsSelect();
@@ -5058,8 +5007,7 @@ function drawZohoCRMFields(fields, checkActive)
     }
 }
 
-function connectActivecampaign(account, api_key, notice, checkActive)
-{
+function connectActivecampaign(account, api_key, notice, checkActive) {
     $f.ajax({
         type: "POST",
         dataType: 'text',
@@ -5068,7 +5016,7 @@ function connectActivecampaign(account, api_key, notice, checkActive)
             api_key: api_key,
             account: account
         },
-        success: function(msg){
+        success: function(msg) {
             let obj = JSON.parse(msg);
             if (obj.success) {
                 let obj = JSON.parse(msg),
@@ -5076,7 +5024,7 @@ function connectActivecampaign(account, api_key, notice, checkActive)
                 campaign[api_key] = {};
                 $f('.activecampaign-list option:not([hidden])').remove();
                 for (var ind in obj.lists) {
-                    str += '<option value="'+ind+'">'+obj.lists[ind]+'</option>';
+                    str += '<option value="' + ind + '">' + obj.lists[ind] + '</option>';
                 }
                 $f('.activecampaign-list').append(str).closest('.ba-subgroup-element').addClass('visible-subgroup');
                 if (checkActive && integrations.campaign_monitor.key.list) {
@@ -5092,8 +5040,7 @@ function connectActivecampaign(account, api_key, notice, checkActive)
     });
 }
 
-function connectCampaignMonitor(api_key, client_id, notice, checkActive)
-{
+function connectCampaignMonitor(api_key, client_id, notice, checkActive) {
     $f.ajax({
         type: "POST",
         dataType: 'text',
@@ -5102,7 +5049,7 @@ function connectCampaignMonitor(api_key, client_id, notice, checkActive)
             api_key: api_key,
             client_id: client_id
         },
-        success: function(msg){
+        success: function(msg) {
             let obj = JSON.parse(msg);
             if (obj.success) {
                 let obj = JSON.parse(msg),
@@ -5110,7 +5057,7 @@ function connectCampaignMonitor(api_key, client_id, notice, checkActive)
                 campaign[api_key] = {};
                 $f('.campaign-monitor-list option:not([hidden])').remove();
                 for (var i = 0; i < obj.lists.length; i++) {
-                    str += '<option value="'+obj.lists[i].ListID+'">'+obj.lists[i].Name+'</option>';
+                    str += '<option value="' + obj.lists[i].ListID + '">' + obj.lists[i].Name + '</option>';
                 }
                 $f('.campaign-monitor-list').append(str).closest('.ba-subgroup-element').addClass('visible-subgroup');
                 if (checkActive && integrations.campaign_monitor.key.list_id) {
@@ -5126,18 +5073,17 @@ function connectCampaignMonitor(api_key, client_id, notice, checkActive)
     });
 }
 
-function getCampaignMonitorFields(api_key, client_id, list_id, checkActive)
-{
+function getCampaignMonitorFields(api_key, client_id, list_id, checkActive) {
     $f.ajax({
-        type:"POST",
-        dataType:'text',
-        url:"index.php?option=com_baforms&view=form&task=form.getCampaignFields",
-        data:{
+        type: "POST",
+        dataType: 'text',
+        url: "index.php?option=com_baforms&view=form&task=form.getCampaignFields",
+        data: {
             api_key: api_key,
             client_id: client_id,
             list_id: list_id
         },
-        success: function(msg){
+        success: function(msg) {
             let obj = JSON.parse(msg);
             if (obj.success) {
                 campaign[api_key][list_id] = obj.fields;
@@ -5147,15 +5093,14 @@ function getCampaignMonitorFields(api_key, client_id, list_id, checkActive)
     });
 }
 
-function drawCampaignMonitorFields(fields, checkActive)
-{
+function drawCampaignMonitorFields(fields, checkActive) {
     let div = $f('.campaign-monitor-fields'),
         str = '';
     div.find('.ba-settings-item').remove();
-    for (let i  in fields) {
-        str += '<div class="ba-settings-item ba-settings-select-type"><span class="ba-settings-item-title">'+
-            fields[i].title+'</span><select class="forms-fields-list" data-key="'+
-            fields[i].key+'"><option value="" hidden></option></select></div>';
+    for (let i in fields) {
+        str += '<div class="ba-settings-item ba-settings-select-type"><span class="ba-settings-item-title">' +
+            fields[i].title + '</span><select class="forms-fields-list" data-key="' +
+            fields[i].key + '"><option value="" hidden></option></select></div>';
     }
     div.append(str).addClass('visible-subgroup');
     drawSubmitItemsSelect();
@@ -5165,20 +5110,19 @@ function drawCampaignMonitorFields(fields, checkActive)
     }
 }
 
-function getAcymailingFields()
-{
+function getAcymailingFields() {
     $f.ajax({
-        type:"POST",
-        dataType:'text',
-        url:"index.php?option=com_baforms&view=form&task=form.getAcymailingFields",
-        success: function(msg){
+        type: "POST",
+        dataType: 'text',
+        url: "index.php?option=com_baforms&view=form&task=form.getAcymailingFields",
+        success: function(msg) {
             let fields = JSON.parse(msg),
                 div = $f('.acymailing-fields'),
                 str = '';
-            for (let i  in fields) {
-                str += '<div class="ba-settings-item ba-settings-select-type"><span class="ba-settings-item-title">'+
-                    fields[i].name+'</span><select class="forms-fields-list" data-key="'+
-                    fields[i].id+'"><option value="" hidden></option></select></div>';
+            for (let i in fields) {
+                str += '<div class="ba-settings-item ba-settings-select-type"><span class="ba-settings-item-title">' +
+                    fields[i].name + '</span><select class="forms-fields-list" data-key="' +
+                    fields[i].id + '"><option value="" hidden></option></select></div>';
             }
             div.append(str).addClass('visible-subgroup');
             drawSubmitItemsSelect();
@@ -5188,8 +5132,7 @@ function getAcymailingFields()
     });
 }
 
-function connectGetResponse(api_key, custom, notice, checkActive)
-{
+function connectGetResponse(api_key, custom, notice, checkActive) {
     $f.ajax({
         type: "POST",
         dataType: 'text',
@@ -5197,7 +5140,7 @@ function connectGetResponse(api_key, custom, notice, checkActive)
         data: {
             api_key: api_key
         },
-        success: function(msg){
+        success: function(msg) {
             let obj = JSON.parse(msg);
             if (obj.success) {
                 let obj = JSON.parse(msg),
@@ -5205,7 +5148,7 @@ function connectGetResponse(api_key, custom, notice, checkActive)
                 getresponse[api_key] = {};
                 $f('.getresponse-list option:not([hidden])').remove();
                 for (var i = 0; i < obj.lists.length; i++) {
-                    str += '<option value="'+obj.lists[i].campaignId+'">'+obj.lists[i].name+'</option>';
+                    str += '<option value="' + obj.lists[i].campaignId + '">' + obj.lists[i].name + '</option>';
                 }
                 $f('.getresponse-list').append(str).closest('.ba-subgroup-element').addClass('visible-subgroup');
                 if (checkActive && integrations.getresponse.key.list_id) {
@@ -5221,17 +5164,16 @@ function connectGetResponse(api_key, custom, notice, checkActive)
     });
 }
 
-function getResponseFields(api_key, list_id, custom, checkActive)
-{
+function getResponseFields(api_key, list_id, custom, checkActive) {
     $f.ajax({
-        type:"POST",
-        dataType:'text',
-        url:"index.php?option=com_baforms&view=form&task=form.getResponseFields",
-        data:{
+        type: "POST",
+        dataType: 'text',
+        url: "index.php?option=com_baforms&view=form&task=form.getResponseFields",
+        data: {
             api_key: api_key,
             list_id: list_id
         },
-        success: function(msg){
+        success: function(msg) {
             let obj = JSON.parse(msg);
             if (obj.success) {
                 getresponse[api_key][list_id] = obj.fields;
@@ -5241,17 +5183,16 @@ function getResponseFields(api_key, list_id, custom, checkActive)
     });
 }
 
-function drawGetResponseFields(fields, custom, checkActive)
-{
+function drawGetResponseFields(fields, custom, checkActive) {
     let div = $f('.getresponse-fields'),
         requiredDiv = div.find('.getresponse-required-fields'),
         customDiv = div.find('.getresponse-custom-fields')[custom ? 'addClass' : 'removeClass']('visible-subgroup'),
         str = '';
     div.find('.ba-settings-item:not(.ba-settings-checkbox-type)').remove();
-    for (let i  in fields) {
-        str = '<div class="ba-settings-item ba-settings-select-type"><span class="ba-settings-item-title">'+
-            fields[i].title+'</span><select class="forms-fields-list" data-key="'+
-            fields[i].key+'"><option value="" hidden></option></select></div>';
+    for (let i in fields) {
+        str = '<div class="ba-settings-item ba-settings-select-type"><span class="ba-settings-item-title">' +
+            fields[i].title + '</span><select class="forms-fields-list" data-key="' +
+            fields[i].key + '"><option value="" hidden></option></select></div>';
         if (fields[i].key == 'email' || fields[i].key == 'name') {
             requiredDiv.append(str);
         } else {
@@ -5266,16 +5207,15 @@ function drawGetResponseFields(fields, custom, checkActive)
     }
 }
 
-function connectMailChimp(api_key, notice, checkActive)
-{
+function connectMailChimp(api_key, notice, checkActive) {
     $f.ajax({
-        type:"POST",
-        dataType:'text',
-        url:"index.php?option=com_baforms&view=form&task=form.connectMailChimp",
-        data:{
+        type: "POST",
+        dataType: 'text',
+        url: "index.php?option=com_baforms&view=form&task=form.connectMailChimp",
+        data: {
             api_key: api_key,
         },
-        success: function(msg){
+        success: function(msg) {
             if (msg == 0) {
                 if (notice) {
                     showNotice('Invalid Api Key', 'ba-alert');
@@ -5288,7 +5228,7 @@ function connectMailChimp(api_key, notice, checkActive)
                     mailchimp[api_key] = {};
                     $f('.mailchimp-list option:not([hidden])').remove();
                     for (var i = 0; i < obj.lists.length; i++) {
-                        str += '<option value="'+obj.lists[i].id+'">'+obj.lists[i].name+'</option>';
+                        str += '<option value="' + obj.lists[i].id + '">' + obj.lists[i].name + '</option>';
                     }
                     $f('.mailchimp-list').append(str).closest('.ba-subgroup-element').addClass('visible-subgroup');
                     if (checkActive && integrations.mailchimp.key.list) {
@@ -5303,17 +5243,16 @@ function connectMailChimp(api_key, notice, checkActive)
     });
 }
 
-function getMailChimpFields(api_key, list_id, checkActive)
-{
+function getMailChimpFields(api_key, list_id, checkActive) {
     $f.ajax({
-        type:"POST",
-        dataType:'text',
-        url:"index.php?option=com_baforms&view=form&task=form.getMailChimpFields",
-        data:{
+        type: "POST",
+        dataType: 'text',
+        url: "index.php?option=com_baforms&view=form&task=form.getMailChimpFields",
+        data: {
             api_key: api_key,
             list_id: list_id
         },
-        success: function(msg){
+        success: function(msg) {
             try {
                 let obj = JSON.parse(msg),
                     object = {
@@ -5330,15 +5269,14 @@ function getMailChimpFields(api_key, list_id, checkActive)
     });
 }
 
-function drawMailChimpFields(fields, checkActive)
-{
+function drawMailChimpFields(fields, checkActive) {
     let div = $f('.mailchimp-fields'),
         str = '';
     div.find('.ba-settings-item').remove();
     for (let i = 0; i < fields.length; i++) {
-        str += '<div class="ba-settings-item ba-settings-select-type"><span class="ba-settings-item-title">'+
-            fields[i].name+'</span><select class="forms-fields-list" data-key="'+
-            fields[i].tag+'"><option value="" hidden></option></select></div>';
+        str += '<div class="ba-settings-item ba-settings-select-type"><span class="ba-settings-item-title">' +
+            fields[i].name + '</span><select class="forms-fields-list" data-key="' +
+            fields[i].tag + '"><option value="" hidden></option></select></div>';
     }
     div.append(str).addClass('visible-subgroup');
     drawSubmitItemsSelect();
@@ -5348,17 +5286,17 @@ function drawMailChimpFields(fields, checkActive)
     }
 }
 
-app.setCalculator = function(){
-    $f('.ba-form-calculator').each(function(){
+app.setCalculator = function() {
+    $f('.ba-form-calculator').each(function() {
         let $this = $f(this);
-            screen = this.querySelector('.ba-form-calculator-screen');
-        screen.oninput = function(){
+        screen = this.querySelector('.ba-form-calculator-screen');
+        screen.oninput = function() {
             app.edit.formula = this.value;
         }
-        $this.find('.ba-form-calculator-btn[data-code]').on('click', function(){
+        $this.find('.ba-form-calculator-btn[data-code]').on('click', function() {
             if (this.dataset.code) {
                 screen.setRangeText(this.dataset.code);
-                let start = screen.selectionStart+this.dataset.code.length;
+                let start = screen.selectionStart + this.dataset.code.length;
                 screen.setSelectionRange(start, start);
             } else {
                 screen.value = '';
@@ -5366,11 +5304,11 @@ app.setCalculator = function(){
             screen.focus();
             screen.oninput();
         });
-        $this.find('.ba-form-calculator-btn[data-fields]').on('click', function(){
+        $this.find('.ba-form-calculator-btn[data-fields]').on('click', function() {
             if (!('ondataTagsInput' in this)) {
-                this.ondataTagsInput = function(){
+                this.ondataTagsInput = function() {
                     screen.setRangeText(this.dataset.value);
-                    let start = screen.selectionStart+this.dataset.value.length;
+                    let start = screen.selectionStart + this.dataset.value.length;
                     screen.setSelectionRange(start, start);
                     screen.focus();
                     screen.oninput();
@@ -5383,8 +5321,8 @@ app.setCalculator = function(){
     });
 }
 
-app.checkLastCheckbox = function(id, count){
-    let wrapper = $f('#'+id+' .ba-form-checkbox-group-wrapper'),
+app.checkLastCheckbox = function(id, count) {
+    let wrapper = $f('#' + id + ' .ba-form-checkbox-group-wrapper'),
         checkbox = wrapper.find('.ba-form-checkbox-wrapper'),
         ind = 1;
     if (wrapper.find('.ba-checkbox-image').length) {
@@ -5393,7 +5331,7 @@ app.checkLastCheckbox = function(id, count){
         wrapper.removeClass('checkbox-image-group-wrapper');
     }
     wrapper.find('.last-row-checkbox-wrapper').removeClass('last-row-checkbox-wrapper');
-    wrapper.find('.ba-form-checkbox-wrapper').each(function(){
+    wrapper.find('.ba-form-checkbox-wrapper').each(function() {
         if (ind == count) {
             this.classList.add('last-row-checkbox-wrapper');
             ind = 0;
@@ -5407,9 +5345,9 @@ app.checkLastCheckbox = function(id, count){
     }).last().addClass('last-row-checkbox-wrapper');
 }
 
-app.checkConditionLogic = function(){
+app.checkConditionLogic = function() {
     $f('.hidden-condition-field').removeClass('hidden-condition-field');
-    app.conditionLogic.forEach(function(el){
+    app.conditionLogic.forEach(function(el) {
         if (!el.publish) {
             return true;
         }
@@ -5417,31 +5355,31 @@ app.checkConditionLogic = function(){
             not = ['image', 'text', 'submit', 'map', 'html', 'headline'],
             item = null,
             value;
-        el.when.forEach(function(obj){
+        el.when.forEach(function(obj) {
             if (!obj.field || !obj.state) {
                 return true;
             }
-            item = document.querySelector('#baform-'+obj.field);
+            item = document.querySelector('#baform-' + obj.field);
             if (!item || not.indexOf(item.dataset.type) != -1) {
                 return true;
             }
             value = '';
             if (item.dataset.type == 'radio' || item.dataset.type == 'select') {
-                item.querySelectorAll('option:not([hidden]), .ba-checkbox-wrapper input').forEach(function(option, i){
+                item.querySelectorAll('option:not([hidden]), .ba-checkbox-wrapper input').forEach(function(option, i) {
                     if (option.checked || option.selected) {
                         value += app.items[item.id].items[i].key;
                     }
                 });
             } else if (item.dataset.type == 'checkbox' || item.dataset.type == 'selectMultiple') {
                 value = []
-                item.querySelectorAll('option:not([hidden]), .ba-checkbox-wrapper input').forEach(function(option, i){
+                item.querySelectorAll('option:not([hidden]), .ba-checkbox-wrapper input').forEach(function(option, i) {
                     if (option.checked || option.selected) {
                         value.push(app.items[item.id].items[i].key);
                     }
                 });
             } else if (item.dataset.type == 'acceptance') {
                 let checked = item.querySelector('input[type="checkbox"]').checked;
-                value = checked ?  item.querySelector('.ba-form-acceptance-html').textContent.trim() : '';
+                value = checked ? item.querySelector('.ba-form-acceptance-html').textContent.trim() : '';
             } else {
                 value = item.querySelector('input, textarea').value;
             }
@@ -5492,10 +5430,10 @@ app.checkConditionLogic = function(){
             return true;
         }
         let method = el.operation == 'OR' ? 'some' : 'every',
-            flag = flags[method](function(state){return state});
-        el.do.forEach(function(obj){
+            flag = flags[method](function(state) { return state });
+        el.do.forEach(function(obj) {
             if (obj.field && obj.action) {
-                let item = document.querySelector('#baform-'+obj.field);
+                let item = document.querySelector('#baform-' + obj.field);
                 if (!item) {
                     return true;
                 }
@@ -5509,7 +5447,7 @@ app.checkConditionLogic = function(){
     });
 }
 
-app.setSubmitDesign = function(obj, wrapper){
+app.setSubmitDesign = function(obj, wrapper) {
     let keys = new Array('background', 'padding', 'border', 'typography', 'icon', 'shadow');
     for (let i = 0; i < keys.length; i++) {
         for (let option in obj[keys[i]]) {
@@ -5517,17 +5455,17 @@ app.setSubmitDesign = function(obj, wrapper){
                 continue;
             }
             app.setDesignCssVariable(keys[i], '', option, obj, wrapper, 'submit');
-            if ((keys[i] == 'padding' && (option == 'top' || option == 'bottom'))
-                || (keys[i] == 'typography' && option == 'line-height')) {
+            if ((keys[i] == 'padding' && (option == 'top' || option == 'bottom')) ||
+                (keys[i] == 'typography' && option == 'line-height')) {
                 app.setDesignCssVariable(keys[i], '', option, obj, wrapper.nextElementSibling, 'submit');
             }
         }
     }
 }
 
-app.prepareFormsPages = function(){
+app.prepareFormsPages = function() {
     let loadRecaptcha = false;
-    $f('.ba-form-submit-field').each(function(){
+    $f('.ba-form-submit-field').each(function() {
         app.setSubmitDesign(app.items[this.id], this.querySelector('.ba-form-submit-wrapper'));
         if (app.items[this.id].recaptcha) {
             loadRecaptcha = true;
@@ -5539,91 +5477,91 @@ app.prepareFormsPages = function(){
     if (document.querySelector('.ba-form-map-field')) {
         app.loadGoogleMaps();
     }
-    $f('.page-info').text(app.design.form.width.value+app.design.form.units['width-value']);
+    $f('.page-info').text(app.design.form.width.value + app.design.form.units['width-value']);
     app.checkFormSlider();
-    $f('.ba-form-checkbox-field, .ba-form-radio-field').each(function(){
+    $f('.ba-form-checkbox-field, .ba-form-radio-field').each(function() {
         app.checkLastCheckbox(this.id, app.items[this.id].count);
     });
-    $f('body div .ba-tooltip').each(function(){
+    $f('body div .ba-tooltip').each(function() {
         app.setTooltip($f(this).parent());
     });
     app.checkPageCount();
     app.checkConditionLogic();
 }
 
-document.addEventListener('DOMContentLoaded', function(){
+document.addEventListener('DOMContentLoaded', function() {
     app.form_id = document.getElementById('form-id').value;
     app.design = $f.extend(true, formOptions.design, app.design);
     app.items.navigation = $f.extend(true, formOptions.navigation, app.items.navigation);
     libHandle = document.getElementById('library-item-handle');
-    setSortable($f('.ba-forms-workspace-body'), 'page', '> .ba-form-page > .ba-edit-item .edit-settings', '> .ba-form-page', function(){
+    setSortable($f('.ba-forms-workspace-body'), 'page', '> .ba-form-page > .ba-edit-item .edit-settings', '> .ba-form-page', function() {
         app.checkPageCount();
     });
     $f('.ba-forms-workspace-body').on('mousedown', '.ba-column-resizer', columnResizer);
     $f('.ba-forms-workspace-body').on('mousedown', '.ba-page-resizer', pageResizer);
     notification = $f('#ba-notification');
-    notification.on('mousedown', function(event){
+    notification.on('mousedown', function(event) {
         event.stopPropagation();
-    }).find('i.zmdi-close').on('click', function(){
+    }).find('i.zmdi-close').on('click', function() {
         notification.removeClass('notification-in').addClass('animation-out');
     });
-    $f('.edit-lightbox').on('mousedown', function(event){
+    $f('.edit-lightbox').on('mousedown', function(event) {
         app.selector = null;
-        setTimeout(function(){
+        setTimeout(function() {
             app.showLightboxSettings();
         }, 300);
     });
-    $f('.edit-lightbox-color').on('mousedown', function(event){
+    $f('.edit-lightbox-color').on('mousedown', function(event) {
         var rect = this.getBoundingClientRect(),
             rect2 = document.querySelector('.edit-lightbox').getBoundingClientRect(),
             modal = $f('#color-variables-dialog'),
             width = modal.innerWidth(),
             left = rect2.right - width,
             delta = 100 - ((rect.left + rect.width / 2 - left) * 100 / width);
-        modal[0].style.setProperty('--color-variables-arrow-right', delta+'%');
+        modal[0].style.setProperty('--color-variables-arrow-right', delta + '%');
         modal.removeClass('ba-right-position ba-bottom-position').addClass('ba-top-position');
         setMinicolorsColor(this.dataset.rgba);
         fontBtn = this;
-        setTimeout(function(){
+        setTimeout(function() {
             modal.css({
-                left : left,
-                top : rect.bottom + 10
+                left: left,
+                top: rect.bottom + 10
             }).modal();
         }, 300);
-    }).on('minicolorsInput', function(){
+    }).on('minicolorsInput', function() {
         var $this = this;
         clearTimeout(this.delay);
-        this.delay = setTimeout(function(){
+        this.delay = setTimeout(function() {
             app.design.lightbox.color = $this.dataset.rgba;
             app.setDesignCssVariable('lightbox', '', 'color', app.design, document.body);
         }, 300);
     });
-    $f('.ba-forms-workspace').on('mousedown', '.edit-item', function(event){
+    $f('.ba-forms-workspace').on('mousedown', '.edit-item', function(event) {
         let item = this.closest('.ba-form-field-item');
         if (!item) {
             app.selector = null;
-            setTimeout(function(){
+            setTimeout(function() {
                 app.showNavigationSettings();
             }, 300);
         } else {
             app.selector = item.id;
-            setTimeout(function(){
+            setTimeout(function() {
                 app.showFieldSettings();
             }, 300);
         }
-    }).on('mousedown', '.copy-item', function(event){
+    }).on('mousedown', '.copy-item', function(event) {
         app.copyItem(this);
-    }).on('mousedown', '.delete-item', function(event){
+    }).on('mousedown', '.delete-item', function(event) {
         fontBtn = this.closest('.ba-edit-item').parentNode;
-        setTimeout(function(){
+        setTimeout(function() {
             $f('#delete-dialog').modal();
         }, 100);
     });
-    $f('#apply-delete').on('click', function(){
+    $f('#apply-delete').on('click', function() {
         if (typeof(fontBtn) == 'object' && fontBtn.type == 'deleteSelectedCondition') {
             let array = [],
                 ind = 0;
-            fontBtn.rows.each(function(i){
+            fontBtn.rows.each(function(i) {
                 if (fontBtn.keys.indexOf(i) != -1) {
                     this.remove();
                 } else {
@@ -5639,7 +5577,7 @@ document.addEventListener('DOMContentLoaded', function(){
             let array = [],
                 key = fontBtn.row.dataset.ind,
                 ind = 0;
-            $f(fontBtn.parent).find('.condition-logic-horizontal-fields-wrapper').each(function(i){
+            $f(fontBtn.parent).find('.condition-logic-horizontal-fields-wrapper').each(function(i) {
                 if (fontBtn.row == this) {
                     this.remove();
                 } else {
@@ -5652,13 +5590,13 @@ document.addEventListener('DOMContentLoaded', function(){
             $f('.conditions-matches-wrapper').css('display', app.edit.when.length > 1 ? '' : 'none');
         } else if (typeof(fontBtn) == 'object' && fontBtn.type == 'deleteSelectedItems') {
             let object = {},
-                item = document.querySelector('#'+app.selector),
+                item = document.querySelector('#' + app.selector),
                 ind = 0;
-            fontBtn.option.each(function(i){
+            fontBtn.option.each(function(i) {
                 let row = fontBtn.rows.get(i);
                 if (fontBtn.keys.indexOf(i) != -1) {
                     if (app.edit.type == 'navigation') {
-                        $f(this).find('.ba-form-field-item').each(function(){
+                        $f(this).find('.ba-form-field-item').each(function() {
                             delete(app.items[this.id]);
                         });
                     }
@@ -5674,7 +5612,7 @@ document.addEventListener('DOMContentLoaded', function(){
                 item.querySelector('.ba-cart-shipping-row').style.display = 'none';
                 app.calculateCartTotal(app.selector, app.edit);
             }
-            if (document.querySelector('#'+app.selector+' .ba-form-checkbox-group-wrapper')) {
+            if (document.querySelector('#' + app.selector + ' .ba-form-checkbox-group-wrapper')) {
                 app.checkLastCheckbox(app.selector, app.edit.count);
             }
             app.edit.items = object;
@@ -5687,14 +5625,14 @@ document.addEventListener('DOMContentLoaded', function(){
             fontBtn.row.classList.remove('with-sorting-image');
             let ind = fontBtn.row.dataset.ind * 1;
             delete app.edit.items[ind].image;
-            $f('#'+app.selector+' .ba-form-checkbox-wrapper:nth-child('+(ind + 1)+') .ba-checkbox-image').remove();
+            $f('#' + app.selector + ' .ba-form-checkbox-wrapper:nth-child(' + (ind + 1) + ') .ba-checkbox-image').remove();
             app.checkLastCheckbox(app.selector, app.edit.count);
         } else {
-            $f(fontBtn).each(function(){
+            $f(fontBtn).each(function() {
                 if (this.classList.contains('ba-form-field-item')) {
                     delete(app.items[this.id]);
                 } else {
-                    $f(this).find('.ba-form-field-item').each(function(){
+                    $f(this).find('.ba-form-field-item').each(function() {
                         delete(app.items[this.id]);
                     });
                 }
@@ -5703,17 +5641,17 @@ document.addEventListener('DOMContentLoaded', function(){
         }
         $f('#delete-dialog').modal('hide');
     });
-    $f('.forms-close').on('click', function(){
-        window.location.href = JUri+'administrator/index.php?option=com_baforms';
+    $f('.forms-close').on('click', function() {
+        window.location.href = JUri + 'administrator/index.php?option=com_baforms';
     });
-    $f('.add-new-page').on('click', function(){
+    $f('.add-new-page').on('click', function() {
         createNewPage();
     });
-    $f('body').on('mousedown', function(event){
+    $f('body').on('mousedown', function(event) {
         if (!event.target || !(event.target &&
-            ((event.target.className && typeof(event.target.className) == 'string' &&
-                event.target.className.match(/^mce|^cke_|CodeMirror-hint/)) ||
-                $f(event.target).closest('[class^="mce"], [class^="cke_"]').length > 0))) {
+                ((event.target.className && typeof(event.target.className) == 'string' &&
+                        event.target.className.match(/^mce|^cke_|CodeMirror-hint/)) ||
+                    $f(event.target).closest('[class^="mce"], [class^="cke_"]').length > 0))) {
             $f('.modal-backdrop').last().trigger('click');
         }
         if (event.target && (event.target.classList.contains('close-all-modals') || event.target.closest('.close-all-modals'))) {
@@ -5722,44 +5660,44 @@ document.addEventListener('DOMContentLoaded', function(){
         $f('.columns-dialog-parent').removeClass('columns-dialog-parent');
         document.body.classList.remove('visible-add-columns-dialog');
     });
-    $f('body .modal').on('hide', function(){
+    $f('body .modal').on('hide', function() {
         let modal = $f(this).addClass('ba-modal-close').data('modal');
         if (modal.$backdrop) {
             modal.$backdrop.addClass('ba-backdrop-close');
         }
-        setTimeout(function(){
+        setTimeout(function() {
             $f('.ba-modal-close').removeClass('ba-modal-close');
         }, 300);
-    }).on('mousedown', function(event){
+    }).on('mousedown', function(event) {
         $f(document).trigger(event);
         event.stopPropagation();
-    }).on('shown', function(event){
-        $f('.modal-backdrop').on('mousedown', function(event){
+    }).on('shown', function(event) {
+        $f('.modal-backdrop').on('mousedown', function(event) {
             if (!this.classList.contains('color-variables-dialog')) {
                 $f('.modal-backdrop.color-variables-dialog').trigger('click');
             }
             event.stopPropagation();
-        }).last().addClass(this.id+(this.classList.contains('hidden-modal-backdrop') ? ' hidden-modal-backdrop' : ''));
+        }).last().addClass(this.id + (this.classList.contains('hidden-modal-backdrop') ? ' hidden-modal-backdrop' : ''));
     });
-    $f('.ba-modal-cp > *, #text-editor-dialog > *').on('mousedown', function(event){
+    $f('.ba-modal-cp > *, #text-editor-dialog > *').on('mousedown', function(event) {
         let $this = this.closest('.modal');
         if ($f('.ba-modal-picker, .picker-modal-arrow').not($this).hasClass('in') && event.target != fontBtn) {
             $f('.modal-backdrop.in').last().trigger('click');
         }
     });
-    $f('#custom-color-scheme-dialog > *').on('mousedown', function(event){
+    $f('#custom-color-scheme-dialog > *').on('mousedown', function(event) {
         if ($f('#color-variables-dialog.in').length && event.target != fontBtn) {
             $f('.modal-backdrop.in.color-variables-dialog').trigger('click');
         }
     });
-    $f('body').on('click', '.ba-add-rows', function(){
+    $f('body').on('click', '.ba-add-rows', function() {
         let content = prepareColumns('12');
-        $f(content).find('.ba-tooltip').each(function(){
+        $f(content).find('.ba-tooltip').each(function() {
             app.setTooltip($f(this).parent());
         });
         this.closest('.ba-form-page').querySelector('.ba-page-items').appendChild(content);
     });
-    $f('body').on('click', '.modify-columns', function(){
+    $f('body').on('click', '.modify-columns', function() {
         let rect = this.closest('.ba-edit-item').querySelector('.edit-settings').getBoundingClientRect(),
             row = this.closest('.ba-form-row'),
             columns = $f(row).find('> .ba-form-column-wrapper > .ba-form-column').length,
@@ -5770,9 +5708,9 @@ document.addEventListener('DOMContentLoaded', function(){
             left = rect.left - width / 2 + rect.width / 2;
         app.modifyRow = row;
         modal.css({
-            top: top+'px',
-            left: left+'px'
-        }).modal().find('input[type="number"]').each(function(){
+            top: top + 'px',
+            left: left + 'px'
+        }).modal().find('input[type="number"]').each(function() {
             this.value = columns;
             let range = $f(this).prev().val(columns);
             setLinearWidth(range);
@@ -5780,77 +5718,77 @@ document.addEventListener('DOMContentLoaded', function(){
         row.classList.add('columns-dialog-parent');
         document.body.classList.add('visible-add-columns-dialog');
     });
-    $f('#custom-css-editor').each(function(){
+    $f('#custom-css-editor').each(function() {
         var code = $f(this).find('.custom-css-editor-code').text();
         $f(this).find('> style').html(code);
     });
-    $f('.ba-code-editor').on('mousedown', function(event){
+    $f('.ba-code-editor').on('mousedown', function(event) {
         if (app.codemirror && !$f('#code-editor-dialog').hasClass('in')) {
             app.showCodeEditor();
         } else if (!app.codemirror) {
             app.loadCodeMirror('showCodeEditor');
         }
     });
-    $f('.ba-design-editor').on('mousedown', function(event){
+    $f('.ba-design-editor').on('mousedown', function(event) {
         let modal = $f('#design-settings-dialog');
         app.selector = null;
         if (modal.hasClass('in')) {
             event.stopPropagation();
         } else {
             app.edit = app.design;
-            setTimeout(function(){
+            setTimeout(function() {
                 $f('#design-settings-dialog').modal();
             }, 100);
         }
     });
-    $f('.design-settings-switcher, .hide-design-settings').on('mousedown', function(){
+    $f('.design-settings-switcher, .hide-design-settings').on('mousedown', function() {
         document.querySelector('.advanced-design-settings').classList[this.dataset.action]('active');
         if (this.dataset.action == 'remove') {
             app.closeAdvancedAccordions();
         }
     });
-    $f('.advanced-design-settings .general-tabs > ul').on('show', function(){
+    $f('.advanced-design-settings .general-tabs > ul').on('show', function() {
         app.closeAdvancedAccordions();
     });
-    $f('.ba-range-wrapper input[type="range"]').each(function(){
+    $f('.ba-range-wrapper input[type="range"]').each(function() {
         rangeAction(this, inputCallback);
     });
-    $f('.ba-settings-toolbar input[type="number"]').on('input', function(){
+    $f('.ba-settings-toolbar input[type="number"]').on('input', function() {
         inputCallback($f(this));
     });
-    $f('.color-scheme-item').on('click', function(){
+    $f('.color-scheme-item').on('click', function() {
         if (this.dataset.scheme == 'custom') {
             var rect = this.getBoundingClientRect(),
                 modal = $f('#custom-color-scheme-dialog'),
                 width = modal.innerWidth(),
                 height = modal.innerHeight();
             modal.css({
-                left : rect.left - width - 10,
-                top : rect.bottom - height / 2 - rect.height / 2
+                left: rect.left - width - 10,
+                top: rect.bottom - height / 2 - rect.height / 2
             }).modal();
         } else {
             let scheme = colorScheme[this.dataset.scheme];
-            $f('#custom-color-scheme-dialog input[data-type="color"]').each(function(){
+            $f('#custom-color-scheme-dialog input[data-type="color"]').each(function() {
                 let input = $f(this);
                 updateInput(input, scheme[this.dataset.key]);
                 input.trigger('minicolorsInput')
             });
         }
     });
-    $f('.select-design-font-group').on('change', function(){
+    $f('.select-design-font-group').on('change', function() {
         let group = this.value;
-        $f(this).closest('.ba-settings-group').find('[data-group]').each(function(){
+        $f(this).closest('.ba-settings-group').find('[data-group]').each(function() {
             this.dataset.group = group;
             setFieldValues($f('#calculation-field-settings-dialog'));
         });
     });
-    $f('.fonts-select').on('change', function(){
+    $f('.fonts-select').on('change', function() {
         let input = this.querySelector('input[type="hidden"]')
-            value = input.value;
+        value = input.value;
         if (value != 'inherit') {
             let link = document.createElement('link');
             link.rel = 'stylesheet';
-            link.href = '//fonts.googleapis.com/css?family='+value;
+            link.href = '//fonts.googleapis.com/css?family=' + value;
             document.head.appendChild(link);
         }
         if (input.dataset.group || input.dataset.subgroup || input.dataset.option) {
@@ -5860,7 +5798,7 @@ document.addEventListener('DOMContentLoaded', function(){
                 app.setValue(value, 'field', 'typography', 'font-family');
                 app.setDesignCssVariable('label', 'typography', 'font-family', app.design, document.body);
                 app.setDesignCssVariable('field', 'typography', 'font-family', app.design, document.body);
-                $f('[data-subgroup="typography"][data-option="font-family"]').each(function(){
+                $f('[data-subgroup="typography"][data-option="font-family"]').each(function() {
                     this.value = value;
                     $f(this).prev().val(googleFonts[value]);
                 });
@@ -5872,7 +5810,7 @@ document.addEventListener('DOMContentLoaded', function(){
             app.setPopularFontsFamily();
         }
     });
-    $f('.ba-settings-toolbar label[data-option]').on('click', function(){
+    $f('.ba-settings-toolbar label[data-option]').on('click', function() {
         let classList = this.classList,
             callback = this.dataset.callback;
         if (this.dataset.default) {
@@ -5886,7 +5824,7 @@ document.addEventListener('DOMContentLoaded', function(){
         } else {
             app.setValue(this.dataset.value, this.dataset.group, this.dataset.subgroup, this.dataset.option);
             let parent = this.closest('.ba-settings-toolbar');
-            parent.querySelector('label[data-option="'+this.dataset.option+'"].active').classList.remove('active');
+            parent.querySelector('label[data-option="' + this.dataset.option + '"].active').classList.remove('active');
             classList.add('active');
         }
         if (callback) {
@@ -5895,7 +5833,7 @@ document.addEventListener('DOMContentLoaded', function(){
             app.setDesignCssVariable(this.dataset.group, this.dataset.subgroup, this.dataset.option, app.design, document.body);
         }
     });
-    $f('input[type="checkbox"][data-option]').on('change', function(){
+    $f('input[type="checkbox"][data-option]').on('change', function() {
         app.setValue(this.checked, this.dataset.group, this.dataset.subgroup, this.dataset.option);
         if (this.dataset.callback) {
             app[this.dataset.callback](this.checked, this.dataset.group, this.dataset.subgroup, this.dataset.option);
@@ -5908,9 +5846,9 @@ document.addEventListener('DOMContentLoaded', function(){
             app.setDesignCssVariable(this.dataset.group, this.dataset.subgroup, this.dataset.option, app.design, document.body);
         }
     });
-    $f('i.spacing-link').on('click', function(){
+    $f('i.spacing-link').on('click', function() {
         let flag = this.classList.contains('link-enabled'),
-            str = '[data-group="'+this.dataset.group+'"]'+(this.dataset.subgroup ? '[data-subgroup="'+this.dataset.subgroup+'"]' : '');
+            str = '[data-group="' + this.dataset.group + '"]' + (this.dataset.subgroup ? '[data-subgroup="' + this.dataset.subgroup + '"]' : '');
         app.setValue(!flag, this.dataset.group, this.dataset.subgroup, 'link');
         if (flag) {
             $f(this).closest('.ba-settings-item').find(str).removeClass('link-enabled');
@@ -5918,9 +5856,9 @@ document.addEventListener('DOMContentLoaded', function(){
             $f(this).closest('.ba-settings-item').find(str).addClass('link-enabled');
         }
     });
-    $f('select.ba-units-select').on('change', function(){
-        let str = (this.dataset.group ? '[data-group="'+this.dataset.group+'"]' : '')+'[data-option="'+this.dataset.option+'"]',
-            select = $f(this).closest('#design-settings-dialog').find('.ba-units-select'+str),
+    $f('select.ba-units-select').on('change', function() {
+        let str = (this.dataset.group ? '[data-group="' + this.dataset.group + '"]' : '') + '[data-option="' + this.dataset.option + '"]',
+            select = $f(this).closest('#design-settings-dialog').find('.ba-units-select' + str),
             input = select.closest('.ba-range-wrapper').find('input[type="number"]');
         if (this.dataset.option == 'letter-spacing') {
             input.val(0);
@@ -5932,7 +5870,7 @@ document.addEventListener('DOMContentLoaded', function(){
             let value = this.value == 'px' ? 500 : 100
             input.val(value);
             changeSelected(select.not(this), this.value);
-            $f('.page-info').text(value+this.value);
+            $f('.page-info').text(value + this.value);
         }
         if (this.dataset.group == 'theme') {
             changeSelected(select.not(this), this.value);
@@ -5945,35 +5883,35 @@ document.addEventListener('DOMContentLoaded', function(){
         }
         input.trigger('input');
     });
-    $f('.ba-form-style-select').on('change', function(){
+    $f('.ba-form-style-select').on('change', function() {
         app.design.theme.style = this.value;
         let value = this.value == 'rounded' ? 50 : 0;
         $f('input[type="number"][data-group="field"][data-subgroup="border"][data-option="radius"]').val(value).trigger('input');
     });
-    $f('.ba-form-layout-select').on('change', function(){
+    $f('.ba-form-layout-select').on('change', function() {
         app.edit.theme.layout = this.value;
         $f('.ba-forms-workspace')[this.value == 'lightbox' ? 'addClass' : 'removeClass']('ba-forms-lightbox-enabled');
     });
     var str = '.ba-settings-number-type, .ba-settings-input-type, .ba-settings-textarea-type, .ba-settings-text-editor-type';
-    $f(str).find('input[data-option], textarea[data-option]').on('input', function(){
+    $f(str).find('input[data-option], textarea[data-option]').on('input', function() {
         let $this = this;
         clearTimeout(this.delay);
-        this.delay = setTimeout(function(){
+        this.delay = setTimeout(function() {
             app.setValue($this.value, $this.dataset.group, $this.dataset.subgroup, $this.dataset.option);
             app[$this.dataset.callback]($this.value, $this.dataset.group, $this.dataset.subgroup, $this.dataset.option);
         }, 300);
     });
-    $f('.ba-settings-font-type input[data-option][data-callback]').on('change', function(){
+    $f('.ba-settings-font-type input[data-option][data-callback]').on('change', function() {
         app.setValue(this.value, this.dataset.group, this.dataset.subgroup, this.dataset.option);
         app[this.dataset.callback](this.value, this.dataset.group, this.dataset.subgroup, this.dataset.option);
     });
     str = '.ba-input-label-wrapper, .ba-form-checkbox-title, .ba-page-navigation-title';
-    $f('.ba-forms-workspace-body').on('keydown', str, function(event){
+    $f('.ba-forms-workspace-body').on('keydown', str, function(event) {
         if (event.keyCode == 13) {
             event.preventDefault();
             event.stopPropagation();
         }
-    }).on('click', '.ba-input-password-icons i', function(){
+    }).on('click', '.ba-input-password-icons i', function() {
         let input = this.closest('.ba-field-container').querySelector('input'),
             icons = this.closest('.ba-input-password-icons').querySelectorAll('i');
         if (this.dataset.action == 'show') {
@@ -5981,10 +5919,10 @@ document.addEventListener('DOMContentLoaded', function(){
         } else {
             input.type = 'password';
         }
-    }).on('click', '.ba-phone-selected-country', function(){
+    }).on('click', '.ba-phone-selected-country', function() {
         let wrapper = this.closest('.ba-phone-countries-wrapper');
-        setTimeout(function(){
-            wrapper.querySelectorAll('li').forEach(function(el){
+        setTimeout(function() {
+            wrapper.querySelectorAll('li').forEach(function(el) {
                 el.style.display = '';
             });
             wrapper.classList.remove('top-countries-list');
@@ -5995,70 +5933,70 @@ document.addEventListener('DOMContentLoaded', function(){
             }
             wrapper.querySelector('.ba-phone-countries-search').value = '';
             wrapper.querySelector('.ba-phone-countries-search').focus();
-            $f('body').off('click.selected-country').one('click.selected-country', function(){
+            $f('body').off('click.selected-country').one('click.selected-country', function() {
                 $f('.visible-countries-list').removeClass('visible-countries-list');
             });
         }, 100);
-    }).on('input', '.ba-phone-countries-search', function(){
+    }).on('input', '.ba-phone-countries-search', function() {
         var li = this.closest('.ba-phone-countries-wrapper').querySelectorAll('li'),
             search = this.value.toLowerCase();
         clearTimeout(this.delay);
-        this.delay = setTimeout(function(){
-            li.forEach(function(el){
+        this.delay = setTimeout(function() {
+            li.forEach(function(el) {
                 let title = el.dataset.title.toLowerCase();
                 el.style.display = !search || title.indexOf(search) != -1 ? '' : 'none';
             });
         }, 300);
-    }).on('click', '.ba-phone-countries-search', function(event){
+    }).on('click', '.ba-phone-countries-search', function(event) {
         event.stopPropagation();
-    }).on('click', '.ba-phone-countries-list li.ba-phone-country-item', function(){
+    }).on('click', '.ba-phone-countries-list li.ba-phone-country-item', function() {
         let wrapper = this.closest('.ba-field-container');
         if (!wrapper.phoneInput) {
             wrapper.countryFlag = wrapper.querySelector('.ba-phone-selected-country .ba-phone-flag');
             wrapper.countryPrefix = wrapper.querySelector('.ba-phone-selected-country .ba-phone-prefix');
             wrapper.phoneInput = wrapper.querySelector('input.ba-phone-number-input');
         }
-        wrapper.countryFlag.className = 'ba-phone-flag ba-phone-flag-'+this.dataset.flag;
+        wrapper.countryFlag.className = 'ba-phone-flag ba-phone-flag-' + this.dataset.flag;
         wrapper.countryPrefix.textContent = this.dataset.prefix;
         wrapper.phoneInput.placeholder = this.dataset.placeholder;
         wrapper.phoneInput.value = '';
         wrapper.phoneInput.mask = this.dataset.placeholder;
         app.prepareInputMask(wrapper.phoneInput, wrapper.phoneInput.mask);
-    }).on('click', 'input.ba-phone-number-input', function(){
+    }).on('click', 'input.ba-phone-number-input', function() {
         if (!this.mask) {
             this.mask = this.placeholder;
         }
         app.prepareInputMask(this, this.mask);
-    }).on('keydown', 'input.ba-phone-number-input', function(event){
+    }).on('keydown', 'input.ba-phone-number-input', function(event) {
         app.prepareInputMask(this, this.mask, event);
-    }).on('input', '.ba-form-phone-field input.ba-phone-number-input', function(){
+    }).on('input', '.ba-form-phone-field input.ba-phone-number-input', function() {
         app.executeInputMask(this, this.mask);
-    }).on('click', '.ba-form-input-field input', function(){
+    }).on('click', '.ba-form-input-field input', function() {
         if (app.masks.indexOf(this.dataset.type) != -1) {
             if (!this.mask) {
                 this.mask = this.placeholder;
             }
             app.prepareInputMask(this, this.mask);
         }
-    }).on('keydown', '.ba-form-input-field input', function(event){
+    }).on('keydown', '.ba-form-input-field input', function(event) {
         if (app.masks.indexOf(this.dataset.type) != -1) {
             app.prepareInputMask(this, this.mask, event);
         }
-    }).on('input', '.ba-form-input-field input', function(){
+    }).on('input', '.ba-form-input-field input', function() {
         if (app.masks.indexOf(this.dataset.type) != -1) {
             app.executeInputMask(this, this.mask);
         }
-    }).on('keyup', '.ba-page-navigation-title', function(event){
+    }).on('keyup', '.ba-page-navigation-title', function(event) {
         let $this = this;
         clearTimeout(this.delay);
-        this.delay = setTimeout(function(){
+        this.delay = setTimeout(function() {
             let nth = $this.closest('.ba-form-page-navigation-title').querySelector('.ba-form-page-navigation-counter').textContent * 1;
             app.items.navigation.items[nth - 1].title = $this.textContent;
-            document.querySelector('.ba-form-page:nth-child('+nth+')').dataset.title = $this.textContent;
-            $f('.ba-form-page-navigation .ba-form-page-navigation-title:nth-child('+nth+')')
+            document.querySelector('.ba-form-page:nth-child(' + nth + ')').dataset.title = $this.textContent;
+            $f('.ba-form-page-navigation .ba-form-page-navigation-title:nth-child(' + nth + ')')
                 .find('.ba-page-navigation-title').not($this).text($this.textContent);
         }, 500);
-    }).on('keyup', '.ba-input-label-wrapper', function(event){
+    }).on('keyup', '.ba-input-label-wrapper', function(event) {
         app.selector = this.closest('.ba-form-field-item').id;
         app.edit = app.items[app.selector];
         if (this.closest('.confirm-email-wrapper')) {
@@ -6067,26 +6005,26 @@ document.addEventListener('DOMContentLoaded', function(){
             app.edit.title = this.textContent;
             prepareRequired();
         }
-    }).on('keyup', '.ba-form-checkbox-title', function(){
+    }).on('keyup', '.ba-form-checkbox-title', function() {
         let id = this.closest('.ba-form-field-item').id,
             $this = this;
         clearTimeout(this.delay);
-        this.delay = setTimeout(function(){
+        this.delay = setTimeout(function() {
             $f($this).closest('.ba-form-checkbox-group-wrapper')
-                .find('> .ba-form-checkbox-wrapper .ba-form-checkbox-title').each(function(ind){
-                if (this == $this) {
-                    app.items[id].items[ind].title = $this.textContent;
-                    return false;
-                }
-            });
+                .find('> .ba-form-checkbox-wrapper .ba-form-checkbox-title').each(function(ind) {
+                    if (this == $this) {
+                        app.items[id].items[ind].title = $this.textContent;
+                        return false;
+                    }
+                });
         }, 500);
-    }).on('input', '.ba-field-container input, .ba-field-container textarea', function(){
+    }).on('input', '.ba-field-container input, .ba-field-container textarea', function() {
         app.checkConditionLogic();
-    }).on('change', '.ba-field-container select', function(){
+    }).on('change', '.ba-field-container select', function() {
         app.checkConditionLogic();
-    }).on('change', '.ba-form-acceptance-field input[type="checkbox"]', function(){
+    }).on('change', '.ba-form-acceptance-field input[type="checkbox"]', function() {
         app.checkConditionLogic();
-    }).on('change', '.ba-form-checkbox-group-wrapper', function(){
+    }).on('change', '.ba-form-checkbox-group-wrapper', function() {
         let input = this.querySelectorAll('input'),
             image = this.classList.contains('checkbox-image-group-wrapper');
         if (image) {
@@ -6098,10 +6036,10 @@ document.addEventListener('DOMContentLoaded', function(){
             }
         }
         app.checkConditionLogic();
-    }).on('click', '.ba-form-checkbox-wrapper', function(event){
-        if ($f(this).find('> .ba-checkbox-image').length && !event.target.classList.contains('ba-form-checkbox')
-            && !event.target.closest('.ba-form-checkbox') && !event.target.closest('.ba-form-radio')) {
-            $f(this).find('> .ba-checkbox-wrapper input').each(function(){
+    }).on('click', '.ba-form-checkbox-wrapper', function(event) {
+        if ($f(this).find('> .ba-checkbox-image').length && !event.target.classList.contains('ba-form-checkbox') &&
+            !event.target.closest('.ba-form-checkbox') && !event.target.closest('.ba-form-radio')) {
+            $f(this).find('> .ba-checkbox-wrapper input').each(function() {
                 if (this.type == 'radio' && !this.checked) {
                     this.checked = true;
                 } else if (this.type == 'checkbox') {
@@ -6109,16 +6047,16 @@ document.addEventListener('DOMContentLoaded', function(){
                 }
             }).trigger('change');
         }
-    }).on('change', '.ba-form-rating input', function(){
+    }).on('change', '.ba-form-rating input', function() {
         let wrapper = this.closest('.ba-form-rating-group-wrapper'),
             label = wrapper.querySelector('label.active');
         if (label) label.classList.remove('active');
         this.closest('.ba-form-rating').classList.add('active');
         wrapper.classList.add('active');
-    }).on('input', '.form-range-wrapper input[type="range"]', function(){
+    }).on('input', '.form-range-wrapper input[type="range"]', function() {
         var max = this.max * 1,
             min = this.min * 1
-            value = this.value * 1,
+        value = this.value * 1,
             sx = (value - min) * 100 / (max - min);
         if (!this.linear) {
             this.linear = this.closest('.form-range-wrapper').querySelector('.ba-form-range-liner');
@@ -6127,9 +6065,9 @@ document.addEventListener('DOMContentLoaded', function(){
             this.number = this.closest('.ba-field-container').querySelector('.form-slider-input-wrapper input[data-type="range"]');
         }
         this.number.value = this.value;
-        this.linear.style.width = sx+'%';
+        this.linear.style.width = sx + '%';
         app.checkConditionLogic();
-    }).on('input', '.form-slider-input-wrapper input[data-type="range"]', function(){
+    }).on('input', '.form-slider-input-wrapper input[data-type="range"]', function() {
         if (!this.range) {
             this.range = $f(this).closest('.ba-field-container').find('.form-range-wrapper input[type="range"]');
         }
@@ -6143,10 +6081,10 @@ document.addEventListener('DOMContentLoaded', function(){
             value = min;
         }
         this.range.val(value).trigger('input');
-    }).on('input', '.set-slider-range', function(){
+    }).on('input', '.set-slider-range', function() {
         let decimals = 99,
             max = decimals > 0 ? 1 : 0,
-            match = this.value.match(new RegExp('\\d+\\.{0,'+max+'}\\d{0,99}'));
+            match = this.value.match(new RegExp('\\d+\\.{0,' + max + '}\\d{0,99}'));
         if (!match) {
             this.value = '';
         } else if (match[0] != this.value) {
@@ -6156,11 +6094,11 @@ document.addEventListener('DOMContentLoaded', function(){
             input = $f(this).closest('.ba-form-field-item').find('input'),
             $this = this;
         clearTimeout(this.delay);
-        this.delay = setTimeout(function(){
+        this.delay = setTimeout(function() {
             app.items[id][$this.dataset.type] = $this.value;
             app.sliderFieldAction($this.value, '', '', $this.dataset.type);
         }, 500);
-    }).on('input', '.form-slider-wrapper input[type="range"]', function(){
+    }).on('input', '.form-slider-wrapper input[type="range"]', function() {
         var max = this.max * 1,
             min = this.min * 1,
             ind = this.dataset.index * 1,
@@ -6176,16 +6114,16 @@ document.addEventListener('DOMContentLoaded', function(){
         this.numbers[index].value = value2;
         this.numbers[ind].value = value;
         this.input.values[ind] = value;
-        this.input.value = this.input.values[0]+' '+this.input.values[1];
+        this.input.value = this.input.values[0] + ' ' + this.input.values[1];
         sx = (this.input.values[1] * 1 - this.input.values[0] * 1) * 100 / (max - min)
         left = (max - this.input.values[1] * 1) * 100 / (max - min);
-        this.linear.style.width = sx+'%';
-        this.linear.style.marginLeft = (100 - sx - left)+'%';
+        this.linear.style.width = sx + '%';
+        this.linear.style.marginLeft = (100 - sx - left) + '%';
         app.checkConditionLogic();
-    }).on('input', '.form-slider-input-wrapper input[data-type="slider"]', function(){
+    }).on('input', '.form-slider-input-wrapper input[data-type="slider"]', function() {
         let $this = this
         clearTimeout(this.delay);
-        this.delay = setTimeout(function(){
+        this.delay = setTimeout(function() {
             if ($this.value) {
                 let value = $this.value * 1,
                     values = $this.slides[0].input.values,
@@ -6207,25 +6145,25 @@ document.addEventListener('DOMContentLoaded', function(){
                 $f($this.slides[index]).trigger('input');
             }
         }, 500);
-    }).on('change', '.ba-cart-shipping-item input[type="radio"]', function(){
+    }).on('change', '.ba-cart-shipping-item input[type="radio"]', function() {
         let id = this.closest('.ba-form-field-item').id;
         app.calculateCartTotal(id, app.items[id]);
-    }).on('input', '.text-content-wrapper', function(){
+    }).on('input', '.text-content-wrapper', function() {
         app.items[this.closest('.ba-form-text-field').id].html = this.innerHTML;
     });
-    $f('div.reset').on('click', function(){
+    $f('div.reset').on('click', function() {
         $f(this).parent().find('input').val('').attr('data-value', '').trigger('input');
     });
-    $f('.modify-item-suffix').on('input', function(){
+    $f('.modify-item-suffix').on('input', function() {
         let $this = this;
         clearTimeout(this.delay);
-        this.delay = setTimeout(function(){
+        this.delay = setTimeout(function() {
             if (app.edit.theme) {
                 $f('.ba-forms-workspace-body').removeClass(app.edit.theme.suffix).addClass($this.value);
             } else if (app.edit.session) {
                 $f('.ba-forms-workspace-body').removeClass(app.edit.suffix).addClass($this.value);
             } else if (app.edit.type != 'navigation') {
-                $f('#'+app.selector).removeClass(app.edit.suffix).addClass($this.value);
+                $f('#' + app.selector).removeClass(app.edit.suffix).addClass($this.value);
             } else {
                 $f('.ba-form-page-navigation-wrapper, .ba-form-page-break').removeClass(app.edit.suffix).addClass($this.value);
             }
@@ -6236,7 +6174,7 @@ document.addEventListener('DOMContentLoaded', function(){
             }
         }, 300);
     });
-    $f('.copy-to-clipboard').on('click', function(event){
+    $f('.copy-to-clipboard').on('click', function(event) {
         var textarea = document.createElement('textarea');
         document.body.appendChild(textarea);
         textarea.value = this.closest('.ba-settings-input-type').querySelector('.select-input').value;
@@ -6245,51 +6183,51 @@ document.addEventListener('DOMContentLoaded', function(){
         textarea.remove();
         showNotice(formsLanguage['SUCCESSFULLY_COPIED_TO_CLIPBOARD']);
     });
-    $f('select[data-option][data-callback]').on('change', function(){
+    $f('select[data-option][data-callback]').on('change', function() {
         app.setValue(this.value, this.dataset.group, this.dataset.subgroup, this.dataset.option);
         app[this.dataset.callback](this.value, this.dataset.group, this.dataset.subgroup, this.dataset.option);
     });
-    $f('.select-input.select-image').on('click', function(){
+    $f('.select-input.select-image').on('click', function() {
         fontBtn = this;
         uploadMode = 'triggerFontBtn';
         checkIframe($f('#uploader-modal').attr('data-check', 'single'), 'uploader');
-    }).on('input', function(){
+    }).on('input', function() {
         if (this.dataset.option) {
             app.setValue(this.value, this.dataset.group, this.dataset.subgroup, this.dataset.option);
             app[this.dataset.callback](this.value, this.dataset.group, this.dataset.subgroup, this.dataset.option);
         }
     });
-    $f('.input-click-trigger').on('click', function(){
+    $f('.input-click-trigger').on('click', function() {
         $f(this).parent().find('input').trigger('click');
     });
-    $f('.ba-settings-sortable-type .sorting-container').on('input', 'input[data-key]', function(){
+    $f('.ba-settings-sortable-type .sorting-container').on('input', 'input[data-key]', function() {
         let ind = this.closest('.sorting-item').dataset.ind * 1,
             key = this.dataset.key;
         app.edit.items[ind][this.dataset.key] = this.value;
         clearTimeout(this.delay);
-        this.delay = setTimeout(function(){
+        this.delay = setTimeout(function() {
             if ('promo' in app.edit && key == 'title') {
-                $f('#'+app.selector).find('.ba-form-shipping-title').get(ind).textContent = app.edit.items[ind].title;
+                $f('#' + app.selector).find('.ba-form-shipping-title').get(ind).textContent = app.edit.items[ind].title;
             } else if ('promo' in app.edit && key == 'price') {
                 let price = renderPrice(app.edit.items[ind].price, app.edit.thousand, app.edit.separator, app.edit.decimals),
-                    option = $f('#'+app.selector).find('.ba-cart-shipping-item').get(ind);
+                    option = $f('#' + app.selector).find('.ba-cart-shipping-item').get(ind);
                 option.querySelector('.field-price-value').textContent = price;
                 option.querySelector('input[type="radio"]').dataset.price = app.edit.items[ind].price;
             } else if (app.edit.type != 'navigation') {
-                let option = $f('#'+app.selector).find('select option:not([hidden]), span.ba-checkbox-title').get(ind),
+                let option = $f('#' + app.selector).find('select option:not([hidden]), span.ba-checkbox-title').get(ind),
                     action = option.localName == 'option' ? 'textContent' : 'innerHTML';
                 option[action] = prepareItemsText(app.edit.items[ind]);
             } else {
-                $f('.ba-form-page:nth-child('+(ind + 1)+')').attr('data-title', app.edit.items[ind].title);
-                $f('.ba-form-page-navigation').each(function(){
+                $f('.ba-form-page:nth-child(' + (ind + 1) + ')').attr('data-title', app.edit.items[ind].title);
+                $f('.ba-form-page-navigation').each(function() {
                     $f(this).find('.ba-page-navigation-title').get(ind).textContent = app.edit.items[ind].title;
                 });
             }
         }, 300);
     });
-    $f('.sorting-group-wrapper').on('change', '.ba-form-checkbox', function(){
+    $f('.sorting-group-wrapper').on('change', '.ba-form-checkbox', function() {
         let checked = 0;
-        $f(this).closest('.sorting-container').find('.ba-form-checkbox input').each(function(){
+        $f(this).closest('.sorting-container').find('.ba-form-checkbox input').each(function() {
             if (this.checked) {
                 checked++;
             }
@@ -6307,30 +6245,30 @@ document.addEventListener('DOMContentLoaded', function(){
                 .find('label[data-action="default"], label[data-action="image"]').removeClass('active');
         }
     });
-    $f('.sorting-group-wrapper').on('click', '.delete-sorting-image', function(){
+    $f('.sorting-group-wrapper').on('click', '.delete-sorting-image', function() {
         fontBtn = {
             type: 'deleteSelectedItemsImage',
             row: this.closest('.sorting-item')
         }
         $f('#delete-dialog').modal();
     });
-    $f('.sorting-group-wrapper .ba-settings-toolbar label').on('click', function(){
+    $f('.sorting-group-wrapper .ba-settings-toolbar label').on('click', function() {
         if (this.classList.contains('active')) {
             let keys = new Array(),
                 rows = $f(this).closest('.sorting-group-wrapper').find('.sorting-container .sorting-item'),
-                item = app.edit.type != 'navigation' ? $f('#'+app.selector) : $f('.ba-form-page')
-                option = app.edit.type != 'navigation' ? item.find('select option:not([hidden]), div.ba-form-checkbox-wrapper') : item;
+                item = app.edit.type != 'navigation' ? $f('#' + app.selector) : $f('.ba-form-page')
+            option = app.edit.type != 'navigation' ? item.find('select option:not([hidden]), div.ba-form-checkbox-wrapper') : item;
             if (item[0].dataset.type == 'total') {
                 option = item.find('.ba-cart-shipping-item');
             }
-            $f(this).closest('.sorting-group-wrapper').find('.sorting-container .ba-form-checkbox input').each(function(){
+            $f(this).closest('.sorting-group-wrapper').find('.sorting-container .ba-form-checkbox input').each(function() {
                 if (this.checked) {
                     keys.push(this.dataset.ind * 1);
                 }
             });
             switch (this.dataset.action) {
                 case 'default':
-                    option.each(function(i){
+                    option.each(function(i) {
                         let flag = keys.indexOf(i) != -1 && !app.edit.items[i].default;
                         if (this.localName == 'option') {
                             this.selected = flag;
@@ -6347,7 +6285,7 @@ document.addEventListener('DOMContentLoaded', function(){
                         ind = 0,
                         time = +new Date(),
                         $this = null;
-                    option.each(function(i){
+                    option.each(function(i) {
                         object[ind] = $f.extend(true, {}, app.edit.items[i]);
                         $this = rows.get(i);
                         $this.dataset.ind = ind;
@@ -6413,18 +6351,18 @@ document.addEventListener('DOMContentLoaded', function(){
             }
         }
     });
-    $f('.sorting-group-wrapper .bulk-adding-items').on('click', function(event){
+    $f('.sorting-group-wrapper .bulk-adding-items').on('click', function(event) {
         fontBtn = this;
         document.querySelector('#bulk-adding-dialog textarea').value = '';
         showDataTagsDialog('bulk-adding-dialog');
     });
-    $f('.apply-bulk-items').on('click', function(){
+    $f('.apply-bulk-items').on('click', function() {
         let modal = $f('#bulk-adding-dialog'),
             textarea = modal.find('textarea');
         if (textarea.val().trim()) {
             let data = textarea.val().trim().split('\n'),
                 key = +new Date();
-            data.forEach(function(title){
+            data.forEach(function(title) {
                 if (title.trim()) {
                     createNewSelectItem(fontBtn, title, key++);
                 }
@@ -6432,7 +6370,7 @@ document.addEventListener('DOMContentLoaded', function(){
         }
         modal.modal('hide');
     });
-    $f('.sorting-group-wrapper .add-new-select-item').on('click', function(event){
+    $f('.sorting-group-wrapper .add-new-select-item').on('click', function(event) {
         if ('promo' in app.edit) {
             let obj = {
                     title: "Option",
@@ -6440,7 +6378,7 @@ document.addEventListener('DOMContentLoaded', function(){
                     price: 0
                 },
                 price = renderPrice('0', app.edit.thousand, app.edit.separator, app.edit.decimals),
-                item = document.querySelector('#'+app.selector),
+                item = document.querySelector('#' + app.selector),
                 parent = $f(item).find('.ba-cart-shipping-row').css('display', '').find('.ba-cart-row-content'),
                 wrapper = this.closest('.sorting-group-wrapper'),
                 row = wrapper.querySelector('.sorting-item:last-child'),
@@ -6448,10 +6386,10 @@ document.addEventListener('DOMContentLoaded', function(){
                 option = document.createElement('div'),
                 child = getSortingItemHTML(obj, ind);
             option.className = 'ba-cart-shipping-item';
-            option.innerHTML = '<label class="ba-form-radio"><input type="radio" data-price="0" name="shipping-'+
-                item.id+'"><span></span></label><span class="ba-shipping-title"><span class="ba-form-shipping-title">'+
-                obj.title+'</span></span><div class="ba-form-calculation-price-wrapper"><span class="field-price-currency">'+
-                app.edit.symbol+'</span><span class="field-price-value">'+price+'</span></div>';
+            option.innerHTML = '<label class="ba-form-radio"><input type="radio" data-price="0" name="shipping-' +
+                item.id + '"><span></span></label><span class="ba-shipping-title"><span class="ba-form-shipping-title">' +
+                obj.title + '</span></span><div class="ba-form-calculation-price-wrapper"><span class="field-price-currency">' +
+                app.edit.symbol + '</span><span class="field-price-value">' + price + '</span></div>';
             app.edit.items[ind] = obj;
             wrapper.querySelector('.sorting-container').appendChild(child);
             parent.append(option);
@@ -6471,16 +6409,16 @@ document.addEventListener('DOMContentLoaded', function(){
             wrapper.querySelector('.sorting-container').appendChild(child);
         }
     });
-    setSortable($f('.sorting-group-wrapper .sorting-container'), 'select', '.sortable-handle', '> .sorting-item', function(el){
+    setSortable($f('.sorting-group-wrapper .sorting-container'), 'select', '.sortable-handle', '> .sorting-item', function(el) {
         let object = {},
-            item = app.edit.type == 'navigation' ? $f('.ba-forms-workspace-body') : $f('#'+app.selector),
+            item = app.edit.type == 'navigation' ? $f('.ba-forms-workspace-body') : $f('#' + app.selector),
             wrapper = app.edit.type != 'navigation' ? item.find('select, .ba-form-checkbox-group-wrapper') : item,
             options = app.edit.type != 'navigation' ? wrapper.find('option:not([hidden]), .ba-form-checkbox-wrapper') : null,
             option = null;
         if (app.edit.type == 'navigation') {
             options = item.find('.ba-form-page');
         }
-        $f(el).closest('.sorting-container').find('.sorting-item').each(function(ind){
+        $f(el).closest('.sorting-container').find('.sorting-item').each(function(ind) {
             object[ind] = $f.extend(true, {}, app.edit.items[this.dataset.ind]);
             option = options.get(this.dataset.ind * 1);
             wrapper.append(option);
@@ -6496,35 +6434,35 @@ document.addEventListener('DOMContentLoaded', function(){
         }
     });
 
-    $f('#jform_recaptcha option').each(function(){
+    $f('#jform_recaptcha option').each(function() {
         let select = $f(this).closest('.ba-settings-select-type').find('select[data-option="recaptcha"]');
         if (this.value == 'recaptcha' || this.value == 'recaptcha_invisible') {
             select.append(this);
         }
     });
-    $f('.add-notifications-admin-emails').on('keyup', function(event){
-        if (event.keyCode == 13 && /@/g.test(this.value) &&  this.value.match(/@/g).length == 1
-            && !app.edit.notifications.admin[this.value]) {
+    $f('.add-notifications-admin-emails').on('keyup', function(event) {
+        if (event.keyCode == 13 && /@/g.test(this.value) && this.value.match(/@/g).length == 1 &&
+            !app.edit.notifications.admin[this.value]) {
             app.edit.notifications.admin[this.value] = true;
             let str = app.getDateTag(this.value, 'notifications', 'admin');
             $f(this).closest('.selected-dates-wrapper').find('.selected-dates-tags').append(str);
             this.value = '';
         }
     });
-    $f('#google-maps-field-settings-dialog').on('shown', function(){
+    $f('#google-maps-field-settings-dialog').on('shown', function() {
         app.createLocationMap();
-    }).on('hide', function(){
-        app.createGoogleMap(document.querySelector('#'+app.selector+' .ba-map-wrapper'), app.edit);
+    }).on('hide', function() {
+        app.createGoogleMap(document.querySelector('#' + app.selector + ' .ba-map-wrapper'), app.edit);
     });
-    $f('.show-bootstrap-modal').on('click', function(){
-        $f("#"+this.dataset.modal).modal();
+    $f('.show-bootstrap-modal').on('click', function() {
+        $f("#" + this.dataset.modal).modal();
     });
 
 
 
 
 
-    $f('.media-fullscrean').on('click', function(){
+    $f('.media-fullscrean').on('click', function() {
         let modal = this.closest('.modal');
         if (!modal.classList.contains('fullscrean')) {
             modal.classList.add('fullscrean');
@@ -6536,28 +6474,28 @@ document.addEventListener('DOMContentLoaded', function(){
             this.classList.remove('zmdi-fullscreen-exit');
         }
     });
-    $f('li.integrations-filter').on('click', function(){
+    $f('li.integrations-filter').on('click', function() {
         let modal = $f(this).closest('.modal'),
-            group = '[data-group="'+this.dataset.group+'"]';
+            group = '[data-group="' + this.dataset.group + '"]';
         if (this.dataset.group == '*') {
             group = '';
         }
         modal.find('li.integrations-filter.active').removeClass('active');
         if (group) {
-            modal.find('.integrations-group > div:not('+group+')').hide();
+            modal.find('.integrations-group > div:not(' + group + ')').hide();
         }
-        modal.find('.integrations-group > div'+group+'').css('display', '');
+        modal.find('.integrations-group > div' + group + '').css('display', '');
         this.classList.add('active');
     });
-    $f('.ba-integrations-search').on('input', function(){
+    $f('.ba-integrations-search').on('input', function() {
         let search = this.value.trim().toLowerCase(),
             $this = this;
         if (!this.searchElements) {
             this.searchElements = $f('.integrations-element');
         }
         clearTimeout(this.delay);
-        this.delay = setTimeout(function(){
-            $this.searchElements.each(function(){
+        this.delay = setTimeout(function() {
+            $this.searchElements.each(function() {
                 if (this.dataset.type.indexOf(search) != -1) {
                     this.style.display = '';
                 } else {
@@ -6566,7 +6504,7 @@ document.addEventListener('DOMContentLoaded', function(){
             });
         }, 300);
     });
-    $f('.integrations-element').on('click', function(){
+    $f('.integrations-element').on('click', function() {
         if (!app.state) {
             app.showLogin(null);
             return false;
@@ -6577,7 +6515,7 @@ document.addEventListener('DOMContentLoaded', function(){
         }
         let type = this.dataset.type,
             modal = $f('#integration-element-options-modal').attr('data-edit', type),
-            group = modal.find('.integration-options[data-group="'+type+'"]');
+            group = modal.find('.integration-options[data-group="' + type + '"]');
         drawSubmitItemsSelect();
         setIntegrationValues(type);
         if (type == 'google_sheets') {
@@ -6588,12 +6526,12 @@ document.addEventListener('DOMContentLoaded', function(){
         modal.find('.ba-modal-title').text(this.querySelector('span').textContent);
         modal.find('.integration-options').hide();
         $f('.deactivate-integration-element').hide();
-        group.css('display', '').find('.set-group-display').each(function(){
+        group.css('display', '').find('.set-group-display').each(function() {
             let action = $f(this).val() ? 'addClass' : 'removeClass',
                 $this = $f(this).closest('.ba-settings-item').next();
             $this[action]('visible-subgroup');
         });
-        group.find('input[data-key], select[data-key]').each(function(){
+        group.find('input[data-key], select[data-key]').each(function() {
             if ($f(this).val()) {
                 $f('.deactivate-integration-element').css('display', '');
                 return false;
@@ -6601,7 +6539,7 @@ document.addEventListener('DOMContentLoaded', function(){
         });
         modal.modal();
     });
-    $f('.set-group-display').on('change', function(){
+    $f('.set-group-display').on('change', function() {
         let action = $f(this).val() ? 'addClass' : 'removeClass',
             $this = $f(this).closest('.ba-settings-item').next();
         $this[action]('visible-subgroup')
@@ -6638,13 +6576,13 @@ document.addEventListener('DOMContentLoaded', function(){
         setIntegrationValues(ind);
         checkIntegrationsActiveState(ind);
     }
-    $f('.deactivate-integration-element').on('click', function(event){
+    $f('.deactivate-integration-element').on('click', function(event) {
         event.preventDefault();
         if (!this.applyBtn) {
             this.applyBtn = $f('.apply-integration-element');
         }
         let group = $f('#integration-element-options-modal').attr('data-edit'),
-            groupDiv = $f('.integration-options[data-group="'+group+'"]');
+            groupDiv = $f('.integration-options[data-group="' + group + '"]');
         if (group == 'google_sheets') {
             app.googleSheets = {
                 client_id: '',
@@ -6673,7 +6611,7 @@ document.addEventListener('DOMContentLoaded', function(){
         groupDiv.find('.ba-subgroup-element').removeClass('visible-subgroup')
         this.applyBtn.trigger('click');
     });
-    $f('.apply-integration-element').on('click', function(event){
+    $f('.apply-integration-element').on('click', function(event) {
         event.preventDefault();
         let modal = $f('#integration-element-options-modal'),
             group = modal.attr('data-edit'),
@@ -6681,7 +6619,7 @@ document.addEventListener('DOMContentLoaded', function(){
         if (group == 'mailchimp' || group == 'campaign_monitor' || group == 'google_sheets') {
             obj.key = {};
         }
-        modal.find('.integration-options[data-group="'+group+'"] [data-key]').each(function(){
+        modal.find('.integration-options[data-group="' + group + '"] [data-key]').each(function() {
             let value = $f(this).val();
             if (this.dataset.key == 'key') {
                 obj.key = value.trim();
@@ -6708,7 +6646,7 @@ document.addEventListener('DOMContentLoaded', function(){
             data.obj = JSON.stringify(object);
             app.google.setClient('drive', object.key.client_id, object.key.client_secret);
         }
-        app.fetch('index.php?option=com_baforms&task=form.saveIntegration', data).then(function(text){
+        app.fetch('index.php?option=com_baforms&task=form.saveIntegration', data).then(function(text) {
             if (group == 'google_maps' && app.googleMaps) {
                 app.googleMaps = null;
                 app.mapScript.remove();
@@ -6720,14 +6658,14 @@ document.addEventListener('DOMContentLoaded', function(){
         });
     });
 
-    $f('.mailchimp-api-key').on('input', function(){
+    $f('.mailchimp-api-key').on('input', function() {
         let $this = this;
         clearTimeout(this.delay);
-        this.delay = setTimeout(function(){
+        this.delay = setTimeout(function() {
             connectMailChimp($this.value.trim(), true, false);
         }, 500);
     });
-    $f('.mailchimp-list').on('change', function(){
+    $f('.mailchimp-list').on('change', function() {
         let api_key = $f('.mailchimp-api-key').val().trim(),
             list_id = $f(this).val();
         if (mailchimp[api_key][list_id]) {
@@ -6744,43 +6682,43 @@ document.addEventListener('DOMContentLoaded', function(){
 
 
 
-    $f('.connect-activecampaign').each(function(){
+    $f('.connect-activecampaign').each(function() {
         let $this = this;
         this.campaign = {};
-        $f('.connect-activecampaign').each(function(){
+        $f('.connect-activecampaign').each(function() {
             $this.campaign[this.dataset.key] = this;
         });
-    }).on('input', function(event){
+    }).on('input', function(event) {
         let obj = this.campaign;
         if (event.target.localName == 'input') {
             let $this = this;
             clearTimeout(this.delay);
-            this.delay = setTimeout(function(){
+            this.delay = setTimeout(function() {
                 if ((obj.api_key.value.trim() && obj.account.value.trim())) {
                     connectActivecampaign(obj.account.value.trim(), obj.api_key.value.trim(), true);
                 }
             }, 500);
         }
     });
-    $f('.activecampaign-list').on('change', function(){
+    $f('.activecampaign-list').on('change', function() {
         $f('.activecampaign-fields').addClass('visible-subgroup');
     });
 
 
 
 
-    $f('.connect-campaign-monitor').each(function(){
+    $f('.connect-campaign-monitor').each(function() {
         let $this = this;
         this.campaign = {};
-        $f('.connect-campaign-monitor').each(function(){
+        $f('.connect-campaign-monitor').each(function() {
             $this.campaign[this.dataset.key] = this;
         });
-    }).on('input', function(event){
+    }).on('input', function(event) {
         let obj = this.campaign;
         if (event.target.localName == 'input') {
             let $this = this;
             clearTimeout(this.delay);
-            this.delay = setTimeout(function(){
+            this.delay = setTimeout(function() {
                 if ((obj.api_key.value.trim() && obj.client_id.value.trim())) {
                     connectCampaignMonitor(obj.api_key.value.trim(), obj.client_id.value.trim(), true);
                 }
@@ -6791,18 +6729,18 @@ document.addEventListener('DOMContentLoaded', function(){
     });
 
 
-    $f('.connect-getresponse').each(function(){
+    $f('.connect-getresponse').each(function() {
         let $this = this;
         this.getresponse = {};
-        $f('.connect-getresponse').each(function(){
+        $f('.connect-getresponse').each(function() {
             $this.getresponse[this.dataset.key] = this;
         });
-    }).on('input', function(event){
+    }).on('input', function(event) {
         let obj = this.getresponse;
         if (event.target.localName == 'input' && event.target.type == 'text') {
             let $this = this;
             clearTimeout(this.delay);
-            this.delay = setTimeout(function(){
+            this.delay = setTimeout(function() {
                 connectGetResponse(obj.api_key.value.trim(), obj.custom_fields.checked, true);
             }, 500);
         } else if (event.target.localName == 'select') {
@@ -6812,29 +6750,29 @@ document.addEventListener('DOMContentLoaded', function(){
         }
     });
 
-    $f('.connect-zoho-crm').each(function(){
+    $f('.connect-zoho-crm').each(function() {
         let $this = this;
         this.zoho = {};
-        $f('.connect-zoho-crm').each(function(){
+        $f('.connect-zoho-crm').each(function() {
             $this.zoho[this.dataset.key] = this;
         });
-    }).on('input', function(){
+    }).on('input', function() {
         if (event.target.localName == 'input') {
             let $this = this;
             clearTimeout(this.delay);
-            this.delay = setTimeout(function(){
+            this.delay = setTimeout(function() {
                 connectZohoCRM($this.zoho);
             }, 500);
         } else {
             connectZohoCRM(this.zoho);
         }
     });
-    $f('.zoho-crm-list').on('change', function(){
+    $f('.zoho-crm-list').on('change', function() {
         drawZohoCRMFields(zoho_crm[document.querySelector('.connect-zoho-crm[data-key="grant_token"]').value][this.value].fields);
     });
 
 
-    $f('.integration-options[data-group="pdf_submissions"] input[data-key="enable"]').on('change', function(){
+    $f('.integration-options[data-group="pdf_submissions"] input[data-key="enable"]').on('change', function() {
         $f(this).closest('.integration-options')
             .find('.ba-subgroup-element')[this.checked ? 'addClass' : 'removeClass']('visible-subgroup');
     });
@@ -6844,20 +6782,20 @@ document.addEventListener('DOMContentLoaded', function(){
 
 
 
-    
-    
 
 
-    $f('#condition-logic-modal').on('show', function(){
+
+
+    $f('#condition-logic-modal').on('show', function() {
         let modal = $f(this),
             ul = modal.find('.ba-folder-tree ul').empty();
         modal.find('.ba-settings-group').hide();
         modal.find('label.active[data-action]').removeClass('active');
-        modal.find('label[data-action="publish"] span[data-action]').each(function(){
+        modal.find('label[data-action="publish"] span[data-action]').each(function() {
             this.style.display = this.dataset.action == 'unpublish' ? '' : 'none';
         });
         modal.find('label[data-action="publish"] i')[0].className = 'zmdi zmdi-eye-off';
-        app.conditionLogic.forEach(function(el, i){
+        app.conditionLogic.forEach(function(el, i) {
             let li = templates['condition-logic-filter'].content.cloneNode(true);
             li.querySelector('li').dataset.key = i;
             li.querySelector('.conditional-logic-title input').value = el.title;
@@ -6866,7 +6804,7 @@ document.addEventListener('DOMContentLoaded', function(){
         });
         app.buttonsPrevent();
     });
-    $f('#condition-logic-modal .add-new-condition-logic').on('click', function(){
+    $f('#condition-logic-modal .add-new-condition-logic').on('click', function() {
         if (!app.state) {
             app.showLogin(null);
             return false;
@@ -6880,23 +6818,23 @@ document.addEventListener('DOMContentLoaded', function(){
                 title: li.querySelector('input[type="text"]').value,
                 publish: true,
                 operation: 'AND',
-                when: [{field:'', state: '', value: ''}],
-                do: [{field:'', action: ''}]
+                when: [{ field: '', state: '', value: '' }],
+                do: [{ field: '', action: '' }]
             };
         app.conditionLogic.push(obj);
         li.querySelector('li').dataset.key = n;
         this.ul.append(li);
         app.buttonsPrevent();
     });
-    $f('#condition-logic-modal ul').on('input', '.conditional-logic-title input', function(event){
+    $f('#condition-logic-modal ul').on('input', '.conditional-logic-title input', function(event) {
         let $this = this;
         clearTimeout(this.delay);
-        this.delay = setTimeout(function(){
+        this.delay = setTimeout(function() {
             app.conditionLogic[$this.closest('li').dataset.key].title = $this.value.trim();
         }, 500);
-    }).on('change', 'input[type="checkbox"]', function(){
+    }).on('change', 'input[type="checkbox"]', function() {
         let array = [];
-        $f('#condition-logic-modal li input[type="checkbox"]').each(function(){
+        $f('#condition-logic-modal li input[type="checkbox"]').each(function() {
             if (this.checked) {
                 array.push(this);
             }
@@ -6908,19 +6846,19 @@ document.addEventListener('DOMContentLoaded', function(){
         }
         if (array.length == 1) {
             let publish = app.conditionLogic[array[0].closest('li').dataset.key].publish;
-            $f('#condition-logic-modal label[data-action="publish"]').addClass('active').each(function(){
+            $f('#condition-logic-modal label[data-action="publish"]').addClass('active').each(function() {
                 this.querySelector('i').className = publish ? 'zmdi zmdi-eye-off' : 'zmdi zmdi-eye';
                 this.querySelector('span[data-action="publish"]').style.display = publish ? 'none' : '';
                 this.querySelector('span[data-action="unpublish"]').style.display = publish ? '' : 'none';
             });
         } else {
-            $f('#condition-logic-modal label[data-action="publish"]').removeClass('active').each(function(){
+            $f('#condition-logic-modal label[data-action="publish"]').removeClass('active').each(function() {
                 this.querySelector('i').className = 'zmdi zmdi-eye-off';
                 this.querySelector('span[data-action="publish"]').style.display = 'none';
                 this.querySelector('span[data-action="unpublish"]').style.display = '';
             });
         }
-    }).on('click', 'li', function(){
+    }).on('click', 'li', function() {
         if (!app.state) {
             app.showLogin(null);
             return false;
@@ -6942,11 +6880,11 @@ document.addEventListener('DOMContentLoaded', function(){
         $f('.conditions-matches-wrapper').css('display', app.edit.when.length > 1 ? '' : 'none');
         group.css('display', '');
     });
-    $f('#condition-logic-modal label[data-action]').on('click', function(){
+    $f('#condition-logic-modal label[data-action]').on('click', function() {
         if (this.classList.contains('active')) {
             let keys = new Array(),
                 rows = $f('#condition-logic-modal ul li');
-            $f('#condition-logic-modal ul li input[type="checkbox"]').each(function(){
+            $f('#condition-logic-modal ul li input[type="checkbox"]').each(function() {
                 if (this.checked) {
                     keys.push(this.closest('li').dataset.key * 1);
                 }
@@ -6965,7 +6903,7 @@ document.addEventListener('DOMContentLoaded', function(){
                     let object = $this = null,
                         ind = 0,
                         array = [];
-                    rows.each(function(i){
+                    rows.each(function(i) {
                         object = $f.extend(true, {}, app.conditionLogic[i]);
                         array.push(object);
                         this.dataset.key = ind++;;
@@ -6992,24 +6930,24 @@ document.addEventListener('DOMContentLoaded', function(){
             }
         }
     });
-    $f('#condition-logic-modal .add-new-when-condition').on('click', function(){
-        app.edit.when.push({field:'', state: '', value: ''});
+    $f('#condition-logic-modal .add-new-when-condition').on('click', function() {
+        app.edit.when.push({ field: '', state: '', value: '' });
         app.appendConditionRow(app.edit.when.length - 1, 'when');
         $f('.conditions-matches-wrapper').css('display', app.edit.when.length > 1 ? '' : 'none');
     });
-    $f('#condition-logic-modal .add-new-do-condition').on('click', function(){
-        app.edit.do.push({field:'', action: ''});
+    $f('#condition-logic-modal .add-new-do-condition').on('click', function() {
+        app.edit.do.push({ field: '', action: '' });
         app.appendConditionRow(app.edit.do.length - 1, 'do');
     });
-    $f('#condition-logic-modal .ba-settings-group').on('change input', '.condition-logic-horizontal-fields-wrapper', function(event){
+    $f('#condition-logic-modal .ba-settings-group').on('change input', '.condition-logic-horizontal-fields-wrapper', function(event) {
         let $this = this;
         clearTimeout(this.delay);
-        this.delay = setTimeout(function(){
+        this.delay = setTimeout(function() {
             app.edit[$this.dataset.ind][$this.dataset.key][event.target.dataset.key] = event.target.value;
             if ($this.dataset.ind == 'when' && event.target.dataset.key == 'field') {
                 app.edit.when[$this.dataset.key].value = '';
                 app.checkConditionFieldType($this, app.edit[$this.dataset.ind][$this.dataset.key]);
-            } else  if ($this.dataset.ind == 'do' && event.target.dataset.key == 'action') {
+            } else if ($this.dataset.ind == 'do' && event.target.dataset.key == 'action') {
                 app.edit.do[$this.dataset.key].field = '';
                 app.checkConditionDoAction($this, app.edit[$this.dataset.ind][$this.dataset.key]);
             }
@@ -7018,10 +6956,10 @@ document.addEventListener('DOMContentLoaded', function(){
             }
             app.checkConditionLogic();
         }, 300);
-    }).on('change', '.conditions-matches-operation', function(){
+    }).on('change', '.conditions-matches-operation', function() {
         app.edit.operation = this.value;
         app.checkConditionLogic();
-    }).on('click', '.delete-condition-row', function(){
+    }).on('click', '.delete-condition-row', function() {
         fontBtn = {
             type: 'deleteConditionRow',
             parent: this.closest('.ba-settings-group'),
@@ -7030,49 +6968,49 @@ document.addEventListener('DOMContentLoaded', function(){
         $f('#delete-dialog').modal();
     });
 
-    $f('#templates-modal .integrations-group').on('click', '.templates-element', function(event){
+    $f('#templates-modal .integrations-group').on('click', '.templates-element', function(event) {
         event.preventDefault();
         if (this.dataset.id) {
             $f.ajax({
-                type:"POST",
-                dataType:'text',
+                type: "POST",
+                dataType: 'text',
                 data: {
                     id: this.dataset.id
                 },
-                url:"index.php?option=com_baforms&task=form.getFormsTemplate",
-                success: function(msg){
+                url: "index.php?option=com_baforms&task=form.getFormsTemplate",
+                success: function(msg) {
                     try {
                         let obj = JSON.parse(msg),
                             div = document.createElement('div'),
                             body = document.querySelector('.ba-forms-workspace-body'),
                             clones = [],
                             data = {
-                                pages:{},
-                                fields:{}
+                                pages: {},
+                                fields: {}
                             }
-                            pages = null;
+                        pages = null;
                         div.innerHTML = obj.html;
                         pages = Array.prototype.slice.call(div.querySelectorAll('.ba-form-page'));
-                        pages.forEach(function(page){
+                        pages.forEach(function(page) {
                             let $this = page.querySelector('.ba-form-page > .ba-edit-item .copy-item'),
                                 clone = app.copyItem($this, obj.items),
                                 pageFields = page.querySelectorAll('.ba-form-field-item'),
                                 cloneFields = clone.querySelectorAll('.ba-form-field-item');
                             data.pages[page.id] = clone.id;
-                            pageFields.forEach(function(field, i){
+                            pageFields.forEach(function(field, i) {
                                 data.fields[field.id.replace('baform-', '')] = cloneFields[i].id.replace('baform-', '');
                             });
                             clones.push(clone);
                         });
-                        clones.forEach(function(clone){
-                            clone.querySelectorAll('.ba-form-calculation-field').forEach(function(field){
+                        clones.forEach(function(clone) {
+                            clone.querySelectorAll('.ba-form-calculation-field').forEach(function(field) {
                                 let formula = app.items[field.id].formula,
                                     matches = formula.match(/\[Field ID=\d+\]/g);
                                 if (matches) {
                                     for (let i = 0; i < matches.length; i++) {
                                         let match = matches[i].match(/\d+/g);
                                         if (data.fields[match]) {
-                                            formula = formula.replace(matches[i], '[Field ID='+data.fields[match]+']');
+                                            formula = formula.replace(matches[i], '[Field ID=' + data.fields[match] + ']');
                                         }
                                     }
                                     app.items[field.id].formula = formula;
@@ -7091,10 +7029,10 @@ document.addEventListener('DOMContentLoaded', function(){
             });
         } else {
             $f.ajax({
-                type:"POST",
-                dataType:'text',
-                url:"index.php?option=com_baforms&task=forms.checkFormsState",
-                success: function(msg){
+                type: "POST",
+                dataType: 'text',
+                url: "index.php?option=com_baforms&task=forms.checkFormsState",
+                success: function(msg) {
                     var flag = true,
                         obj;
                     if (msg) {
@@ -7109,12 +7047,12 @@ document.addEventListener('DOMContentLoaded', function(){
                             script = document.createElement('script');
                         domain += window.location.pathname.replace('index.php', '').replace('/administrator', '');
                         url += 'option=com_baupdater&task=baforms.checkFormsUser';
-                        url += '&data='+obj.data;
+                        url += '&data=' + obj.data;
                         if (domain[domain.length - 1] != '/') {
                             domain += '/';
                         }
-                        url += '&domain='+window.btoa(domain);
-                        script.onload = function(){
+                        url += '&domain=' + window.btoa(domain);
+                        script.onload = function() {
                             if (formsResponse) {
                                 installTemplates();
                                 document.body.classList.remove('disabled-licence');
@@ -7130,47 +7068,47 @@ document.addEventListener('DOMContentLoaded', function(){
             });
         }
     });
-    $f('#login-modal').on('show', function(){
+    $f('#login-modal').on('show', function() {
         var url = 'https://www.balbooa.com/demo/index.php?option=com_baupdater&view=baforms',
             domain = window.location.host.replace('www.', '');
-            iframe = document.createElement('iframe');
+        iframe = document.createElement('iframe');
         domain += window.location.pathname.replace('index.php', '').replace('/administrator', '');
         if (domain[domain.length - 1] != '/') {
             domain += '/';
         }
-        url += '&domain='+window.btoa(domain);
-        iframe.onload = function(){
+        url += '&domain=' + window.btoa(domain);
+        iframe.onload = function() {
             this.classList.add('iframe-loaded');
         }
         iframe.src = url;
         $f(this).find('.modal-body').html(iframe);
         window.addEventListener("message", listenMessage, false);
-    }).on('hide', function(){
+    }).on('hide', function() {
         window.removeEventListener("message", listenMessage, false);
     });
 
-    $f('.lightbox-position-wrapper div').on('click', function(){
+    $f('.lightbox-position-wrapper div').on('click', function() {
         let workspace = document.querySelector('.ba-forms-workspace').classList;
-        workspace.remove('lightbox-position-'+app.edit.position);
+        workspace.remove('lightbox-position-' + app.edit.position);
         this.closest('.lightbox-position-wrapper').querySelector('.active').classList.remove('active');
         this.classList.add('active');
         app.edit.position = this.dataset.value;
-        workspace.add('lightbox-position-'+app.edit.position);
+        workspace.add('lightbox-position-' + app.edit.position);
     });
 
 
 
-    $f('.trigger-picker-modal').on('click', function(){
+    $f('.trigger-picker-modal').on('click', function() {
         fontBtn = this;
-        $f('#'+this.dataset.modal).modal();
+        $f('#' + this.dataset.modal).modal();
         showDataTagsDialog(this.dataset.modal);
     });
-    $f('.ba-modal-list-picker').on('click', 'li[data-value]', function(){
+    $f('.ba-modal-list-picker').on('click', 'li[data-value]', function() {
         $f(this).closest('.modal').modal('hide');
         fontBtn.querySelector('input[type="text"]').value = this.dataset.title ? this.dataset.title : this.textContent;
         $f(fontBtn).find('input[type="hidden"]').val(this.dataset.value).trigger('change');
     });
-    $f('#google-fonts-dialog ul').each(function(){
+    $f('#google-fonts-dialog ul').each(function() {
         for (let ind in googleFonts) {
             let li = document.createElement('li')
             li.dataset.value = ind;
@@ -7180,7 +7118,7 @@ document.addEventListener('DOMContentLoaded', function(){
     });
 
 
-    
+
 
 
 
@@ -7213,18 +7151,18 @@ document.addEventListener('DOMContentLoaded', function(){
     app.google.setDriveIntegration();
 });
 
-app.createTemplate = function(event){
+app.createTemplate = function(event) {
     let group = $f('.select-template-group').val();
     if (group) {
         $f.ajax({
-            type:"POST",
-            dataType:'text',
+            type: "POST",
+            dataType: 'text',
             data: {
                 id: app.form_id,
                 group: group
             },
-            url:"index.php?option=com_baforms&task=form.createTemplate",
-            success: function(msg){
+            url: "index.php?option=com_baforms&task=form.createTemplate",
+            success: function(msg) {
                 var a = document.createElement('a');
                 a.href = msg;
                 a.setAttribute('download', '')
@@ -7236,47 +7174,47 @@ app.createTemplate = function(event){
     }
 }
 
-app.createTemplateData = function(){
+app.createTemplateData = function() {
     if (document.querySelector('#create-template-modal')) {
         return false;
     }
-    var btn = '<span class="open-create-template" onclick="$f(\'#create-template-modal\').modal();">'+
-                    '<a href="#"><span class="zmdi zmdi-assignment"></span></a>'+
-                    '<span class="ba-tooltip ba-right ba-hide-element">Create Template</span>'+
-                '</span>',
-        html = '<div id="create-template-modal" class="mce-ba-modal ba-modal-sm modal hide" style="display:none;">'+
-                    '<div class="modal-body">'+
-                        '<h3>Create Template</h3>'+
-                        '<select class="select-template-group"></select>'+
-                    '</div>'+
-                    '<div class="modal-footer">'+
-                        '<a href="#" class="ba-btn" data-dismiss="modal">Cancel</a>'+
-                        '<a href="#" class="ba-btn-primary active-button" id="create-template"'+
-                        ' onclick="app.createTemplate(); return false;">Create</a>'+
-                    '</div>'+
-                '</div>';
+    var btn = '<span class="open-create-template" onclick="$f(\'#create-template-modal\').modal();">' +
+        '<a href="#"><span class="zmdi zmdi-assignment"></span></a>' +
+        '<span class="ba-tooltip ba-right ba-hide-element">Create Template</span>' +
+        '</span>',
+        html = '<div id="create-template-modal" class="mce-ba-modal ba-modal-sm modal hide" style="display:none;">' +
+        '<div class="modal-body">' +
+        '<h3>Create Template</h3>' +
+        '<select class="select-template-group"></select>' +
+        '</div>' +
+        '<div class="modal-footer">' +
+        '<a href="#" class="ba-btn" data-dismiss="modal">Cancel</a>' +
+        '<a href="#" class="ba-btn-primary active-button" id="create-template"' +
+        ' onclick="app.createTemplate(); return false;">Create</a>' +
+        '</div>' +
+        '</div>';
     $f('body').append(html);
     $f('.ba-sidebar > div:nth-child(2)').append(btn);
     let select = $f('.select-template-group')
-    $f('#templates-modal li').each(function(){
+    $f('#templates-modal li').each(function() {
         if (this.dataset.group != '*') {
-            select.append('<option value="'+this.dataset.group+'">'+this.textContent+'</option>');
+            select.append('<option value="' + this.dataset.group + '">' + this.textContent + '</option>');
         }
     });
-    $f('.open-create-template').find('.ba-tooltip').each(function(){
+    $f('.open-create-template').find('.ba-tooltip').each(function() {
         app.setTooltip($f(this).parent());
     });
 }
 
-!function($) {
-    var gridSorting = function(element, options){
+! function($) {
+    var gridSorting = function(element, options) {
         this.item = $(element);
         this.options = options;
         this.placeholder = this.handle = null;
     }
 
     gridSorting.prototype = {
-        getElementObj:function(key, el, rect, value, value1){
+        getElementObj: function(key, el, rect, value, value1) {
             if (value == value1 && !this.elements[key]) {
                 this.elements[key] = {
                     el: el,
@@ -7284,7 +7222,7 @@ app.createTemplateData = function(){
                 };
             }
         },
-        prepareData: function($this){
+        prepareData: function($this) {
             let rect = this.placeholder.getBoundingClientRect(),
                 place = $(this.placeholder);
             this.elements = {};
@@ -7294,7 +7232,7 @@ app.createTemplateData = function(){
                 left: rect.left,
                 top: rect.top
             };
-            place.prevAll(this.options.selector).each(function(){
+            place.prevAll(this.options.selector).each(function() {
                 rect = this.getBoundingClientRect();
                 $this.getElementObj('top', this, rect, rect.left, $this.css.left);
                 $this.getElementObj('left', this, rect, rect.top, $this.css.top);
@@ -7302,7 +7240,7 @@ app.createTemplateData = function(){
                     return false;
                 }
             });
-            place.nextAll(this.options.selector).each(function(){
+            place.nextAll(this.options.selector).each(function() {
                 rect = this.getBoundingClientRect();
                 $this.getElementObj('bottom', this, rect, rect.left, $this.css.left);
                 $this.getElementObj('right', this, rect, rect.top, $this.css.top);
@@ -7311,9 +7249,9 @@ app.createTemplateData = function(){
                 }
             });
         },
-        init : function(){
+        init: function() {
             let $this = this;
-            this.item.on('mousedown.gridSorting', this.options.handle, function(event){
+            this.item.on('mousedown.gridSorting', this.options.handle, function(event) {
                 if (event.button == 0) {
                     $this.placeholder = $(this).closest($this.item[0].children)[0];
                     $this.handle = $this.placeholder.cloneNode(true);
@@ -7328,8 +7266,8 @@ app.createTemplateData = function(){
                     delta.x = $this.css.left - event.clientX;
                     delta.y = $this.css.top - event.clientY;
                     helper.css($this.css);
-                    document.body.classList.add($this.options.group+'-grid-sorting-started');
-                    $(document).on('mousemove.gridSorting', function(event){
+                    document.body.classList.add($this.options.group + '-grid-sorting-started');
+                    $(document).on('mousemove.gridSorting', function(event) {
                         let target = null,
                             top = event.clientY + delta.y,
                             left = event.clientX + delta.x,
@@ -7353,26 +7291,26 @@ app.createTemplateData = function(){
                             $this.prepareData($this);
                         }
                         helper.css({
-                            top : top,
-                            left : left,
+                            top: top,
+                            left: left,
                         });
-                        
+
                         return false;
-                    }).off('mouseleave.gridSorting').on('mouseleave.gridSorting', function(){
+                    }).off('mouseleave.gridSorting').on('mouseleave.gridSorting', function() {
                         $(document).trigger('mouseup.gridSorting');
-                    }).off('mouseup.gridSorting').on('mouseup.gridSorting', function(){
+                    }).off('mouseup.gridSorting').on('mouseup.gridSorting', function() {
                         $this.handle.classList.add('grid-sorting-return-animation');
                         helper.css($this.css);
-                        setTimeout(function(){
+                        setTimeout(function() {
                             $this.placeholder.classList.remove('sorting-grid-placeholder-item');
                             $this.handle.remove();
                             $this.placeholder = $this.handle = null;
                             $this.elements = {};
                         }, 300);
-                        document.body.classList.remove($this.options.group+'-grid-sorting-started');
+                        document.body.classList.remove($this.options.group + '-grid-sorting-started');
                         $(document).off('mousemove.gridSorting mouseup.gridSorting mouseleave.gridSorting');
                     });
-                    
+
                     return false;
                 }
             });
@@ -7380,7 +7318,7 @@ app.createTemplateData = function(){
     }
 
     $.fn.gridSorting = function(option) {
-        return this.each(function (){
+        return this.each(function() {
             var $this = $(this),
                 data = $this.data('gridSorting'),
                 options = $.extend({}, $.fn.gridSorting.defaults, typeof option == 'object' && option);
@@ -7391,11 +7329,11 @@ app.createTemplateData = function(){
             data.init();
         });
     }
-    
+
     $.fn.gridSorting.defaults = {
-        selector : '> *',
+        selector: '> *',
         handle: '.grid-sorting-handle',
-        change : function(){},
-        start : function(){}
+        change: function() {},
+        start: function() {}
     }
 }(window.$f ? window.$f : window.jQuery);

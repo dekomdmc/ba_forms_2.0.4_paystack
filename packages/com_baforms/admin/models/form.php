@@ -162,7 +162,7 @@ class baformsModelForm extends JModelAdmin
             $obj->key = json_encode($obj->key);
         }
         $array = array('google_maps', 'stripe', 'paypal', 'twocheckout', 'authorize', 'liqpay', 'payupl',
-            'cloudpayments', 'robokassa', 'mollie', 'payu_latam', 'yandex_kassa', 'redsys', 'payfast', 'paypal_sdk');
+            'cloudpayments', 'robokassa', 'mollie', 'payu_latam', 'yandex_kassa', 'redsys', 'payfast', 'paypal_sdk', 'paystack');
         if (in_array($obj->service, $array)) {
             $db->updateObject('#__baforms_api', $obj, 'id');
         } else if ($obj->service == 'zoho_crm') {

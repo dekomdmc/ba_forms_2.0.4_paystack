@@ -135,6 +135,14 @@ abstract class compatibleCheck
             $stripe->key = json_encode($data);
             self::$db->updateObject('#__baforms_api', $stripe, 'id');
         }
+        if (!empty($form->paystack_secret_key)) {
+            $paystack = self::getService('paystack');
+            $data = json_decode($paystack->key);
+            $data->api_key = $form->paystack_secret_key;
+            $data->secret_key = $form->paystack_secret_key;
+            $paystack->key = json_encode($data);
+            self::$db->updateObject('#__baforms_api', $paystack, 'id');
+        }
     }
 
     private static function getService($service)

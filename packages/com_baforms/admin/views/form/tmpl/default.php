@@ -617,6 +617,18 @@ document.body.classList.add('disabled-licence');
                 </div>
             </div>
         </div>
+        <div class="integration-options" data-group="paystack">
+            <div class="ba-settings-group">
+                <div class="ba-settings-item ba-settings-input-type">
+                    <span class="ba-settings-item-title">Secret Key</span>
+                    <input type="text" data-key="secret_key">
+                </div>
+                <div class="ba-settings-item ba-settings-input-type">
+                    <span class="ba-settings-item-title">Public Key</span>
+                    <input type="text" data-key="public_key">
+                </div>
+            </div>
+        </div>
         <div class="integration-options" data-group="redsys">
             <div class="ba-settings-group">
                 <div class="ba-settings-item ba-settings-input-type">
@@ -6324,13 +6336,6 @@ if ($this->about->tag == 'pro') {
                         <i class="zmdi zmdi-check-circle"></i>
                         <span>PayFast</span>
                     </div>
-                    <!--
-                    <div class="integrations-element ba-work-area-element" data-group="payment" data-type="paypal">
-                        <img src="<?php echo JUri::root().'administrator/components/com_baforms/assets/images/paypal.png' ?>">
-                        <i class="zmdi zmdi-check-circle"></i>
-                        <span>PayPal</span>
-                    </div>
-                    -->
                     <div class="integrations-element ba-work-area-element" data-group="payment" data-type="paypal_sdk">
                         <img src="<?php echo JUri::root().'administrator/components/com_baforms/assets/images/paypal.png' ?>">
                         <i class="zmdi zmdi-check-circle"></i>
@@ -6383,6 +6388,12 @@ if ($this->about->tag == 'pro') {
                         <img src="<?php echo JUri::root().'administrator/components/com_baforms/assets/images/zoho.png' ?>">
                         <i class="zmdi zmdi-check-circle"></i>
                         <span>Zoho CRM</span>
+                    </div>
+                    <div class="integrations-element ba-work-area-element<?php echo baformsHelper::checkIntegration('paystack'); ?>"
+                        data-group="payment" data-type="paystack">
+                        <img src="<?php echo JUri::root().'administrator/components/com_baforms/assets/images/paystack.png' ?>">
+                        <i class="zmdi zmdi-check-circle"></i>
+                        <span>Paystack</span>
                     </div>
                 </div>
             </div>

@@ -1,10 +1,11 @@
 <?php
+
 /**
-* @package   BaForms
-* @author    Balbooa http://www.balbooa.com/
-* @copyright Copyright @ Balbooa
-* @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
-*/
+ * @package   BaForms
+ * @author    Balbooa http://www.balbooa.com/
+ * @copyright Copyright @ Balbooa
+ * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
+ */
 
 defined('_JEXEC') or die;
 
@@ -15,15 +16,15 @@ jimport('joomla.application.component.controllerform');
 class BaformsControllerForm extends JControllerForm
 {
     public function getModel($name = '', $prefix = '', $config = array('ignore_request' => true))
-	{
-		return parent::getModel($name, $prefix, array('ignore_request' => false));
-	}
+    {
+        return parent::getModel($name, $prefix, array('ignore_request' => false));
+    }
 
     public function loadAjaxForm()
     {
         $input = JFactory::getApplication()->input;
         $id = $input->get('id', 0, 'int');
-        $body = '[forms ID='.$id.']';
+        $body = '[forms ID=' . $id . ']';
         $html = baformsHelper::renderFormHTML($body);
         $design = baformsHelper::$design;
         if (empty($design) || $design->theme->layout != 'lightbox' || $design->lightbox->trigger->type != '') {
@@ -49,6 +50,14 @@ class BaformsControllerForm extends JControllerForm
         $str = json_encode($data);
         echo $str;
         exit();
+    }
+
+    public function getPaystackData()
+    {
+        $model = $this->getModel();
+        $data = $model->getServiceData('paystack');
+        $str = json_encode($data);
+        echo $str;
     }
 
     public function getCloudPaymentsData()
@@ -84,7 +93,7 @@ class BaformsControllerForm extends JControllerForm
         $language = JFactory::getLanguage();
         $language->load('com_baforms', JPATH_ADMINISTRATOR);
         $result = array();
-        $path = JPATH_ROOT.'/administrator/components/com_baforms/language/en-GB/en-GB.com_baforms.ini';
+        $path = JPATH_ROOT . '/administrator/components/com_baforms/language/en-GB/en-GB.com_baforms.ini';
         if (JFile::exists($path)) {
             $contents = JFile::read($path);
             $contents = str_replace('_QQ_', '"\""', $contents);
@@ -120,9 +129,9 @@ class BaformsControllerForm extends JControllerForm
         $month = $input->get('month', '0', 'string');
         $start = $input->get('start', 0, 'int');
         if (strlen($month) == 1) {
-            $month = '0'.$month;
+            $month = '0' . $month;
         }
-        $date = JDate::getInstance($year.'-'.$month.'-01');
+        $date = JDate::getInstance($year . '-' . $month . '-01');
         $obj = $this->renderFormsCalendarData($date, $month, $year, $start);
         $str = json_encode($obj);
         header('Content-Type: text/javascript');
@@ -135,21 +144,23 @@ class BaformsControllerForm extends JControllerForm
         $end = $start + 6;
         $obj = new stdClass();
         $dateData = new stdClass();
-        $dateData->days = array(JText::_('SUN'), JText::_('MON'), JText::_('TUE'), JText::_('WED'), JText::_('THU'),
-            JText::_('FRI'), JText::_('SAT'), JText::_('SUN'));
+        $dateData->days = array(
+            JText::_('SUN'), JText::_('MON'), JText::_('TUE'), JText::_('WED'), JText::_('THU'),
+            JText::_('FRI'), JText::_('SAT'), JText::_('SUN')
+        );
         $today = date('j');
         $now = JDate::getInstance();
         $nowDate = new stdClass();
         $nowDate->date = $now->format('n Y');
         $nowDate->year = $now->format('Y');
         $nowDate->month = $now->format('n');
-        $m = strlen($nowDate->month) == 1 ? '0'.$nowDate->month : $nowDate->month;
-        $nowDate->time = JDate::getInstance($nowDate->year.'-'.$m.'-01')->getTimestamp();
+        $m = strlen($nowDate->month) == 1 ? '0' . $nowDate->month : $nowDate->month;
+        $nowDate->time = JDate::getInstance($nowDate->year . '-' . $m . '-01')->getTimestamp();
         $todayDate = $dateObject->format('n Y');
         $obj->title = $dateObject->format('F Y');
         $obj->header = '';
-        for ($i = $start; $i <= $end; $i++) { 
-            $obj->header .= '<div class="ba-event-calendar-day-name">'.$dateData->days[$i].'</div>';
+        for ($i = $start; $i <= $end; $i++) {
+            $obj->header .= '<div class="ba-event-calendar-day-name">' . $dateData->days[$i] . '</div>';
         }
         $obj->body = '';
         $firstDay = $dateObject->format('w');
@@ -168,13 +179,13 @@ class BaformsControllerForm extends JControllerForm
                 if (($i === 0 && $j < $firstDay) || $date > $daysInMonth) {
                     $obj->body .= '<div class="ba-empty-date-cell"></div>';
                 } else {
-                    $d = $date < 10 ? '0'.(string)$date : (string)$date;
-                    $event = JDate::getInstance($year.'-'.$month.'-'.$d);
+                    $d = $date < 10 ? '0' . (string)$date : (string)$date;
+                    $event = JDate::getInstance($year . '-' . $month . '-' . $d);
                     $eventDate = $event->format('j F Y');
                     $dayDate = $event->format('Y-m-d');
-                    $obj->body .= '<div class="ba-date-cell'.($date == $today && $nowDate->date == $todayDate ? ' ba-curent-date' : '');
+                    $obj->body .= '<div class="ba-date-cell' . ($date == $today && $nowDate->date == $todayDate ? ' ba-curent-date' : '');
                     $obj->body .= ($nowDate->time > $time || ($nowDate->date == $todayDate && $date < $today) ? ' ba-previous-date' : '');
-                    $obj->body .= '" data-date="'.$eventDate.'" data-day-number="'.$j.'" data-day-date="'.$dayDate.'">'.$date.'</div>';
+                    $obj->body .= '" data-date="' . $eventDate . '" data-day-number="' . $j . '" data-day-date="' . $dayDate . '">' . $date . '</div>';
                     $date++;
                 }
             }
@@ -254,13 +265,12 @@ class BaformsControllerForm extends JControllerForm
         $cardCode = $input->get('cardCode', '', 'string');
         $cardNumber = str_replace(' ', '', $cardNumber);
         $expArray = explode('/', $expirationDate);
-        $expirationDate = $expArray[1].'-'.$expArray[0];
+        $expirationDate = $expArray[1] . '-' . $expArray[0];
         $model = $this->getModel('form');
         $model->payAuthorize($id, $total, $cardNumber, $expirationDate, $cardCode);
     }
 
     public function save($key = NULL, $urlVar = NULL)
     {
-               
     }
 }
